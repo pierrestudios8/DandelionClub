@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<title>Dandelion Club — Donate</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="ds/dandelion-club/components/bundle.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;500;900&amp;family=Geist:wght@400;700;900&amp;display=swap">
+<style>
+body{margin:0;background:#1e122b}
+a{color:inherit}
+.seg{flex:1;height:56px;border:2px solid #1e122b;font:900 16px/1 Unbounded,sans-serif;text-transform:uppercase;cursor:pointer}
+.seg.on,.amt.on{background:#1e122b;color:#ffcd19}.seg+.seg{border-left:0}
+.seg,.amt{background:#fcfaf2;color:#1e122b}
+.amt{border:2px solid #1e122b;padding:20px;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:8px;min-height:132px;box-sizing:border-box}
+</style>
+</helmet>
+<div class="dc-root" style="width: 1440px; height: 2760px; overflow: hidden; background: var(--night); display: flex; flex-direction: column">
+
+<div style="height: 40px; flex-shrink: 0; background: var(--dandelion); color: var(--night); display: flex; align-items: center; justify-content: center; gap: 12px; font-family: var(--font-text); font-size: 14px; font-weight: 700">
+<span>Next planting: [Date], [Site]</span><a href="PlantingDetail.dc.html" style="font-weight: 900">Join us</a>
+</div>
+
+<header style="height: 100px; flex-shrink: 0; box-sizing: border-box; padding: 0 120px; background: var(--night); display: flex; align-items: center; justify-content: space-between">
+<a href="Main.dc.html" aria-label="Dandelion Club home"><img src="/_blob/dcd6dd260f90db2a7c075486314ec745" alt="Dandelion Club" style="width: 160px; height: 65px; display: block"></a>
+<nav aria-label="Main" style="display: flex; align-items: center; gap: 40px">
+<a class="dc-eyebrow" href="Plantings.dc.html" style="color: var(--dandelion); text-decoration: none">Plantings</a>
+<a class="dc-eyebrow" href="Main.dc.html#work" style="color: var(--dandelion); text-decoration: none">Our work</a>
+<a class="dc-eyebrow" href="Main.dc.html#about" style="color: var(--dandelion); text-decoration: none">About</a>
+<a class="dc-eyebrow" href="Main.dc.html#journal" style="color: var(--dandelion); text-decoration: none">Journal</a>
+<a class="dc-btn" href="GetInvolved.dc.html">Get involved</a>
+</nav>
+</header>
+
+<section style="height: 380px; flex-shrink: 0; box-sizing: border-box; padding: 64px 120px 0; background: var(--night); color: var(--paper); display: flex; flex-direction: column; gap: 24px">
+<div><p class="dc-eyebrow">Donate</p><h1 class="dc-display-xl" style="color: var(--dandelion)">Pay for the next planting.</h1></div>
+<p class="dc-lead" style="max-width: 640px">Your gift pays for trees, soil, water and tools for school food forests in the Western Cape. [Confirm what donations cover.]</p>
+</section>
+
+<section style="height: 980px; flex-shrink: 0; box-sizing: border-box; padding: 96px 120px 0; background: var(--paper); color: var(--night); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-content: start">
+<form aria-labelledby="dn-title" style="grid-column: span 7; display: flex; flex-direction: column; gap: 28px">
+<h2 id="dn-title" class="dc-display">Your gift.</h2>
+
+<fieldset style="border: 0; margin: 0; padding: 0">
+<legend class="dc-field__label" style="margin-bottom: 12px">How often</legend>
+<div style="display: flex; max-width: 560px">
+<button type="button" class="{{onceCls}}" aria-pressed="{{onceOn}}" onClick="{{pickOnce}}">Once-off</button>
+<button type="button" class="{{monthlyCls}}" aria-pressed="{{monthlyOn}}" onClick="{{pickMonthly}}">Monthly</button>
+</div>
+</fieldset>
+
+<fieldset style="border: 0; margin: 0; padding: 0">
+<legend class="dc-field__label" style="margin-bottom: 12px">Amount</legend>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px">
+<sc-for list="{{amounts}}" as="a" hint-placeholder-count="3">
+<button type="button" class="{{a.cls}}" aria-pressed="{{a.on}}" onClick="{{a.pick}}">
+<span style="font: 900 26px/1 var(--font-display)">R{{a.label}}</span>
+<span style="font: 400 14px/20px var(--font-text)">{{a.note}}</span>
+</button>
+</sc-for>
+</div>
+<div class="dc-field" style="margin-top: 16px; max-width: 280px"><label class="dc-field__label" for="dn-other">Or another amount (R)</label><input class="dc-field__input" id="dn-other" inputmode="numeric" placeholder="e.g. 500"></div>
+</fieldset>
+
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; max-width: 560px">
+<div class="dc-field"><label class="dc-field__label" for="dn-name">Your name</label><input class="dc-field__input" id="dn-name" autocomplete="name"></div>
+<div class="dc-field"><label class="dc-field__label" for="dn-email">Email</label><input class="dc-field__input" id="dn-email" type="email" autocomplete="email"></div>
+</div>
+<label class="dc-check" style="max-width: 560px"><input type="checkbox"> I'd like a Section 18A tax certificate. [Only if the NPC can issue them; we'll ask for ID or company details next.]</label>
+<label class="dc-check" style="max-width: 560px"><input type="checkbox"> I agree that Dandelion Club may store these details to process my donation.</label>
+</form>
+
+<aside aria-label="Summary" style="grid-column: 9 / span 4; align-self: start; margin-top: 84px; background: var(--night); color: var(--paper); padding: 32px; display: flex; flex-direction: column; gap: 20px">
+<p class="dc-eyebrow" style="color: var(--dandelion)">Summary</p>
+<div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid var(--hairline-on-night); padding-bottom: 16px"><p class="dc-lead">{{freqLabel}}</p><p class="dc-display" style="color: var(--dandelion)">R{{chosen}}</p></div>
+<p class="dc-small" style="color: var(--ink-muted-on-night)">{{chosenNote}}</p>
+<button class="dc-btn" type="submit" style="justify-content: center">Continue to payment</button>
+<p class="dc-small" style="color: var(--ink-muted-on-night)">Secure card payment by [PayFast]. [How to cancel a monthly gift.]</p>
+</aside>
+</section>
+
+<section style="height: 420px; flex-shrink: 0; box-sizing: border-box; padding: 0 120px; background: var(--night); color: var(--paper); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-items: center">
+<div style="grid-column: span 5; display: flex; flex-direction: column; gap: 16px">
+<p class="dc-eyebrow">Prefer EFT?</p>
+<h2 class="dc-display" style="color: var(--dandelion)">Pay us directly.</h2>
+<p class="dc-lead" style="color: var(--ink-muted-on-night)">Use your name as the reference and email info@dandelionclub.co.za so we can thank you.</p>
+</div>
+<dl style="grid-column: 7 / span 6; margin: 0; display: grid; grid-template-columns: 180px minmax(0, 1fr); row-gap: 14px; border: 2px solid var(--dandelion); padding: 32px">
+<dt class="dc-eyebrow" style="font-size: 14px; color: var(--dandelion)">Account name</dt><dd class="dc-detail" style="margin: 0">Business Building Institute NPC</dd>
+<dt class="dc-eyebrow" style="font-size: 14px; color: var(--dandelion)">Bank</dt><dd class="dc-detail" style="margin: 0">FNB</dd>
+<dt class="dc-eyebrow" style="font-size: 14px; color: var(--dandelion)">Account</dt><dd class="dc-detail" style="margin: 0">63122832446</dd>
+<dt class="dc-eyebrow" style="font-size: 14px; color: var(--dandelion)">Branch code</dt><dd class="dc-detail" style="margin: 0">200912</dd>
+<dt class="dc-eyebrow" style="font-size: 14px; color: var(--dandelion)">SWIFT</dt><dd class="dc-detail" style="margin: 0">FIRNZAJJ</dd>
+</dl>
+</section>
+
+<section style="height: 460px; flex-shrink: 0; box-sizing: border-box; padding: 96px 120px 0; background: var(--paper); color: var(--night); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-content: start">
+<h2 class="dc-display" style="grid-column: span 4">Accountable.</h2>
+<div style="grid-column: 6 / span 7; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px">
+<div style="border-top: 2px solid var(--night); padding-top: 16px; display: flex; flex-direction: column; gap: 8px"><h3 class="dc-subtitle">Who we are</h3><p class="dc-body" style="font-size: 16px; line-height: 24px">Dandelion Club is run by Business Building Institute NPC, registration [number].</p></div>
+<div style="border-top: 2px solid var(--night); padding-top: 16px; display: flex; flex-direction: column; gap: 8px"><h3 class="dc-subtitle">Tax certificates</h3><p class="dc-body" style="font-size: 16px; line-height: 24px">[Section 18A status and how certificates are issued.]</p></div>
+<div style="border-top: 2px solid var(--night); padding-top: 16px; display: flex; flex-direction: column; gap: 8px"><h3 class="dc-subtitle">Where it goes</h3><p class="dc-body" style="font-size: 16px; line-height: 24px">[Split between trees, soil and water, tools, and running costs.]</p></div>
+<div style="border-top: 2px solid var(--night); padding-top: 16px; display: flex; flex-direction: column; gap: 8px"><h3 class="dc-subtitle">Reports</h3><p class="dc-body" style="font-size: 16px; line-height: 24px">[Annual report download, once published.]</p></div>
+</div>
+</section>
+
+<footer style="height: 380px; flex-shrink: 0; box-sizing: border-box; padding: 64px 120px 32px; background: var(--night); color: var(--paper); display: flex; flex-direction: column; justify-content: space-between">
+<div style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px">
+<div style="grid-column: span 3"><img src="/_blob/dcd6dd260f90db2a7c075486314ec745" alt="Dandelion Club" style="width: 160px; height: 65px; display: block"></div>
+<nav aria-label="Site" style="grid-column: span 2; display: flex; flex-direction: column; gap: 10px; font-size: 16px"><p class="dc-eyebrow" style="font-size: 14px; color: var(--dandelion)">Visit</p><a href="Plantings.dc.html" style="text-decoration: none">Plantings</a><a href="Main.dc.html#work" style="text-decoration: none">Our work</a><a href="Main.dc.html#about" style="text-decoration: none">About</a><a href="Main.dc.html#journal" style="text-decoration: none">Journal</a></nav>
+<nav aria-label="Take part" style="grid-column: span 2; display: flex; flex-direction: column; gap: 10px; font-size: 16px"><p class="dc-eyebrow" style="font-size: 14px; color: var(--dandelion)">Take part</p><a href="PlantingDetail.dc.html" style="text-decoration: none">Join a planting</a><a href="DedicateTree.dc.html" style="text-decoration: none">Dedicate a tree</a><a href="Donate.dc.html" style="text-decoration: none">Donate</a><a href="GetInvolved.dc.html" style="text-decoration: none">Partner with us</a></nav>
+<div style="grid-column: 9 / span 4; display: flex; flex-direction: column; gap: 12px">
+<p class="dc-eyebrow" style="font-size: 14px; color: var(--dandelion)">Contact</p>
+<p class="dc-lead">info@dandelionclub.co.za</p>
+<p class="dc-small" style="color: var(--ink-muted-on-night)">Instagram · LinkedIn</p>
+</div>
+</div>
+<div style="display: flex; justify-content: space-between; border-top: 1px solid var(--hairline-on-night); padding-top: 20px">
+<p class="dc-small" style="color: var(--ink-muted-on-night)">Business Building Institute NPC · Registration [number]</p>
+<a class="dc-small" href="#privacy" style="color: var(--ink-muted-on-night)">Privacy</a>
+</div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2760}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const s = this.state || {};
+    const freq = s.freq || 'once';
+    const picked = s.amount || 350;
+    const list = [
+      { value: 100, note: '[What R100 pays for]' },
+      { value: 350, note: '[What R350 pays for, e.g. one tree]' },
+      { value: 1000, note: '[What R1,000 pays for]' }
+    ];
+    const amounts = list.map((a) => ({
+      label: a.value.toLocaleString('en-ZA'),
+      note: a.note,
+      on: a.value === picked,
+      cls: a.value === picked ? 'amt on' : 'amt',
+      pick: () => this.setState({ amount: a.value })
+    }));
+    const chosen = list.find((a) => a.value === picked) || list[1];
+    return {
+      amounts: amounts,
+      onceOn: freq === 'once',
+      monthlyOn: freq === 'monthly',
+      onceCls: freq === 'once' ? 'seg on' : 'seg',
+      monthlyCls: freq === 'monthly' ? 'seg on' : 'seg',
+      pickOnce: () => this.setState({ freq: 'once' }),
+      pickMonthly: () => this.setState({ freq: 'monthly' }),
+      freqLabel: freq === 'monthly' ? 'Every month' : 'Once-off',
+      chosen: chosen.value.toLocaleString('en-ZA'),
+      chosenNote: chosen.note
+    };
+  }
+}
+</script>
+</body>
+</html>

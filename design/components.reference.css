@@ -1,0 +1,109 @@
+@import url("https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;500;900&family=Geist:wght@400;700;900&display=swap");
+
+/* Dandelion Club component styles. Every value comes from tokens.css. */
+
+.dc-root { font-family: var(--font-text); color: var(--night); background: var(--paper); margin: 0; }
+.dc-root *, .dc-root *::before, .dc-root *::after { box-sizing: border-box; }
+
+.dc-on-night { background: var(--night); color: var(--paper); }
+.dc-on-paper { background: var(--paper); color: var(--night); }
+.dc-on-dandelion { background: var(--dandelion); color: var(--night); }
+
+.dc-caps { text-transform: uppercase; }
+.dc-display-xl { font-family: var(--font-display); font-weight: 900; font-size: 72px; line-height: .9; text-transform: uppercase; margin: 0; }
+.dc-display { font-family: var(--font-display); font-weight: 900; font-size: 40px; line-height: 36px; text-transform: uppercase; margin: 0; }
+.dc-eyebrow { font-family: var(--font-display); font-weight: 900; font-size: 18px; line-height: 21.6px; text-transform: uppercase; margin: 0; }
+.dc-detail { font-family: var(--font-display); font-weight: 300; font-size: 18px; line-height: 21.6px; margin: 0; }
+.dc-title { font-family: var(--font-text); font-weight: 700; font-size: 32px; line-height: 38.4px; margin: 0; }
+.dc-subtitle { font-family: var(--font-text); font-weight: 700; font-size: 24px; line-height: 28.8px; margin: 0; }
+.dc-lead { font-family: var(--font-text); font-weight: 700; font-size: 18px; line-height: 19.8px; margin: 0; }
+.dc-lead strong, .dc-lead b { font-weight: 900; }
+.dc-body { font-family: var(--font-text); font-weight: 400; font-size: 18px; line-height: 28px; max-width: var(--measure-text); margin: 0; }
+.dc-small { font-family: var(--font-text); font-weight: 400; font-size: 14px; line-height: 20px; margin: 0; }
+.dc-muted { color: var(--ink-muted); }
+:is(.dc-on-night, .dc-hero, .dc-contribute, .dc-header) .dc-muted { color: var(--ink-muted-on-night); }
+.dc-yellow { color: var(--dandelion); }
+
+/* Button: square, night fill, dandelion outline and label (live site). */
+.dc-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+  padding: var(--space-5) var(--space-6);
+  font-family: var(--font-display); font-weight: 900; font-size: 18px; line-height: 21.6px; text-transform: uppercase;
+  color: var(--dandelion); background: var(--night);
+  border: var(--border-strong) solid var(--dandelion); border-radius: var(--radius-none);
+  text-decoration: none; cursor: pointer; transition: background-color 150ms ease-out, color 150ms ease-out;
+}
+.dc-btn:hover { background: var(--dandelion); color: var(--night); border-color: var(--night); }
+.dc-btn:focus-visible { outline: var(--border-strong) solid var(--focus-on-paper); outline-offset: 3px; }
+:is(.dc-on-night, .dc-hero, .dc-contribute, .dc-header) .dc-btn:focus-visible { outline-color: var(--focus-on-night); }
+.dc-btn--ghost { background: transparent; color: var(--night); border-color: var(--night); }
+.dc-btn--ghost:hover { background: var(--night); color: var(--dandelion); }
+:is(.dc-on-night, .dc-hero, .dc-contribute, .dc-header) .dc-btn--ghost { color: var(--dandelion); border-color: var(--dandelion); }
+:is(.dc-on-night, .dc-hero, .dc-contribute, .dc-header) .dc-btn--ghost:hover { background: var(--dandelion); color: var(--night); }
+.dc-btn--quiet { text-transform: none; }
+.dc-btn[disabled], .dc-btn[aria-disabled="true"] { opacity: .45; cursor: not-allowed; }
+.dc-btn-stack { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-3); }
+.dc-btn-row { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+
+/* Header */
+.dc-header { background: var(--night); display: flex; align-items: center; justify-content: space-between; padding: var(--space-2) var(--space-7); min-height: 84px; }
+.dc-header__logo img { display: block; width: 160px; height: 65px; }
+.dc-header__nav { display: flex; gap: var(--space-7); align-items: center; }
+.dc-header__nav a { font-family: var(--font-display); font-weight: 900; font-size: 18px; line-height: 21.6px; text-transform: uppercase; color: var(--dandelion); text-decoration: none; }
+.dc-header__nav a:hover { text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 2px; }
+
+/* Announcement bar (addition) */
+.dc-announce { background: var(--dandelion); color: var(--night); display: flex; justify-content: center; gap: var(--space-3); padding: var(--space-2) var(--space-4); font-family: var(--font-text); font-weight: 700; font-size: 14px; line-height: 20px; }
+.dc-announce a { color: var(--night); font-weight: 900; }
+
+/* Hero: photo fading into night (live site), text on night */
+.dc-hero { background: var(--night); color: var(--paper); }
+.dc-hero__media { position: relative; aspect-ratio: 16 / 7; background: var(--night-raised); overflow: hidden; }
+.dc-hero__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.dc-hero__media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(rgba(30, 18, 43, 0) 42%, var(--night) 100%); }
+.dc-hero__body { padding: var(--space-8) var(--space-7) var(--space-9); display: grid; gap: var(--space-4); }
+.dc-hero__headline { color: var(--dandelion); }
+
+/* Section wrappers */
+.dc-section { padding: var(--space-9) var(--space-7); }
+.dc-section__head { display: grid; gap: 0; margin-bottom: var(--space-5); }
+.dc-stack { display: grid; gap: var(--space-4); }
+
+/* Seed band: dandelion ground, paper seed pattern, one night seed (live site) */
+.dc-seedband { background-color: var(--dandelion); background-repeat: repeat; background-size: 144px 144px; display: grid; place-items: center; min-height: 390px; }
+.dc-seedband__seed { width: 150px; height: auto; }
+
+/* Contribute block (live site): night ground, outlined button, bank lines in detail */
+.dc-contribute { background: var(--night); color: var(--paper); text-align: center; padding: var(--space-9) var(--space-7); display: grid; justify-items: center; gap: var(--space-5); }
+.dc-contribute__details { display: grid; gap: var(--space-1); color: var(--paper); }
+
+/* Planting card (addition, from the live Next planting section) */
+.dc-planting { background: var(--paper-sunk); border: var(--border-strong) solid var(--night); padding: var(--space-7); display: grid; gap: var(--space-4); max-width: 560px; }
+.dc-planting__when { display: grid; gap: var(--space-1); }
+.dc-planting--past { background: var(--paper); }
+.dc-tag { display: inline-block; align-self: start; justify-self: start; font-family: var(--font-display); font-weight: 900; font-size: 12px; line-height: 16px; text-transform: uppercase; padding: var(--space-1) var(--space-2); background: var(--night); color: var(--dandelion); }
+
+/* Route card (addition, Get involved hub) */
+.dc-route { display: grid; gap: var(--space-3); padding: var(--space-7); background: var(--night); color: var(--paper); border: var(--border-strong) solid var(--night); text-decoration: none; }
+.dc-route:hover { border-color: var(--dandelion); }
+.dc-route__title { color: var(--dandelion); }
+.dc-route__arrow { font-family: var(--font-display); font-weight: 900; color: var(--dandelion); }
+
+/* Form fields (addition) */
+.dc-field { display: grid; gap: var(--space-2); max-width: 420px; }
+.dc-field__label { font-family: var(--font-text); font-weight: 700; font-size: 18px; line-height: 19.8px; color: var(--night); }
+.dc-field__input { font: 400 18px/28px var(--font-text); color: var(--night); background: var(--paper); border: var(--border-strong) solid var(--night); border-radius: var(--radius-none); padding: var(--space-3) var(--space-4); width: 100%; }
+.dc-field__input::placeholder { color: var(--ink-muted); }
+.dc-field__input:focus { outline: var(--border-strong) solid var(--focus-on-paper); outline-offset: 3px; }
+.dc-field__hint { font: 400 14px/20px var(--font-text); color: var(--ink-muted); }
+.dc-field--error .dc-field__input { border-color: var(--error); }
+.dc-field--error .dc-field__hint { color: var(--error); font-weight: 700; }
+.dc-check { display: flex; gap: var(--space-3); align-items: flex-start; font: 400 14px/20px var(--font-text); color: var(--night); max-width: 420px; }
+.dc-check input { width: 20px; height: 20px; margin: 0; accent-color: var(--night); flex: none; }
+
+@media (max-width: 1023px) { .dc-display-xl { font-size: 40px; line-height: 36px; } }
+@media (max-width: 599px) {
+  .dc-header, .dc-hero__body, .dc-section, .dc-contribute { padding-left: var(--space-4); padding-right: var(--space-4); }
+  .dc-header__nav { gap: var(--space-4); }
+}
+@media (prefers-reduced-motion: reduce) { .dc-btn { transition: none; } }

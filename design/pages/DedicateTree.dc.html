@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<title>Dandelion Club — Dedicate a tree</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="ds/dandelion-club/components/bundle.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;500;900&amp;family=Geist:wght@400;700;900&amp;display=swap">
+<style>
+body{margin:0;background:#1e122b}
+a{color:inherit}
+.stepbtn{width:52px;height:52px;border:2px solid #1e122b;background:#fcfaf2;color:#1e122b;font:900 22px/1 Unbounded,sans-serif;cursor:pointer}
+.stepbtn:hover{background:#1e122b;color:#ffcd19}
+</style>
+</helmet>
+<div class="dc-root" style="width: 1440px; height: 2980px; overflow: hidden; background: var(--night); display: flex; flex-direction: column">
+
+<div style="height: 40px; flex-shrink: 0; background: var(--dandelion); color: var(--night); display: flex; align-items: center; justify-content: center; gap: 12px; font-family: var(--font-text); font-size: 14px; font-weight: 700">
+<span>Next planting: [Date], [Site]</span><a href="PlantingDetail.dc.html" style="font-weight: 900">Join us</a>
+</div>
+
+<header style="height: 100px; flex-shrink: 0; box-sizing: border-box; padding: 0 120px; background: var(--night); display: flex; align-items: center; justify-content: space-between">
+<a href="Main.dc.html" aria-label="Dandelion Club home"><img src="/_blob/dcd6dd260f90db2a7c075486314ec745" alt="Dandelion Club" style="width: 160px; height: 65px; display: block"></a>
+<nav aria-label="Main" style="display: flex; align-items: center; gap: 40px">
+<a class="dc-eyebrow" href="Plantings.dc.html" style="color: var(--dandelion); text-decoration: none">Plantings</a>
+<a class="dc-eyebrow" href="Main.dc.html#work" style="color: var(--dandelion); text-decoration: none">Our work</a>
+<a class="dc-eyebrow" href="Main.dc.html#about" style="color: var(--dandelion); text-decoration: none">About</a>
+<a class="dc-eyebrow" href="Main.dc.html#journal" style="color: var(--dandelion); text-decoration: none">Journal</a>
+<a class="dc-btn" href="GetInvolved.dc.html">Get involved</a>
+</nav>
+</header>
+
+<section style="height: 420px; flex-shrink: 0; box-sizing: border-box; padding: 64px 120px 0; background: var(--night); color: var(--paper); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px">
+<div style="grid-column: span 8; display: flex; flex-direction: column; gap: 24px">
+<div><p class="dc-eyebrow">Dedicate a tree</p><h1 class="dc-display-xl" style="color: var(--dandelion)">Put a name to a tree.</h1></div>
+<p class="dc-lead" style="max-width: 620px">For a birthday, a memory, a new baby or a team. Your tree goes into a school food forest and its name goes on the site register.</p>
+</div>
+<div style="grid-column: 10 / span 3; display: flex; align-items: center; justify-content: center">
+<img src="/_blob/787774dfab5c165cc27fa30e02ce713b" alt="" style="width: 150px; height: auto">
+</div>
+</section>
+
+<section style="height: 520px; flex-shrink: 0; box-sizing: border-box; padding: 96px 120px 0; background: var(--paper); color: var(--night); display: flex; flex-direction: column; gap: 48px">
+<h2 class="dc-display">How it works.</h2>
+<ol style="margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px">
+<li style="border-top: 2px solid var(--night); padding-top: 20px; display: flex; flex-direction: column; gap: 12px"><span class="dc-display" style="font-size: 32px">01</span><h3 class="dc-subtitle">Choose a site and a name</h3><p class="dc-small dc-muted" style="font-size: 16px; line-height: 24px">Pick one of our schools, or let us plant it where it's needed most.</p></li>
+<li style="border-top: 2px solid var(--night); padding-top: 20px; display: flex; flex-direction: column; gap: 12px"><span class="dc-display" style="font-size: 32px">02</span><h3 class="dc-subtitle">We plant it</h3><p class="dc-small dc-muted" style="font-size: 16px; line-height: 24px">Your tree goes in on the next planting day at that site, planted by volunteers and learners.</p></li>
+<li style="border-top: 2px solid var(--night); padding-top: 20px; display: flex; flex-direction: column; gap: 12px"><span class="dc-display" style="font-size: 32px">03</span><h3 class="dc-subtitle">You get the proof</h3><p class="dc-small dc-muted" style="font-size: 16px; line-height: 24px">[A certificate by email, and a photo from the planting day.]</p></li>
+</ol>
+</section>
+
+<section style="height: 1000px; flex-shrink: 0; box-sizing: border-box; padding: 96px 120px 0; background: var(--paper-sunk); color: var(--night); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-content: start">
+<form aria-labelledby="dt-title" style="grid-column: span 7; display: flex; flex-direction: column; gap: 24px">
+<h2 id="dt-title" class="dc-display">Your dedication.</h2>
+
+<fieldset style="border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px">
+<legend class="dc-field__label" style="margin-bottom: 12px">Number of trees</legend>
+<div style="display: flex; align-items: center; gap: 0">
+<button type="button" class="stepbtn" aria-label="One fewer tree" onClick="{{less}}">−</button>
+<output aria-live="polite" style="width: 88px; height: 52px; box-sizing: border-box; border-top: 2px solid var(--night); border-bottom: 2px solid var(--night); display: flex; align-items: center; justify-content: center; font: 900 22px/1 var(--font-display); background: var(--paper)">{{trees}}</output>
+<button type="button" class="stepbtn" aria-label="One more tree" onClick="{{more}}">+</button>
+</div>
+</fieldset>
+
+<div class="dc-field" style="max-width: 560px"><label class="dc-field__label" for="dt-for">Dedicated to</label><input class="dc-field__input" id="dt-for" placeholder="Name of the person, family or team"></div>
+<div class="dc-field" style="max-width: 560px"><label class="dc-field__label" for="dt-msg">Message for the register <span style="font-weight: 400">(optional)</span></label><input class="dc-field__input" id="dt-msg" maxlength="80"><p class="dc-field__hint">Up to 80 characters. Shown next to the name on the site page.</p></div>
+<div class="dc-field" style="max-width: 560px"><label class="dc-field__label" for="dt-site">Site</label><select class="dc-field__input" id="dt-site"><option>Wherever it's needed most</option><option>Silukhanyo Primary</option><option>Mhani Gingi Centre of Excellence</option><option>Genadendal</option></select></div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; max-width: 560px">
+<div class="dc-field"><label class="dc-field__label" for="dt-name">Your name</label><input class="dc-field__input" id="dt-name" autocomplete="name"></div>
+<div class="dc-field"><label class="dc-field__label" for="dt-email">Your email</label><input class="dc-field__input" id="dt-email" type="email" autocomplete="email"></div>
+</div>
+<label class="dc-check" style="max-width: 560px"><input type="checkbox" checked=""> Show the dedication on the public site register.</label>
+<label class="dc-check" style="max-width: 560px"><input type="checkbox"> I agree that Dandelion Club may store these details to process this dedication.</label>
+</form>
+
+<aside aria-label="Summary" style="grid-column: 9 / span 4; align-self: start; margin-top: 84px; background: var(--night); color: var(--paper); padding: 32px; display: flex; flex-direction: column; gap: 20px">
+<p class="dc-eyebrow" style="color: var(--dandelion)">Summary</p>
+<div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid var(--hairline-on-night); padding-bottom: 16px">
+<p class="dc-lead">{{trees}} × tree</p><p class="dc-lead">R{{price}} each</p>
+</div>
+<div style="display: flex; justify-content: space-between; align-items: baseline">
+<p class="dc-eyebrow">Total</p><p class="dc-display" style="color: var(--dandelion)">R{{total}}</p>
+</div>
+<ul class="dc-small" style="margin: 0; padding-left: 18px; color: var(--ink-muted-on-night); display: flex; flex-direction: column; gap: 6px">
+<li>[Price per tree to confirm]</li>
+<li>Name on the site register</li>
+<li>[Certificate and planting-day photo]</li>
+<li>[Section 18A certificate, if applicable]</li>
+</ul>
+<button class="dc-btn" type="submit" style="justify-content: center">Continue to payment</button>
+<p class="dc-small" style="color: var(--ink-muted-on-night)">Secure card payment by [PayFast]. Prefer EFT? <a href="Donate.dc.html" style="color: var(--dandelion)">See bank details</a>.</p>
+</aside>
+</section>
+
+<section style="height: 520px; flex-shrink: 0; box-sizing: border-box; padding: 96px 120px 0; background: var(--paper); color: var(--night); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-content: start">
+<h2 class="dc-display" style="grid-column: span 4">Questions.</h2>
+<div style="grid-column: 6 / span 7; display: flex; flex-direction: column">
+<details open="" style="border-top: 2px solid var(--night); padding: 20px 0"><summary class="dc-subtitle" style="cursor: pointer">When is my tree planted?</summary><p class="dc-body" style="margin-top: 12px">On the next planting day at the site you chose. [How we let you know.]</p></details>
+<details style="border-top: 2px solid var(--night); padding: 20px 0"><summary class="dc-subtitle" style="cursor: pointer">Can I visit it?</summary><p class="dc-body" style="margin-top: 12px">[Answer: open plantings, school access rules.]</p></details>
+<details style="border-top: 2px solid var(--night); padding: 20px 0"><summary class="dc-subtitle" style="cursor: pointer">What if the tree doesn't make it?</summary><p class="dc-body" style="margin-top: 12px">[Answer: replanting policy.]</p></details>
+<details style="border-top: 2px solid var(--night); border-bottom: 2px solid var(--night); padding: 20px 0"><summary class="dc-subtitle" style="cursor: pointer">Can I dedicate a tree as a company?</summary><p class="dc-body" style="margin-top: 12px">Yes. For [ten] or more trees, <a href="GetInvolved.dc.html" style="font-weight: 700">talk to us about a partnership</a>.</p></details>
+</div>
+</section>
+
+<footer style="height: 380px; flex-shrink: 0; box-sizing: border-box; padding: 64px 120px 32px; background: var(--night); color: var(--paper); display: flex; flex-direction: column; justify-content: space-between">
+<div style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px">
+<div style="grid-column: span 3"><img src="/_blob/dcd6dd260f90db2a7c075486314ec745" alt="Dandelion Club" style="width: 160px; height: 65px; display: block"></div>
+<nav aria-label="Site" style="grid-column: span 2; display: flex; flex-direction: column; gap: 10px; font-size: 16px"><p class="dc-eyebrow" style="font-size: 14px; color: var(--dandelion)">Visit</p><a href="Plantings.dc.html" style="text-decoration: none">Plantings</a><a href="Main.dc.html#work" style="text-decoration: none">Our work</a><a href="Main.dc.html#about" style="text-decoration: none">About</a><a href="Main.dc.html#journal" style="text-decoration: none">Journal</a></nav>
+<nav aria-label="Take part" style="grid-column: span 2; display: flex; flex-direction: column; gap: 10px; font-size: 16px"><p class="dc-eyebrow" style="font-size: 14px; color: var(--dandelion)">Take part</p><a href="PlantingDetail.dc.html" style="text-decoration: none">Join a planting</a><a href="DedicateTree.dc.html" style="text-decoration: none">Dedicate a tree</a><a href="Donate.dc.html" style="text-decoration: none">Donate</a><a href="GetInvolved.dc.html" style="text-decoration: none">Partner with us</a></nav>
+<div style="grid-column: 9 / span 4; display: flex; flex-direction: column; gap: 12px">
+<p class="dc-eyebrow" style="font-size: 14px; color: var(--dandelion)">Contact</p>
+<p class="dc-lead">info@dandelionclub.co.za</p>
+<p class="dc-small" style="color: var(--ink-muted-on-night)">Instagram · LinkedIn</p>
+</div>
+</div>
+<div style="display: flex; justify-content: space-between; border-top: 1px solid var(--hairline-on-night); padding-top: 20px">
+<p class="dc-small" style="color: var(--ink-muted-on-night)">Business Building Institute NPC · Registration [number]</p>
+<a class="dc-small" href="#privacy" style="color: var(--ink-muted-on-night)">Privacy</a>
+</div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"pricePerTree":{"editor":"int","default":350,"min":50,"max":5000,"step":50,"unit":"R","section":"Placeholder pricing"},"$preview":{"width":1440,"height":2980}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const price = this.props.pricePerTree ?? 350;
+    const trees = (this.state && this.state.trees) || 1;
+    return {
+      trees: trees,
+      price: price.toLocaleString('en-ZA'),
+      total: (price * trees).toLocaleString('en-ZA'),
+      less: () => this.setState({ trees: Math.max(1, trees - 1) }),
+      more: () => this.setState({ trees: Math.min(50, trees + 1) })
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+/* Dandelion Club tokens as CSS variables (from the Dandelion Club Design System tokens.json) */
+:root {
+  --night: #1e122b;
+  --dandelion: #ffcd19;
+  --paper: #fcfaf2;
+  --wheat: #dcc569;
+  --night-raised: #2e2040;
+  --paper-sunk: #f3eedd;
+  --ink-muted: #5c5266;
+  --ink-muted-on-night: #c9c0d3;
+  --hairline: rgba(30, 18, 43, 0.16);
+  --hairline-on-night: rgba(255, 205, 25, 0.28);
+  --error: #a4262c;
+  --success: #2f6b4f;
+  --focus-on-paper: var(--night);
+  --focus-on-night: var(--dandelion);
+  --font-display: Unbounded, "Arial Black", sans-serif;
+  --font-text: Geist, "Helvetica Neue", Arial, sans-serif;
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 20px;
+  --space-6: 30px; --space-7: 32px; --space-8: 48px; --space-9: 64px; --space-10: 120px;
+  --radius-none: 0;
+  --border-strong: 2px; --border-hairline: 1px;
+  --measure-content: 1200px; --measure-text: 680px;
+}

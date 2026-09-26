@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<title>Dandelion Club — Home</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="ds/dandelion-club/components/bundle.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;500;900&amp;family=Geist:wght@400;700;900&amp;display=swap">
+<style>
+body{margin:0;background:#1e122b}
+a{color:inherit}
+.seedband{background-color:#ffcd19;background-image:url(/_blob/6dec624af0d6b5c8cedc09a82ce14b6f);background-size:144px 144px}
+</style>
+</helmet>
+<div class="dc-root" style="width: 1440px; height: 5370px; overflow: hidden; background: var(--night); display: flex; flex-direction: column">
+
+<div style="height: 40px; flex-shrink: 0; background: var(--dandelion); color: var(--night); display: flex; align-items: center; justify-content: center; gap: 12px; font-family: var(--font-text); font-size: 14px; font-weight: 700">
+<span>Next planting: [Date], [Site]</span><a href="PlantingDetail.dc.html" style="font-weight: 900">Join us</a>
+</div>
+
+<header style="height: 100px; flex-shrink: 0; box-sizing: border-box; padding: 0 120px; background: var(--night); display: flex; align-items: center; justify-content: space-between">
+<a href="Main.dc.html" aria-label="Dandelion Club home"><img src="/_blob/dcd6dd260f90db2a7c075486314ec745" alt="Dandelion Club" style="width: 160px; height: 65px; display: block"></a>
+<nav aria-label="Main" style="display: flex; align-items: center; gap: 40px">
+<a class="dc-eyebrow" href="Plantings.dc.html" style="color: var(--dandelion); text-decoration: none">Plantings</a>
+<a class="dc-eyebrow" href="#work" style="color: var(--dandelion); text-decoration: none">Our work</a>
+<a class="dc-eyebrow" href="#about" style="color: var(--dandelion); text-decoration: none">About</a>
+<a class="dc-eyebrow" href="#journal" style="color: var(--dandelion); text-decoration: none">Journal</a>
+<a class="dc-btn" href="GetInvolved.dc.html">Get involved</a>
+</nav>
+</header>
+
+<section style="height: 860px; flex-shrink: 0; background: var(--night); color: var(--paper); display: flex; flex-direction: column">
+<div style="height: 480px; position: relative; background: var(--night-raised); display: flex; align-items: center; justify-content: center">
+<span style="font-family: var(--font-text); font-size: 14px; color: var(--ink-muted-on-night)">[Photo: planting day at Silukhanyo Primary, fading into night at the bottom]</span>
+<div style="position: absolute; left: 0; right: 0; bottom: 0; height: 280px; background: linear-gradient(rgba(30, 18, 43, 0), #1e122b)"></div>
+</div>
+<div style="box-sizing: border-box; padding: 16px 120px 0; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-items: end">
+<div style="grid-column: span 8; display: flex; flex-direction: column; gap: 20px">
+<p class="dc-eyebrow" style="color: var(--paper)">Food forests for Western Cape schools</p>
+<h1 class="dc-display-xl" style="color: var(--dandelion)">Plant it forward.</h1>
+<p class="dc-lead" style="max-width: 620px">We turn bare school ground into food forests, one planting day at a time. Bring gloves if you've got them. We'll bring everything else.</p>
+</div>
+<div style="grid-column: span 4; display: flex; flex-direction: column; align-items: flex-end; gap: 12px">
+<a class="dc-btn" href="PlantingDetail.dc.html">Join a planting</a>
+<a class="dc-btn" href="DedicateTree.dc.html">Dedicate a tree</a>
+</div>
+</div>
+</section>
+
+<section style="height: 560px; flex-shrink: 0; box-sizing: border-box; padding: 120px 120px 0; background: var(--paper); color: var(--night); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-content: start">
+<div style="grid-column: span 6; display: flex; flex-direction: column; gap: 20px">
+<div><p class="dc-eyebrow">Next planting</p><h2 class="dc-display">Come and dig with us.</h2></div>
+<p class="dc-lead">Planting days are on Saturday mornings. Families welcome, no experience needed.</p>
+<p class="dc-lead">Bring gloves if you've got them.<br>We'll bring everything else.</p>
+<a href="Plantings.dc.html" style="font-family: var(--font-display); font-weight: 900; font-size: 16px; text-transform: uppercase; color: var(--night)">All plantings →</a>
+</div>
+<article style="grid-column: 8 / span 5; background: var(--paper-sunk); border: 2px solid var(--night); padding: 32px; display: flex; flex-direction: column; gap: 16px; align-self: start">
+<span class="dc-tag">Upcoming</span>
+<div><p class="dc-subtitle">[Saturday, date]</p><p class="dc-small dc-muted">[09:00 to 12:30]</p></div>
+<h3 class="dc-title">[Site name]</h3>
+<p class="dc-lead">[One line on what we're planting this time.]</p>
+<div style="display: flex; gap: 12px"><a class="dc-btn" href="PlantingDetail.dc.html">Join</a><a class="dc-btn dc-btn--ghost" href="PlantingDetail.dc.html">Details</a></div>
+</article>
+</section>
+
+<section style="height: 320px; flex-shrink: 0; box-sizing: border-box; padding: 0 120px; background: var(--night); color: var(--paper); display: flex; flex-direction: column; justify-content: center; gap: 16px">
+<p class="dc-eyebrow" style="color: var(--ink-muted-on-night)">Why the dandelion</p>
+<p class="dc-display" style="color: var(--dandelion); max-width: 1100px">A dandelion's taproot breaks soil too hard for anything else to root in.</p>
+<p class="dc-small" style="color: var(--ink-muted-on-night)">Source: [add a reference before launch]</p>
+</section>
+
+<section id="work" style="height: 720px; flex-shrink: 0; box-sizing: border-box; padding: 120px 120px 0; background: var(--paper); color: var(--night); display: flex; flex-direction: column; gap: 48px">
+<div style="display: flex; justify-content: space-between; align-items: end">
+<div><p class="dc-eyebrow">What we do</p><h2 class="dc-display">More than trees.</h2></div>
+<a class="dc-btn dc-btn--ghost" href="#work">Our work</a>
+</div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px">
+<div style="border-top: 2px solid var(--night); padding-top: 20px; display: flex; flex-direction: column; gap: 10px"><h3 class="dc-subtitle">Food forests</h3><p class="dc-small dc-muted" style="font-size: 16px; line-height: 24px">Layered plantings of fruit trees, shrubs and ground cover on school land.</p></div>
+<div style="border-top: 2px solid var(--night); padding-top: 20px; display: flex; flex-direction: column; gap: 10px"><h3 class="dc-subtitle">Water-smart soil</h3><p class="dc-small dc-muted" style="font-size: 16px; line-height: 24px">Mulch, swales and planting that hold winter rain through a dry summer.</p></div>
+<div style="border-top: 2px solid var(--night); padding-top: 20px; display: flex; flex-direction: column; gap: 10px"><h3 class="dc-subtitle">Local enterprise</h3><p class="dc-small dc-muted" style="font-size: 16px; line-height: 24px">Support for women and young people starting food businesses around each site.</p></div>
+<div style="border-top: 2px solid var(--night); padding-top: 20px; display: flex; flex-direction: column; gap: 10px"><h3 class="dc-subtitle">Outdoor learning</h3><p class="dc-small dc-muted" style="font-size: 16px; line-height: 24px">The food forest as a classroom for teachers, learners and neighbours.</p></div>
+<div style="border-top: 2px solid var(--night); padding-top: 20px; display: flex; flex-direction: column; gap: 10px"><h3 class="dc-subtitle">Compost and circularity</h3><p class="dc-small dc-muted" style="font-size: 16px; line-height: 24px">Food scraps and garden waste turned back into soil on site.</p></div>
+<div style="border-top: 2px solid var(--night); padding-top: 20px; display: flex; flex-direction: column; gap: 10px"><h3 class="dc-subtitle">Heritage and belonging</h3><p class="dc-small dc-muted" style="font-size: 16px; line-height: 24px">Local plant knowledge and the people who hold it, at the centre of each site.</p></div>
+</div>
+</section>
+
+<section style="height: 700px; flex-shrink: 0; box-sizing: border-box; padding: 120px 120px 0; background: var(--night); color: var(--paper); display: flex; flex-direction: column; gap: 48px">
+<div><p class="dc-eyebrow">Where we work</p><h2 class="dc-display" style="color: var(--dandelion)">Three sites so far.</h2></div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px">
+<a href="#work" style="text-decoration: none; color: var(--paper); display: flex; flex-direction: column; gap: 16px">
+<div style="height: 240px; background: var(--night-raised); display: flex; align-items: center; justify-content: center"><span class="dc-small" style="color: var(--ink-muted-on-night)">[Photo: Silukhanyo Primary]</span></div>
+<h3 class="dc-subtitle">Silukhanyo Primary</h3><p class="dc-small" style="color: var(--ink-muted-on-night)">First food forest planting, 29 August 2026.</p>
+</a>
+<a href="#work" style="text-decoration: none; color: var(--paper); display: flex; flex-direction: column; gap: 16px">
+<div style="height: 240px; background: var(--night-raised); display: flex; align-items: center; justify-content: center"><span class="dc-small" style="color: var(--ink-muted-on-night)">[Photo: Mhani Gingi Centre of Excellence]</span></div>
+<h3 class="dc-subtitle">Mhani Gingi Centre of Excellence</h3><p class="dc-small" style="color: var(--ink-muted-on-night)">[One line about this site.]</p>
+</a>
+<a href="#work" style="text-decoration: none; color: var(--paper); display: flex; flex-direction: column; gap: 16px">
+<div style="height: 240px; background: var(--night-raised); display: flex; align-items: center; justify-content: center"><span class="dc-small" style="color: var(--ink-muted-on-night)">[Photo: Genadendal]</span></div>
+<h3 class="dc-subtitle">Genadendal</h3><p class="dc-small" style="color: var(--ink-muted-on-night)">[One line about this site.]</p>
+</a>
+</div>
+</section>
+
+<section class="seedband" aria-hidden="true" style="height: 390px; flex-shrink: 0; display: flex; align-items: center; justify-content: center">
+<img src="/_blob/bdaf49de16c5d0e817f49c3db00074d5" alt="" style="width: 150px; height: auto">
+</section>
+
+<section id="about" style="height: 340px; flex-shrink: 0; box-sizing: border-box; padding: 0 120px; background: var(--paper-sunk); color: var(--night); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-items: center">
+<div style="grid-column: span 7; display: flex; flex-direction: column; gap: 16px">
+<p class="dc-eyebrow">For funders and partners</p>
+<h2 class="dc-display">Fund a food forest.</h2>
+<p class="dc-body">Dandelion Club is run by Business Building Institute NPC. Talk to us about funding a site, a school or one of our programmes.</p>
+</div>
+<div style="grid-column: 9 / span 4; display: flex; flex-direction: column; align-items: flex-end; gap: 12px">
+<a class="dc-btn" href="GetInvolved.dc.html">Start a conversation</a>
+<a class="dc-btn dc-btn--ghost" href="#about">About us</a>
+</div>
+</section>
+
+<section id="journal" style="height: 600px; flex-shrink: 0; box-sizing: border-box; padding: 120px 120px 0; background: var(--paper); color: var(--night); display: flex; flex-direction: column; gap: 48px">
+<div style="display: flex; justify-content: space-between; align-items: end">
+<div><p class="dc-eyebrow">From the journal</p><h2 class="dc-display">Field notes.</h2></div>
+<a class="dc-btn dc-btn--ghost" href="#journal">All posts</a>
+</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px">
+<a href="#journal" style="text-decoration: none; color: var(--night); display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 24px">
+<div style="height: 180px; background: var(--paper-sunk); border: 2px solid var(--night); display: flex; align-items: center; justify-content: center"><span class="dc-small dc-muted">[Photo]</span></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><span class="dc-tag">Plantings</span><h3 class="dc-subtitle">[Recap: the first Silukhanyo planting]</h3><p class="dc-small dc-muted">[Date] · [Author]</p></div>
+</a>
+<a href="#journal" style="text-decoration: none; color: var(--night); display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 24px">
+<div style="height: 180px; background: var(--paper-sunk); border: 2px solid var(--night); display: flex; align-items: center; justify-content: center"><span class="dc-small dc-muted">[Photo]</span></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><span class="dc-tag">Field notes</span><h3 class="dc-subtitle">[What a food forest looks like in year one]</h3><p class="dc-small dc-muted">[Date] · [Author]</p></div>
+</a>
+</div>
+</section>
+
+<section style="height: 360px; flex-shrink: 0; box-sizing: border-box; padding: 0 120px; background: var(--night); color: var(--paper); display: flex; align-items: center; justify-content: space-between">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<p class="dc-eyebrow">Get involved</p>
+<h2 class="dc-display-xl" style="color: var(--dandelion)">Get your hands dirty.</h2>
+</div>
+<a class="dc-btn" href="GetInvolved.dc.html">Find your way in</a>
+</section>
+
+<footer style="height: 380px; flex-shrink: 0; box-sizing: border-box; padding: 64px 120px 32px; background: var(--night); color: var(--paper); border-top: 1px solid var(--hairline-on-night); display: flex; flex-direction: column; justify-content: space-between">
+<div style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px">
+<div style="grid-column: span 3"><img src="/_blob/dcd6dd260f90db2a7c075486314ec745" alt="Dandelion Club" style="width: 160px; height: 65px; display: block"></div>
+<nav aria-label="Site" style="grid-column: span 2; display: flex; flex-direction: column; gap: 10px; font-size: 16px"><p class="dc-eyebrow" style="font-size: 14px; color: var(--dandelion)">Visit</p><a href="Plantings.dc.html" style="text-decoration: none">Plantings</a><a href="#work" style="text-decoration: none">Our work</a><a href="#about" style="text-decoration: none">About</a><a href="#journal" style="text-decoration: none">Journal</a></nav>
+<nav aria-label="Take part" style="grid-column: span 2; display: flex; flex-direction: column; gap: 10px; font-size: 16px"><p class="dc-eyebrow" style="font-size: 14px; color: var(--dandelion)">Take part</p><a href="PlantingDetail.dc.html" style="text-decoration: none">Join a planting</a><a href="DedicateTree.dc.html" style="text-decoration: none">Dedicate a tree</a><a href="Donate.dc.html" style="text-decoration: none">Donate</a><a href="GetInvolved.dc.html" style="text-decoration: none">Partner with us</a></nav>
+<div style="grid-column: 9 / span 4; display: flex; flex-direction: column; gap: 12px">
+<p class="dc-eyebrow" style="font-size: 14px; color: var(--dandelion)">Hear about the next planting</p>
+<form style="display: flex">
+<label for="nl" style="position: absolute; left: -9999px">Email address</label>
+<input id="nl" type="email" placeholder="Your email" style="flex-grow: 1; font: 400 16px/24px var(--font-text); padding: 12px 16px; border: 2px solid var(--dandelion); border-right: 0; background: var(--night-raised); color: var(--paper)">
+<button class="dc-btn" style="padding: 12px 20px">Sign up</button>
+</form>
+<p class="dc-small" style="color: var(--ink-muted-on-night)">info@dandelionclub.co.za · Instagram · LinkedIn</p>
+</div>
+</div>
+<div style="display: flex; justify-content: space-between; border-top: 1px solid var(--hairline-on-night); padding-top: 20px">
+<p class="dc-small" style="color: var(--ink-muted-on-night)">Business Building Institute NPC · Registration [number]</p>
+<a class="dc-small" href="#privacy" style="color: var(--ink-muted-on-night)">Privacy</a>
+</div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":5370}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

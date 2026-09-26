@@ -1,0 +1,25 @@
+---
+// Phase 0 shell. Phase 1 adds meta/Open Graph slots, the skip link,
+// AnnouncementBar, Header and Footer.
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+  </head>
+  <body>
+    <main>
+      <slot />
+    </main>
+  </body>
+</html>

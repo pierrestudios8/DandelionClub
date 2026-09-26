@@ -1,0 +1,21 @@
+# build output
+dist/
+.vercel/
+.astro/
+
+# dependencies
+node_modules/
+
+# environment: real values live in Vercel and .env.local only
+.env
+.env*.local
+.env.production
+
+# tests
+playwright-report/
+test-results/
+coverage/
+
+# logs and OS
+*.log
+.DS_Store

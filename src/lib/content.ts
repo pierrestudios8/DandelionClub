@@ -3,7 +3,7 @@
  * dev and Vercel previews so the club can review them, and left out in production.
  */
 import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
-import { formatDate } from './format';
+import { formatDate, formatTimeRange } from './format';
 import { impactFigures, sortPlantings, type ImpactFigures } from './plantings';
 
 export type Planting = CollectionEntry<'plantings'>;
@@ -41,10 +41,16 @@ export async function getPastPlantings(): Promise<Planting[]> {
   return (await sorted()).past;
 }
 
+/** Sites with a held planting first (earliest first), then the rest by name. */
 export async function getSites(): Promise<Site[]> {
-  return (await getCollection('sites', visible)).sort((a, b) =>
-    a.data.name.localeCompare(b.data.name),
-  );
+  const [sites, past] = await Promise.all([getCollection('sites', visible), getPastPlantings()]);
+  const firstPlanted = new Map<string, number>();
+  for (const p of past) {
+    const t = p.data.date.getTime();
+    firstPlanted.set(p.data.site.id, Math.min(t, firstPlanted.get(p.data.site.id) ?? t));
+  }
+  const rank = (s: Site) => firstPlanted.get(s.id) ?? Number.POSITIVE_INFINITY;
+  return sites.sort((a, b) => rank(a) - rank(b) || a.data.name.localeCompare(b.data.name));
 }
 
 /** Impact figures; any figure with unconfirmed inputs is null and must be hidden. */
@@ -72,4 +78,30 @@ export async function getAnnouncement() {
     site: site?.data.name ?? next.data.site.id,
     href: `/plantings/${next.id}`,
   };
+}
+
+/** What PlantingCard and NextPlanting need for one planting. */
+export async function plantingCard(planting: Planting) {
+  const site = await getEntry(planting.data.site);
+  const { data } = planting;
+  return {
+    date: formatDate(data.date, { weekday: true }),
+    time: formatTimeRange(data.start, data.end),
+    site: site?.data.name ?? data.site.id,
+    summary: data.summary,
+    href: `/plantings/${planting.id}`,
+    treesPlanted: data.treesPlanted,
+    volunteers: data.volunteers,
+    image: data.heroImage ?? site?.data.heroImage,
+  };
+}
+
+export async function getFacts() {
+  return getCollection('facts');
+}
+
+export async function getJournal() {
+  return (await getCollection('journal')).sort(
+    (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+  );
 }

@@ -1,0 +1,67 @@
+---
+/**
+ * The NPC's EFT details as a list in a dandelion outline on night (Donate).
+ * Values stay selectable text so people can copy the account number.
+ */
+import Placeholder from './Placeholder.astro';
+import type { Settings } from '../lib/schema';
+
+interface Props {
+  bank: Settings['bank'];
+}
+
+const { bank } = Astro.props;
+const rows = [
+  ['Account name', bank.accountName],
+  ['Bank', bank.bank],
+  ['Account', bank.account],
+  ['Branch code', bank.branch],
+  ['SWIFT', bank.swift],
+];
+---
+
+<dl class="bank">
+  {rows.map(([label, value]) => (
+    <div class="bank__row">
+      <dt class="t-eyebrow-sm">{label}</dt>
+      <dd class="t-detail">
+        <Placeholder value={value} />
+      </dd>
+    </div>
+  ))}
+</dl>
+
+<style>
+  .bank {
+    display: grid;
+    gap: var(--space-4);
+    padding: var(--space-5);
+    border: var(--border-strong) solid var(--dandelion);
+  }
+
+  .bank__row {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .bank dt {
+    color: var(--dandelion);
+  }
+
+  .bank dd {
+    user-select: all;
+    overflow-wrap: anywhere;
+  }
+
+  @media (min-width: 600px) {
+    .bank {
+      padding: var(--space-7);
+    }
+
+    .bank__row {
+      grid-template-columns: calc(var(--space-10) + var(--space-9)) 1fr;
+      align-items: baseline;
+      gap: var(--space-4);
+    }
+  }
+</style>

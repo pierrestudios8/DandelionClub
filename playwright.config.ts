@@ -24,7 +24,7 @@ export default defineConfig({
     // otherwise backgrounds itself and Playwright sees the process exit.
     command: `node node_modules/astro/bin/astro.mjs dev --port ${PORT} --ignore-lock`,
     url: `http://localhost:${PORT}`,
-    env: { DC_E2E: '1' },
+    env: { DC_E2E: '1', DC_FIXTURES: '1' },
     reuseExistingServer: !process.env.CI,
   },
 });

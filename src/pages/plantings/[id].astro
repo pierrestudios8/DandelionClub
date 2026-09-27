@@ -1,0 +1,483 @@
+---
+/**
+ * One planting. Upcoming: design/pages/PlantingDetail.dc.html (1440px) and
+ * PlantingDetailMobile.dc.html (390px), with the sign-up form.
+ * Held: the same header with the recap and counts instead of the form
+ * (no design yet; follows the system).
+ */
+import { getEntry, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Button from '../../components/Button.astro';
+import Form from '../../components/Form.astro';
+import FormField from '../../components/FormField.astro';
+import Hero from '../../components/Hero.astro';
+import Placeholder from '../../components/Placeholder.astro';
+import Section from '../../components/Section.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import { getPastPlantings, getUpcomingPlantings, type Planting } from '../../lib/content';
+import { formatDate, formatTimeRange } from '../../lib/format';
+import { isTodo } from '../../lib/todo';
+
+export async function getStaticPaths() {
+  const [upcoming, past] = await Promise.all([getUpcomingPlantings(), getPastPlantings()]);
+  return [
+    ...upcoming.map((planting) => ({
+      params: { id: planting.id },
+      props: { planting, held: false },
+    })),
+    ...past.map((planting) => ({ params: { id: planting.id }, props: { planting, held: true } })),
+  ];
+}
+
+interface Props {
+  planting: Planting;
+  held: boolean;
+}
+
+const { planting, held } = Astro.props;
+const { data } = planting;
+const site = await getEntry(data.site);
+const { Content } = await render(planting);
+
+const siteName = site?.data.name ?? data.site.id;
+const date = formatDate(data.date, { weekday: true });
+const time = formatTimeRange(data.start, data.end);
+const mapUrl = site && !isTodo(site.data.mapUrl) ? site.data.mapUrl : undefined;
+const counts = [
+  typeof data.treesPlanted === 'number' && `${data.treesPlanted} trees planted`,
+  typeof data.volunteers === 'number' && `${data.volunteers} volunteers`,
+].filter(Boolean);
+
+const heardOptions = [
+  { value: '', label: 'Choose one' },
+  { value: 'friend', label: 'A friend' },
+  { value: 'school', label: 'The school' },
+  { value: 'instagram', label: 'Instagram' },
+  { value: 'other', label: 'Other' },
+];
+---
+
+<BaseLayout
+  title={`${siteName}, ${formatDate(data.date)}`}
+  description={
+    held
+      ? `The food forest planting at ${siteName} on ${formatDate(data.date)}.`
+      : `Join the food forest planting at ${siteName} on ${formatDate(data.date)}. Bring gloves if you've got them; we'll bring everything else.`
+  }
+>
+  <Hero
+    eyebrow={held ? 'Planted' : 'Food forest planting'}
+    headline={siteName}
+    image={data.heroImage ?? site?.data.heroImage}
+    imageAlt={`${siteName}`}
+  >
+    <a slot="kicker" class="back t-small" href="/plantings">
+      <span aria-hidden="true">←</span> All plantings
+    </a>
+    <p class="when">
+      <span>
+        <Placeholder value={date} />
+      </span>
+      <span class="when__sep" aria-hidden="true">
+        ·
+      </span>
+      <span>
+        <Placeholder value={time} />
+      </span>
+    </p>
+    {!held && (
+      <div class="jump">
+        <Button href="#sign-up" block>
+          Save my spot <span aria-hidden="true">↓</span>
+        </Button>
+      </div>
+    )}
+  </Hero>
+
+  <Section ground="paper">
+    <div class:list={['layout', held && 'layout--held']}>
+      <div class="about">
+        <div class="about__intro">
+          <h2 class="t-display about__title">The day.</h2>
+          <div class="t-body prose">
+            {isTodo(planting.body?.trim()) ? (
+              <Placeholder value={planting.body?.trim()} />
+            ) : (
+              <Content />
+            )}
+          </div>
+        </div>
+
+        {held ? (
+          <div class="block">
+            <p class="t-eyebrow-sm">How it went</p>
+            {data.recap && (
+              <p class="t-body">
+                <Placeholder value={data.recap} />
+              </p>
+            )}
+            {counts.length > 0 && <p class="t-lead">{counts.join(' · ')}</p>}
+          </div>
+        ) : (
+          <>
+            <dl class="details">
+              <div class="details__row">
+                <dt class="t-eyebrow-sm">Where</dt>
+                <dd>
+                  <p class="t-lead">
+                    {siteName}, <Placeholder value={site?.data.address} />
+                  </p>
+                  {mapUrl && (
+                    <a class="details__link t-small" href={mapUrl}>
+                      Open in maps <span aria-hidden="true">→</span>
+                    </a>
+                  )}
+                </dd>
+              </div>
+              <div class="details__row">
+                <dt class="t-eyebrow-sm">When</dt>
+                <dd>
+                  <p class="t-lead">
+                    <Placeholder value={date} />, <Placeholder value={time} />
+                  </p>
+                </dd>
+              </div>
+              <div class="details__row">
+                <dt class="t-eyebrow-sm">Bring</dt>
+                <dd class="t-lead">{data.bring}</dd>
+              </div>
+              <div class="details__row">
+                <dt class="t-eyebrow-sm">Kids</dt>
+                <dd class="t-lead">
+                  <Placeholder value={data.kids} />
+                </dd>
+              </div>
+              <div class="details__row">
+                <dt class="t-eyebrow-sm">Access</dt>
+                <dd class="t-lead">
+                  <Placeholder value={data.access} />
+                </dd>
+              </div>
+            </dl>
+
+            {data.schedule.length > 0 && (
+              <div class="block">
+                <p class="t-eyebrow-sm" id="schedule-heading">
+                  How the morning runs
+                </p>
+                <ol class="schedule t-body" aria-labelledby="schedule-heading">
+                  {data.schedule.map((step) => (
+                    <li>
+                      <span class="schedule__time">
+                        <Placeholder value={step.time} />
+                      </span>{' '}
+                      <Placeholder value={step.text} />
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            )}
+          </>
+        )}
+      </div>
+
+      {!held && (
+        <div class="panel" id="sign-up">
+          <Form
+            id="planting-signup"
+            action="/api/planting-signup"
+            aria-labelledby="signup-title"
+            successTitle="See you in the soil."
+          >
+            <div>
+              {data.capacity && <p class="t-eyebrow-sm">{data.capacity} spots</p>}
+              <h2 class="panel__title" id="signup-title">
+                Save your spot
+              </h2>
+            </div>
+            <input type="hidden" name="planting" value={planting.id} />
+            <FormField
+              id="signup-name"
+              name="name"
+              label="Your name"
+              autocomplete="name"
+              invalid="Enter your name."
+              wide
+            />
+            <FormField
+              id="signup-email"
+              name="email"
+              label="Email"
+              type="email"
+              autocomplete="email"
+              hint="We'll send the details and a calendar invite here."
+              invalid="Enter a full email address, like name@example.com."
+              wide
+            />
+            <FormField
+              id="signup-phone"
+              name="phone"
+              label="Mobile number"
+              type="tel"
+              autocomplete="tel"
+              optional
+              hint="Only for day-of changes, such as rain."
+              wide
+            />
+            <div class="pair">
+              <FormField
+                id="signup-adults"
+                name="adults"
+                label="Adults"
+                type="number"
+                value={1}
+                min="1"
+                inputmode="numeric"
+                invalid="Enter at least 1 adult."
+              />
+              <FormField
+                id="signup-children"
+                name="children"
+                label="Children"
+                type="number"
+                value={0}
+                min="0"
+                inputmode="numeric"
+                invalid="Enter 0 or more children."
+              />
+            </div>
+            <FormField
+              id="signup-heard"
+              name="heard"
+              label="How did you hear about us?"
+              type="select"
+              optional
+              options={heardOptions}
+              wide
+            />
+            <FormField
+              id="signup-consent"
+              name="consent"
+              type="checkbox"
+              invalid="Tick this box so we can save your spot."
+              wide
+            >
+              I agree that Dandelion Club may store these details to organise this planting.{' '}
+              <a href="/privacy">Privacy</a>
+            </FormField>
+            <div>
+              <Button type="submit" class="panel__submit">
+                Save my spot
+              </Button>
+            </div>
+            <p slot="success">Your spot is saved. We'll email you the details.</p>
+          </Form>
+        </div>
+      )}
+    </div>
+  </Section>
+
+  {held && (
+    <Section ground="night" aria-labelledby="next-heading">
+      <div class="next">
+        <SectionHeading eyebrow="Plantings" id="next-heading">
+          Come to the next one.
+        </SectionHeading>
+        <Button href="/plantings">See the dates</Button>
+      </div>
+    </Section>
+  )}
+</BaseLayout>
+
+<style>
+  .back {
+    color: var(--ink-muted-on-night);
+    text-decoration: none;
+  }
+
+  .back:hover {
+    text-decoration: underline;
+  }
+
+  .when {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: var(--space-2);
+    font-size: var(--type-subtitle-sm-size);
+    line-height: var(--type-subtitle-sm-leading);
+    font-weight: var(--type-subtitle-sm-weight);
+  }
+
+  /* Two lines on phones, as in the mobile design. */
+  @media (max-width: 599px) {
+    .when {
+      flex-direction: column;
+    }
+
+    .when__sep {
+      display: none;
+    }
+  }
+
+  .jump {
+    margin-top: var(--space-2);
+  }
+
+  @media (min-width: 1024px) {
+    .when {
+      font-size: var(--type-subtitle-size);
+      line-height: var(--type-subtitle-leading);
+    }
+
+    .jump {
+      display: none;
+    }
+  }
+
+  .layout {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  .about {
+    display: grid;
+    gap: var(--space-8);
+    align-content: start;
+  }
+
+  .about__intro {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  @media (max-width: 1023px) {
+    .about__title {
+      display: none;
+    }
+  }
+
+  .prose {
+    max-width: var(--measure-text);
+  }
+
+  .prose :global(p + p) {
+    margin-top: var(--space-4);
+  }
+
+  .details {
+    display: grid;
+    border-bottom: var(--border-strong) solid var(--night);
+  }
+
+  .details__row {
+    display: grid;
+    gap: var(--space-1);
+    padding-block: var(--space-4);
+    border-top: var(--border-strong) solid var(--night);
+  }
+
+  .details dd {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .details__link {
+    font-weight: var(--type-lead-weight);
+  }
+
+  .block {
+    display: grid;
+    gap: var(--space-4);
+    padding-top: var(--space-5);
+    border-top: var(--border-strong) solid var(--night);
+  }
+
+  .schedule {
+    display: grid;
+    gap: var(--space-2);
+    padding-left: var(--space-5);
+  }
+
+  .schedule__time {
+    font-weight: var(--type-lead-weight);
+  }
+
+  .panel {
+    padding: var(--space-5);
+    background: var(--paper-sunk);
+    border: var(--border-strong) solid var(--night);
+    scroll-margin-top: var(--space-4);
+  }
+
+  .panel :global(.form) {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .panel__title {
+    font-size: var(--type-title-sm-size);
+    line-height: var(--type-title-sm-leading);
+    font-weight: var(--type-title-sm-weight);
+  }
+
+  .pair {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3);
+  }
+
+  @media (max-width: 599px) {
+    .panel :global(.panel__submit) {
+      display: flex;
+      width: 100%;
+    }
+  }
+
+  .next {
+    display: grid;
+    gap: var(--space-7);
+  }
+
+  @media (min-width: 600px) {
+    .panel {
+      padding: var(--space-7);
+    }
+
+    .panel__title {
+      font-size: var(--type-title-size);
+      line-height: var(--type-title-leading);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .layout {
+      grid-template-columns: 6fr 1fr 5fr;
+    }
+
+    .panel {
+      grid-column: 3;
+      align-self: start;
+    }
+
+    .details {
+      border-bottom: 0;
+    }
+
+    .details__row {
+      grid-template-columns: calc(var(--space-10) + var(--space-7)) 1fr;
+      gap: var(--space-5);
+      border-top: 0;
+      padding-block: var(--space-3);
+    }
+
+    .details__row:first-child {
+      border-top: var(--border-strong) solid var(--night);
+      padding-top: var(--space-5);
+    }
+
+    .next {
+      grid-template-columns: 1fr auto;
+      align-items: center;
+    }
+  }
+</style>

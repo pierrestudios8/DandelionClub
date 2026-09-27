@@ -1,0 +1,61 @@
+---
+/**
+ * Big numbers computed from the Plantings and Sites collections. Renders only
+ * when trees planted is real, and shows only the figures whose inputs are real.
+ */
+import Section from './Section.astro';
+import type { ImpactFigures } from '../lib/plantings';
+
+interface Props {
+  figures: ImpactFigures;
+}
+
+const { figures } = Astro.props;
+const items = [
+  { value: figures.treesPlanted, label: 'trees planted' },
+  { value: figures.plantingsHeld, label: figures.plantingsHeld === 1 ? 'planting' : 'plantings' },
+  { value: figures.schools, label: figures.schools === 1 ? 'school' : 'schools' },
+  { value: figures.volunteers, label: 'volunteers' },
+].filter((i): i is { value: number; label: string } => i.value !== null);
+---
+
+{figures.treesPlanted !== null && (
+  <Section ground="night" space="tight" aria-label="Our impact so far">
+    <dl class="impact">
+      {items.map((i) => (
+        <div>
+          <dt class="t-eyebrow-sm muted">{i.label}</dt>
+          <dd class="impact__value">{i.value.toLocaleString('en-ZA')}</dd>
+        </div>
+      ))}
+    </dl>
+  </Section>
+)}
+
+<style>
+  .impact {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-7) var(--space-5);
+  }
+
+  .impact div {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: var(--space-2);
+  }
+
+  .impact__value {
+    font-family: var(--type-display-xl-family);
+    font-weight: var(--type-display-xl-weight);
+    font-size: var(--type-display-xl-size);
+    line-height: var(--type-display-xl-leading);
+    color: var(--dandelion);
+  }
+
+  @media (min-width: 1024px) {
+    .impact {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+</style>

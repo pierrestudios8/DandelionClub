@@ -1,0 +1,47 @@
+---
+/**
+ * Where forms land without JavaScript. Phase 5 fills in the confirmation
+ * details; Phase 6 adds the payment outcome for dedications and donations.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Button from '../../components/Button.astro';
+import Placeholder from '../../components/Placeholder.astro';
+import Section from '../../components/Section.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import { THANK_YOU, type ThankYouType } from '../../lib/forms/types';
+
+export function getStaticPaths() {
+  return (Object.keys(THANK_YOU) as ThankYouType[]).map((type) => ({ params: { type } }));
+}
+
+const { title, line } = THANK_YOU[Astro.params.type as ThankYouType];
+---
+
+<BaseLayout
+  title="Thank you"
+  description="Thanks for getting in touch with Dandelion Club."
+  noindex
+>
+  <Section ground="night">
+    <SectionHeading level={1} size="display-xl">
+      {title}
+    </SectionHeading>
+    <p class="t-lead thanks__line">
+      <Placeholder value={line} />
+    </p>
+    <div class="thanks__actions">
+      <Button href="/">Back to the home page</Button>
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .thanks__line {
+    margin-top: var(--space-5);
+    max-width: var(--measure-text);
+  }
+
+  .thanks__actions {
+    margin-top: var(--space-8);
+  }
+</style>

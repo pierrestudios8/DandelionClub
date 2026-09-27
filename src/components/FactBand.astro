@@ -1,0 +1,51 @@
+---
+/** "Why the dandelion": one fact on night, with its source. Renders only with a real source link. */
+import Section from './Section.astro';
+import { isTodo } from '../lib/todo';
+
+interface Props {
+  fact?: { text: string; sourceUrl: string };
+}
+
+const { fact } = Astro.props;
+const show = fact && !isTodo(fact.sourceUrl);
+---
+
+{show && (
+  <Section ground="night" aria-labelledby="fact-eyebrow">
+    <figure class="fact">
+      <p class="t-eyebrow muted" id="fact-eyebrow">
+        Why the dandelion
+      </p>
+      <blockquote class="fact__text">
+        <p>{fact.text}</p>
+      </blockquote>
+      <figcaption class="t-small muted">
+        Source: <a href={fact.sourceUrl}>{new URL(fact.sourceUrl).hostname}</a>
+      </figcaption>
+    </figure>
+  </Section>
+)}
+
+<style>
+  .fact {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .fact__text {
+    font-family: var(--type-display-family);
+    font-weight: var(--type-display-weight);
+    font-size: var(--type-display-sm-size);
+    line-height: var(--type-display-sm-leading);
+    text-transform: uppercase;
+    color: var(--dandelion);
+  }
+
+  @media (min-width: 600px) {
+    .fact__text {
+      font-size: var(--type-display-size);
+      line-height: var(--type-display-leading);
+    }
+  }
+</style>

@@ -4,7 +4,8 @@
  * dandelion display headline, supporting lines and one or two actions.
  * Text never sits on the photograph. See design/components/Hero.md.
  *
- * Slots: default = supporting lines (lead), "actions" = Buttons.
+ * Slots: "kicker" = a line above the eyebrow (e.g. a back link),
+ * default = supporting lines (lead), "actions" = Buttons.
  */
 import type { ImageMetadata } from 'astro';
 import { Image } from 'astro:assets';
@@ -42,6 +43,7 @@ const Heading = `h${level}` as 'h1' | 'h2';
   </div>
   <div class="container hero__body">
     <div class="hero__text">
+      {Astro.slots.has('kicker') && <slot name="kicker" />}
       {eyebrow && <p class="t-eyebrow">{eyebrow}</p>}
       <Heading class="t-display-xl hero__headline">{headline}</Heading>
       <div class="hero__lines t-lead">

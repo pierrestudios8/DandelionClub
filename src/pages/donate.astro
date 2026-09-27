@@ -1,0 +1,491 @@
+---
+/**
+ * Donate: design/pages/Donate.dc.html. The once-off/monthly toggle and the
+ * amounts are radio buttons, so the form works without JavaScript; the script
+ * only keeps the summary in step.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BankDetails from '../components/BankDetails.astro';
+import Button from '../components/Button.astro';
+import Form from '../components/Form.astro';
+import FormField from '../components/FormField.astro';
+import PageIntro from '../components/PageIntro.astro';
+import Placeholder from '../components/Placeholder.astro';
+import Section from '../components/Section.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import { getSettings } from '../lib/content';
+import { formatRand } from '../lib/format';
+import { isTodo } from '../lib/todo';
+
+const settings = await getSettings();
+const amounts = settings.donationAmounts;
+// The design opens on the middle amount.
+const initial = amounts[Math.floor(amounts.length / 2)] ?? amounts[0];
+const offer18a = settings.section18a !== false;
+---
+
+<BaseLayout
+  title="Donate"
+  description="Give once or monthly to pay for trees, soil, water and tools for school food forests in the Western Cape. Card or EFT."
+>
+  <PageIntro eyebrow="Donate" title="Pay for the next planting.">
+    Your gift pays for trees, soil, water and tools for school food forests in the Western Cape.{' '}
+    <Placeholder value="TODO: confirm what donations cover" />
+  </PageIntro>
+
+  <Section ground="paper">
+    <div class="checkout">
+      <Form id="donate" action="/api/donate" aria-labelledby="gift-heading" class="checkout__form">
+        <h2 class="t-display heading" id="gift-heading">
+          Your gift.
+        </h2>
+
+        <fieldset class="choice">
+          <legend class="choice__legend">How often</legend>
+          <div class="toggle">
+            <label class="toggle__option">
+              <input class="visually-hidden" type="radio" name="frequency" value="once" checked />
+              <span>Once-off</span>
+            </label>
+            <label class="toggle__option">
+              <input class="visually-hidden" type="radio" name="frequency" value="monthly" />
+              <span>Monthly</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset class="choice">
+          <legend class="choice__legend">Amount</legend>
+          <div class="amounts">
+            {amounts.map((a) => (
+              <label class="amount">
+                <input
+                  class="visually-hidden"
+                  type="radio"
+                  name="amount"
+                  value={a.amount}
+                  checked={a === initial}
+                  data-note={isTodo(a.note) ? '' : a.note}
+                />
+                <span class="amount__value">{formatRand(a.amount)}</span>
+                <span class="t-small">
+                  <Placeholder value={a.note} />
+                </span>
+              </label>
+            ))}
+          </div>
+          <div class="other">
+            <FormField
+              id="donate-other"
+              name="otherAmount"
+              label="Or another amount (R)"
+              type="number"
+              inputmode="numeric"
+              min="5"
+              step="1"
+              optional
+              placeholder="e.g. 500"
+              invalid="Enter a whole number of rand, R5 or more."
+            />
+          </div>
+        </fieldset>
+
+        <div class="pair">
+          <FormField
+            id="donate-name"
+            name="name"
+            label="Your name"
+            autocomplete="name"
+            invalid="Enter your name."
+          />
+          <FormField
+            id="donate-email"
+            name="email"
+            label="Email"
+            type="email"
+            autocomplete="email"
+            invalid="Enter a full email address, like name@example.com."
+          />
+        </div>
+        {offer18a && (
+          <FormField id="donate-18a" name="section18a" type="checkbox" optional>
+            I'd like a Section 18A tax certificate.{' '}
+            {isTodo(settings.section18a) ? (
+              <Placeholder value={settings.section18a} />
+            ) : (
+              "We'll ask for ID or company details next."
+            )}
+          </FormField>
+        )}
+        <FormField
+          id="donate-consent"
+          name="consent"
+          type="checkbox"
+          invalid="Tick this box so we can process your donation."
+        >
+          I agree that Dandelion Club may store these details to process my donation.{' '}
+          <a href="/privacy">Privacy</a>
+        </FormField>
+        <p slot="success">
+          <Placeholder value="TODO: what happens next (payment is wired up in Phase 6)" />
+        </p>
+      </Form>
+
+      <aside class="summary on-night" aria-labelledby="donate-summary-heading" data-donate-summary>
+        <p class="t-eyebrow summary__heading" id="donate-summary-heading">
+          Summary
+        </p>
+        <div class="summary__line" aria-live="polite">
+          <p class="t-lead" data-frequency>
+            Once-off
+          </p>
+          <p class="summary__amount" data-amount>
+            {formatRand(initial.amount)}
+          </p>
+        </div>
+        <p class="t-small muted" data-note>
+          <Placeholder value={initial.note} />
+        </p>
+        <Button type="submit" form="donate" block>
+          Continue to payment
+        </Button>
+        <p class="t-small muted">
+          Secure card payment by <Placeholder value="TODO: payment provider (PayFast?)" />.
+          <span data-monthly-only hidden>
+            <Placeholder value="TODO: how to cancel a monthly gift" />
+          </span>
+        </p>
+      </aside>
+    </div>
+  </Section>
+
+  <Section ground="night" id="eft" aria-labelledby="eft-heading">
+    <div class="eft">
+      <div class="eft__text">
+        <SectionHeading eyebrow="Prefer EFT?" id="eft-heading">
+          Pay us directly.
+        </SectionHeading>
+        <p class="t-lead muted">
+          Use your name as the reference and email{' '}
+          <a href={`mailto:${settings.email}`}>{settings.email}</a> so we can thank you.
+        </p>
+      </div>
+      <BankDetails bank={settings.bank} />
+    </div>
+  </Section>
+
+  <Section ground="paper" aria-labelledby="accountable-heading">
+    <div class="accountable">
+      <h2 class="t-display heading" id="accountable-heading">
+        Accountable.
+      </h2>
+      <div class="facts">
+        <div class="fact">
+          <h3 class="fact__title">Who we are</h3>
+          <p class="fact__text">
+            Dandelion Club is run by {settings.npcName}, registration{' '}
+            <Placeholder value={settings.npcRegistration} />.
+          </p>
+        </div>
+        <div class="fact">
+          <h3 class="fact__title">Tax certificates</h3>
+          <p class="fact__text">
+            <Placeholder value="TODO: Section 18A status and how certificates are issued" />
+          </p>
+        </div>
+        <div class="fact">
+          <h3 class="fact__title">Where it goes</h3>
+          <p class="fact__text">
+            <Placeholder value="TODO: split between trees, soil and water, tools, and running costs" />
+          </p>
+        </div>
+        <div class="fact">
+          <h3 class="fact__title">Reports</h3>
+          <p class="fact__text">
+            <Placeholder value="TODO: annual report download, once published" />
+          </p>
+        </div>
+      </div>
+    </div>
+  </Section>
+</BaseLayout>
+
+<script>
+  import { formatRand } from '../lib/format';
+
+  const form = document.querySelector<HTMLFormElement>('#donate');
+  const summary = document.querySelector<HTMLElement>('[data-donate-summary]');
+
+  if (form && summary) {
+    const other = form.querySelector<HTMLInputElement>('[name="otherAmount"]');
+    const amountRadios = [...form.querySelectorAll<HTMLInputElement>('[name="amount"]')];
+    const frequencyOut = summary.querySelector('[data-frequency]');
+    const amountOut = summary.querySelector('[data-amount]');
+    const noteOut = summary.querySelector('[data-note]');
+    const monthlyOnly = summary.querySelector<HTMLElement>('[data-monthly-only]');
+    const initialNote = noteOut?.innerHTML ?? '';
+
+    const update = () => {
+      const monthly =
+        form.querySelector<HTMLInputElement>('[name="frequency"]:checked')?.value === 'monthly';
+      if (frequencyOut) frequencyOut.textContent = monthly ? 'Every month' : 'Once-off';
+      if (monthlyOnly) monthlyOnly.hidden = !monthly;
+
+      const custom = Number(other?.value);
+      const picked = amountRadios.find((r) => r.checked);
+      if (other?.value && Number.isFinite(custom) && custom > 0) {
+        if (amountOut) amountOut.textContent = formatRand(custom);
+        if (noteOut) noteOut.textContent = '';
+      } else if (picked) {
+        if (amountOut) amountOut.textContent = formatRand(Number(picked.value));
+        if (noteOut) {
+          if (picked.dataset.note) noteOut.textContent = picked.dataset.note;
+          else if (picked.defaultChecked) noteOut.innerHTML = initialNote;
+          else noteOut.textContent = '';
+        }
+      }
+    };
+
+    // Typing another amount clears the preset; picking a preset clears the typed one.
+    other?.addEventListener('input', () => {
+      if (other.value) amountRadios.forEach((r) => (r.checked = false));
+      update();
+    });
+    amountRadios.forEach((r) =>
+      r.addEventListener('change', () => {
+        if (other) other.value = '';
+        update();
+      }),
+    );
+    form.addEventListener('change', update);
+    update();
+  }
+</script>
+
+<style>
+  .heading {
+    margin-bottom: var(--space-7);
+  }
+
+  @media (max-width: 599px) {
+    .heading {
+      font-size: var(--type-display-sm-size);
+      line-height: var(--type-display-sm-leading);
+    }
+  }
+
+  .checkout {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  .checkout :global(.checkout__form) {
+    display: grid;
+    gap: var(--space-7);
+  }
+
+  .checkout .heading {
+    margin-bottom: 0;
+  }
+
+  .choice {
+    border: 0;
+    padding: 0;
+    min-width: 0;
+  }
+
+  .choice__legend {
+    margin-bottom: var(--space-3);
+    font-size: var(--type-lead-size);
+    line-height: var(--type-lead-leading);
+    font-weight: var(--type-lead-weight);
+  }
+
+  .toggle {
+    display: flex;
+    max-width: var(--field-measure);
+  }
+
+  .toggle__option {
+    flex: 1;
+    display: grid;
+    place-items: center;
+    min-height: calc(var(--space-8) + var(--space-2));
+    border: var(--border-strong) solid var(--night);
+    font-family: var(--type-eyebrow-family);
+    font-size: var(--type-eyebrow-sm-size);
+    font-weight: var(--type-eyebrow-weight);
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .toggle__option + .toggle__option {
+    border-left: 0;
+  }
+
+  .toggle__option:has(:checked),
+  .amount:has(:checked) {
+    background: var(--night);
+    color: var(--dandelion);
+  }
+
+  .toggle__option:has(:focus-visible),
+  .amount:has(:focus-visible) {
+    outline: var(--border-strong) solid var(--focus-on-paper);
+    outline-offset: var(--focus-offset);
+  }
+
+  .amounts {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .amount {
+    display: grid;
+    gap: var(--space-2);
+    align-content: start;
+    padding: var(--space-5);
+    border: var(--border-strong) solid var(--night);
+    cursor: pointer;
+  }
+
+  .amount:has(:checked) :global(.placeholder) {
+    color: var(--dandelion);
+  }
+
+  .amount__value {
+    font-family: var(--type-eyebrow-lg-family);
+    font-size: var(--type-eyebrow-lg-size);
+    line-height: var(--type-eyebrow-lg-leading);
+    font-weight: var(--type-eyebrow-lg-weight);
+  }
+
+  .other {
+    margin-top: var(--space-4);
+    max-width: calc(var(--field-measure) / 2);
+  }
+
+  .pair {
+    display: grid;
+    gap: var(--space-5);
+    max-width: var(--field-measure);
+  }
+
+  .summary {
+    display: grid;
+    gap: var(--space-5);
+    align-self: start;
+    padding: var(--space-5);
+  }
+
+  .summary__heading {
+    color: var(--dandelion);
+  }
+
+  .summary__line {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-4);
+    padding-bottom: var(--space-4);
+    border-bottom: var(--border-hairline) solid var(--hairline-on-night);
+  }
+
+  .summary__amount {
+    font-family: var(--type-display-family);
+    font-size: var(--type-display-size);
+    line-height: var(--type-display-leading);
+    font-weight: var(--type-display-weight);
+    color: var(--dandelion);
+  }
+
+  .eft,
+  .accountable {
+    display: grid;
+    gap: var(--space-7);
+  }
+
+  .eft__text {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .eft__text a {
+    color: var(--dandelion);
+  }
+
+  .facts {
+    display: grid;
+    gap: var(--space-7);
+  }
+
+  .fact {
+    display: grid;
+    gap: var(--space-2);
+    align-content: start;
+    padding-top: var(--space-4);
+    border-top: var(--border-strong) solid var(--night);
+  }
+
+  .fact__title {
+    font-size: var(--type-subtitle-size);
+    line-height: var(--type-subtitle-leading);
+    font-weight: var(--type-subtitle-weight);
+  }
+
+  .fact__text {
+    font-size: var(--type-small-lg-size);
+    line-height: var(--type-small-lg-leading);
+  }
+
+  @media (min-width: 600px) {
+    .amounts {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .amount {
+      min-height: calc(var(--space-10) + var(--space-3));
+    }
+
+    .pair,
+    .facts {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .summary {
+      padding: var(--space-7);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .checkout {
+      grid-template-columns: 7fr 1fr 4fr;
+    }
+
+    .summary {
+      grid-column: 3;
+      margin-top: calc(var(--space-10) - var(--space-7));
+    }
+
+    .eft {
+      grid-template-columns: 5fr 1fr 6fr;
+      align-items: center;
+    }
+
+    .eft :global(.bank) {
+      grid-column: 3;
+    }
+
+    .accountable {
+      grid-template-columns: 4fr 1fr 7fr;
+    }
+
+    .facts {
+      grid-column: 3;
+    }
+
+    .accountable .heading {
+      margin-bottom: 0;
+    }
+  }
+</style>

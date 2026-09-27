@@ -1,65 +1,87 @@
 ---
 /**
- * Inline email + button used in the footer and on the Plantings and Get involved pages.
- * Posts to the newsletter endpoint (stubbed in Phase 3, wired in Phase 5).
- * The POPIA consent line sits under the field.
+ * Inline email + button used in the footer and on the Plantings, Get involved
+ * and Home pages. Posts to the newsletter endpoint (stubbed in Phase 3, wired
+ * in Phase 5). The POPIA consent line sits under the field.
  */
 import Button from './Button.astro';
+import Form from './Form.astro';
 
 interface Props {
   id: string;
-  /** Visible heading above the form; also its accessible name. */
+  /** Visible heading above the form; also its accessible name. Omit when the section has one. */
   label?: string;
+  /** Id of an existing heading to name the form by, instead of `label`. */
+  labelledBy?: string;
   button?: string;
-  action?: string;
 }
 
-const {
-  id,
-  label = 'Hear about the next planting',
-  button = 'Sign up',
-  action = '/api/newsletter',
-} = Astro.props;
+const { id, label = 'Hear about the next planting', labelledBy, button = 'Sign up' } = Astro.props;
+const headingId = labelledBy ?? `${id}-heading`;
 ---
 
-<form class="signup" method="post" action={action} aria-labelledby={`${id}-heading`}>
-  <p class="t-eyebrow-sm signup__heading" id={`${id}-heading`}>
-    {label}
-  </p>
-  <div class="signup__row">
-    <label class="visually-hidden" for={`${id}-email`}>
-      Email address
-    </label>
-    <input
-      class="signup__input"
-      id={`${id}-email`}
-      name="email"
-      type="email"
-      autocomplete="email"
-      placeholder="Your email"
-      required
-    />
-    <Button type="submit" compact>
-      {button}
-    </Button>
-  </div>
-  <label class="signup__consent t-small">
-    <input type="checkbox" name="consent" required />
-    <span>
-      Dandelion Club may email me about plantings. <a href="/privacy">Privacy</a>
-    </span>
-  </label>
-  <div class="signup__trap" aria-hidden="true">
-    <label>
-      Leave this empty <input type="text" name="website" tabindex="-1" autocomplete="off" />
-    </label>
-  </div>
-</form>
+<div class="signup">
+  <Form
+    id={id}
+    action="/api/newsletter"
+    aria-labelledby={headingId}
+    successTitle="You're on the list."
+  >
+    {!labelledBy && (
+      <p class="t-eyebrow-sm signup__heading" id={headingId}>
+        {label}
+      </p>
+    )}
+    <div class="signup__field" data-field>
+      <div class="signup__row">
+        <label class="visually-hidden" for={`${id}-email`}>
+          Email address
+        </label>
+        <input
+          class="signup__input"
+          id={`${id}-email`}
+          name="email"
+          type="email"
+          autocomplete="email"
+          placeholder="Your email"
+          required
+          data-invalid-message="Enter a full email address, like name@example.com."
+        />
+        <Button type="submit" compact>
+          {button}
+        </Button>
+      </div>
+      <p class="signup__error" id={`${id}-email-error`} hidden></p>
+    </div>
+    <div class="signup__field" data-field>
+      <label class="signup__consent t-small" for={`${id}-consent`}>
+        <input
+          type="checkbox"
+          id={`${id}-consent`}
+          name="consent"
+          value="yes"
+          required
+          data-invalid-message="Tick this box so we can email you."
+        />
+        <span>
+          Dandelion Club may email me about plantings. <a href="/privacy">Privacy</a>
+        </span>
+      </label>
+      <p class="signup__error" id={`${id}-consent-error`} hidden></p>
+    </div>
+    <p slot="success">We'll email you when the next planting date is set.</p>
+  </Form>
+</div>
 
 <style>
-  .signup {
+  .signup :global(.form) {
     display: grid;
     gap: var(--space-3);
+  }
+
+  .signup__field {
+    display: grid;
+    gap: var(--space-2);
   }
 
   .signup__row {
@@ -83,6 +105,17 @@ const {
     color: var(--ink-muted);
   }
 
+  .signup__field[data-invalid] .signup__input {
+    border-color: var(--error);
+  }
+
+  .signup__error {
+    font-size: var(--type-small-size);
+    line-height: var(--type-small-leading);
+    font-weight: var(--type-lead-weight);
+    color: var(--error);
+  }
+
   .signup__consent {
     display: flex;
     gap: var(--space-2);
@@ -95,12 +128,6 @@ const {
     height: var(--space-4);
     margin-top: var(--space-1);
     accent-color: var(--night);
-  }
-
-  /* Honeypot: off-screen, not display:none, so simple bots still fill it. */
-  .signup__trap {
-    position: absolute;
-    left: -100vw;
   }
 
   :global(.on-night) .signup__heading {
@@ -123,5 +150,16 @@ const {
 
   :global(.on-night) .signup__consent input {
     accent-color: var(--dandelion);
+  }
+
+  /* Error red fails contrast on night, so errors there use dandelion, with the words. */
+  :global(.on-night) .signup__error {
+    color: var(--dandelion);
+  }
+
+  :global(.on-night) .signup__field[data-invalid] .signup__input {
+    border-color: var(--dandelion);
+    outline: var(--border-strong) solid var(--dandelion);
+    outline-offset: calc(var(--border-strong) * -1);
   }
 </style>

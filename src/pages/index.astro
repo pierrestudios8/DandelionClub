@@ -1,14 +1,277 @@
 ---
-// Phase 1 placeholder home. Phase 3 builds the designed page.
+/** Home: design/pages/Home.dc.html (1440px) and HomeMobile.dc.html (390px). */
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import FactBand from '../components/FactBand.astro';
+import Hero from '../components/Hero.astro';
+import ImpactStrip from '../components/ImpactStrip.astro';
+import JournalCard from '../components/JournalCard.astro';
+import NextPlanting from '../components/NextPlanting.astro';
+import Placeholder from '../components/Placeholder.astro';
 import Section from '../components/Section.astro';
 import SectionHeading from '../components/SectionHeading.astro';
+import SeedBand from '../components/SeedBand.astro';
+import SiteCard from '../components/SiteCard.astro';
+import {
+  getFacts,
+  getImpactFigures,
+  getJournal,
+  getNextPlanting,
+  getProgrammes,
+  getSettings,
+  getSites,
+  plantingCard,
+} from '../lib/content';
+import { formatDate, numberWord } from '../lib/format';
+
+const [next, figures, facts, programmes, sites, posts, settings] = await Promise.all([
+  getNextPlanting(),
+  getImpactFigures(),
+  getFacts(),
+  getProgrammes(),
+  getSites(),
+  getJournal(),
+  getSettings(),
+]);
+const nextCard = next ? await plantingCard(next) : undefined;
+const joinHref = nextCard ? `${nextCard.href}#sign-up` : '/plantings';
+const fact = facts[0]?.data;
 ---
 
-<BaseLayout title="Dandelion Club" description="Food forests at schools in the Western Cape.">
-  <Section ground="paper">
-    <SectionHeading eyebrow="Dandelion Club" level={1}>
-      Plant it forward.
-    </SectionHeading>
+<BaseLayout
+  title="Dandelion Club"
+  description="Dandelion Club turns bare school ground in the Western Cape into food forests, one Saturday planting at a time. Join a planting, dedicate a tree or donate."
+>
+  <Hero eyebrow="Food forests for Western Cape schools" headline="Plant it forward.">
+    <p>We turn bare school ground into food forests, one planting day at a time.</p>
+    <p>Bring gloves if you've got them. We'll bring everything else.</p>
+    <Fragment slot="actions">
+      <Button href={joinHref}>Join a planting</Button>
+      <Button href="/dedicate-a-tree">Dedicate a tree</Button>
+    </Fragment>
+  </Hero>
+
+  <NextPlanting planting={nextCard} />
+
+  <ImpactStrip figures={figures} />
+
+  <FactBand fact={fact} />
+
+  <Section ground="paper" aria-labelledby="work-heading" class="home-work">
+    <div class="split-head">
+      <SectionHeading eyebrow="What we do" id="work-heading">
+        More than trees.
+      </SectionHeading>
+      <Button href="/our-work" variant="ghost">
+        Our work
+      </Button>
+    </div>
+    <ul role="list" class="programmes">
+      {programmes.map((p) => (
+        <li class="programme">
+          <h3 class="programme__title">{p.data.title}</h3>
+          <p class="programme__summary muted">
+            <Placeholder value={p.data.summary} />
+          </p>
+        </li>
+      ))}
+    </ul>
+  </Section>
+
+  {sites.length > 0 && (
+    <Section ground="night" aria-labelledby="sites-heading">
+      <SectionHeading eyebrow="Where we work" id="sites-heading">
+        {`${numberWord(sites.length)} ${sites.length === 1 ? 'site' : 'sites'} so far.`}
+      </SectionHeading>
+      <div class="cards cards--three">
+        {sites.map((s) => (
+          <SiteCard
+            name={s.data.name}
+            summary={s.data.summary}
+            href={`/sites/${s.id}`}
+            image={s.data.heroImage}
+          />
+        ))}
+      </div>
+    </Section>
+  )}
+
+  <SeedBand />
+
+  <Section ground="paper-sunk" aria-labelledby="funders-heading">
+    <div class="funders">
+      <div class="funders__text">
+        <SectionHeading eyebrow="For funders and partners" id="funders-heading">
+          Fund a food forest.
+        </SectionHeading>
+        <p class="t-body">
+          Dandelion Club is run by {settings.npcName}. Talk to us about funding a site, a school or
+          one of our programmes.
+        </p>
+      </div>
+      <div class="funders__actions">
+        <Button href="/get-involved/partner">Start a conversation</Button>
+        <Button href="/about" variant="ghost">
+          About us
+        </Button>
+      </div>
+    </div>
+  </Section>
+
+  {posts.length > 0 && (
+    <Section ground="paper" aria-labelledby="journal-heading">
+      <div class="split-head">
+        <SectionHeading eyebrow="From the journal" id="journal-heading">
+          Field notes.
+        </SectionHeading>
+        <Button href="/journal" variant="ghost">
+          All posts
+        </Button>
+      </div>
+      <div class="cards cards--two">
+        {posts.slice(0, 2).map((post) => (
+          <JournalCard
+            title={post.data.title}
+            href={`/journal/${post.id}`}
+            date={formatDate(post.data.date)}
+            author={post.data.author}
+            tag={post.data.tags[0]}
+            image={post.data.heroImage}
+          />
+        ))}
+      </div>
+    </Section>
+  )}
+
+  <Section ground="night" aria-labelledby="close-heading">
+    <div class="close">
+      <SectionHeading eyebrow="Get involved" id="close-heading" size="display-xl">
+        Get your hands dirty.
+      </SectionHeading>
+      <Button href="/get-involved" class="close__button">
+        Find your way in
+      </Button>
+    </div>
   </Section>
 </BaseLayout>
+
+<style>
+  .split-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: var(--space-5);
+    margin-bottom: var(--space-8);
+  }
+
+  /* On phones the section's button moves out of the heading row, as in HomeMobile. */
+  @media (max-width: 599px) {
+    .split-head :global(.btn) {
+      display: none;
+    }
+  }
+
+  .programmes {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .programme {
+    display: grid;
+    gap: var(--space-2);
+    align-content: start;
+    padding-top: var(--space-4);
+    border-top: var(--border-strong) solid var(--night);
+  }
+
+  .programme__title {
+    font-size: var(--type-subtitle-sm-size);
+    line-height: var(--type-subtitle-sm-leading);
+    font-weight: var(--type-subtitle-sm-weight);
+  }
+
+  .programme__summary {
+    font-size: var(--type-small-lg-size);
+    line-height: var(--type-small-lg-leading);
+  }
+
+  .cards {
+    display: grid;
+    gap: var(--space-7) var(--space-5);
+    margin-top: var(--space-8);
+  }
+
+  .split-head + .cards {
+    margin-top: 0;
+  }
+
+  .funders,
+  .close {
+    display: grid;
+    gap: var(--space-7);
+  }
+
+  .funders__text {
+    display: grid;
+    gap: var(--space-4);
+    max-width: var(--measure-text);
+  }
+
+  .funders__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  @media (max-width: 599px) {
+    .close :global(.close__button) {
+      display: flex;
+      width: 100%;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .programmes {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .cards--two,
+    .cards--three {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .programmes,
+    .cards--three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .programme {
+      gap: var(--space-3);
+      padding-top: var(--space-5);
+    }
+
+    .programme__title {
+      font-size: var(--type-subtitle-size);
+      line-height: var(--type-subtitle-leading);
+    }
+
+    .funders {
+      grid-template-columns: 7fr 1fr 4fr;
+      align-items: center;
+    }
+
+    .funders__actions {
+      grid-column: 3;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .close {
+      grid-template-columns: 1fr auto;
+      align-items: center;
+    }
+  }
+</style>

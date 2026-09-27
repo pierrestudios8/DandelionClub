@@ -5,6 +5,7 @@
  * it says so and offers the newsletter instead; it never shows a past date.
  * See design/components/NextPlanting.md.
  */
+import type { ComponentProps } from 'astro/types';
 import NewsletterSignup from './NewsletterSignup.astro';
 import PlantingCard from './PlantingCard.astro';
 import Section from './Section.astro';
@@ -13,13 +14,7 @@ import SectionHeading from './SectionHeading.astro';
 interface Props {
   /** Prefix for element ids; change it if the section appears twice on a page. */
   id?: string;
-  planting?: {
-    date: string;
-    time?: string;
-    site: string;
-    summary?: string;
-    href: string;
-  };
+  planting?: Omit<ComponentProps<typeof PlantingCard>, 'variant'>;
 }
 
 const { id = 'next-planting', planting } = Astro.props;

@@ -39,7 +39,7 @@ const tally = [
 
   <Section ground="paper" aria-labelledby="coming-up">
     <h2 class="t-display section-title" id="coming-up">
-      Coming up.
+      Upcoming plantings.
     </h2>
     <div class="grid grid--two">
       {upcoming.map((p) => (
@@ -62,7 +62,7 @@ const tally = [
     <Section ground="paper-sunk" aria-labelledby="already-planted">
       <div class="past-head">
         <h2 class="t-display section-title" id="already-planted">
-          Already planted.
+          Projects.
         </h2>
         {tally.length > 0 && <p class="t-lead">{tally.join(' · ')}</p>}
       </div>
@@ -101,6 +101,7 @@ const tally = [
 
   .grid {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--space-5);
     align-items: start;
   }
@@ -111,6 +112,7 @@ const tally = [
 
   .notify {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--space-4);
     padding: var(--space-5);
     border: var(--border-strong) dashed var(--night);

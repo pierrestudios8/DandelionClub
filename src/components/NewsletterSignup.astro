@@ -76,6 +76,7 @@ const headingId = labelledBy ?? `${id}-heading`;
 <style>
   .signup :global(.form) {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--space-3);
   }
 
@@ -89,7 +90,9 @@ const headingId = labelledBy ?? `${id}-heading`;
   }
 
   .signup__input {
-    flex: 1 1 auto;
+    /* Shrink below the input's default size so the row fits any column. */
+    flex: 1 1 0;
+    width: 0;
     min-width: 0;
     padding: var(--space-3) var(--space-4);
     font-size: var(--type-small-lg-size);

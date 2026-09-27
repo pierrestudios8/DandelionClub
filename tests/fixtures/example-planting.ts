@@ -35,6 +35,9 @@ export function examplePlanting(now = new Date()) {
       { time: 'TODO: time', text: 'TODO: mulch, water and a photo with the new trees' },
     ],
     capacity: 40,
+    // Example numbers so tests can check the counter; never on Vercel.
+    treesTarget: 60,
+    treesDonated: 18,
     publish: false,
   };
 }

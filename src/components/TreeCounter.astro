@@ -1,0 +1,83 @@
+---
+/**
+ * Trees against a target: "18 of 60 trees donated" with a bar. The words carry the
+ * meaning; the bar is decoration. Unconfirmed numbers show as placeholders, and
+ * the bar only appears when both numbers are real.
+ */
+import Placeholder from './Placeholder.astro';
+import { isTodo } from '../lib/todo';
+
+interface Props {
+  value?: number | string;
+  target?: number | string;
+  /** "planted" or "donated". */
+  verb: 'planted' | 'donated';
+}
+
+const { value, target, verb } = Astro.props;
+const num = (v: unknown): v is number => typeof v === 'number';
+const show = value !== undefined || target !== undefined;
+const percent =
+  num(value) && num(target) ? Math.min(100, Math.round((value / target) * 100)) : null;
+const fmt = (n: number) => n.toLocaleString('en-ZA');
+---
+
+{show && (
+  <div class="counter">
+    <p class="counter__text">
+      {num(value) && num(target) ? (
+        <>
+          <strong>{fmt(value)}</strong> of {fmt(target)} trees {verb}
+        </>
+      ) : (
+        <>
+          <strong>
+            {num(value) ? (
+              fmt(value)
+            ) : (
+              <Placeholder value={isTodo(value) ? value : `TODO: trees ${verb}`} />
+            )}
+          </strong>{' '}
+          trees {verb} · target{' '}
+          {num(target) ? (
+            fmt(target)
+          ) : (
+            <Placeholder value={isTodo(target) ? target : 'TODO: tree target'} />
+          )}
+        </>
+      )}
+    </p>
+    {percent !== null && (
+      <div class="counter__bar" aria-hidden="true">
+        <span style={`width: ${percent}%`} />
+      </div>
+    )}
+  </div>
+)}
+
+<style>
+  .counter {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .counter__text {
+    font-size: var(--type-small-lg-size);
+    line-height: var(--type-small-lg-leading);
+  }
+
+  .counter__text strong {
+    font-weight: var(--type-lead-strong-weight);
+  }
+
+  .counter__bar {
+    height: var(--space-3);
+    border: var(--border-strong) solid currentColor;
+  }
+
+  .counter__bar span {
+    display: block;
+    height: 100%;
+    background: currentColor;
+  }
+</style>

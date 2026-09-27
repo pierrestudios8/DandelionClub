@@ -50,6 +50,14 @@ a {
   color: inherit;
 }
 
+/* A long word in a big headline breaks, hyphenated, instead of running off a phone screen. */
+h1,
+h2,
+h3 {
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
 /* `hidden` always wins over a component's display rule. */
 [hidden] {
   display: none !important;

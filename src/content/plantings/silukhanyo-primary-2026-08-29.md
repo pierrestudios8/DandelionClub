@@ -10,6 +10,7 @@ kids: 'TODO: what children can do on the day'
 access: 'TODO: parking, entrance and accessibility'
 schedule: []
 publish: false
+treesTarget: 'TODO: tree target'
 treesPlanted: 'TODO: trees planted'
 volunteers: 'TODO: number of volunteers'
 recap: 'TODO: short recap of the day'

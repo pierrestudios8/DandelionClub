@@ -4,6 +4,7 @@ Newest first. Add a line for every decision that isn't already in CLAUDE.md or S
 
 | Date | Decision | Reason |
 | --- | --- | --- |
+| 2026-09-27 | Trees planted (the impact figure) is the active projects' total (`projectTreesTotal`), not a sum over held plantings; it stays hidden until every active project's count is confirmed. Plantings held, schools and volunteers still come from held plantings | Handoff Task B: the projects hold the confirmed counts; a partial sum would understate the work |
 | 2026-09-27 | Project cards show totals; phases open in a dropdown over the photo, and cards in a row share one height. Upcoming plantings is a two-column split (headline and copy, then the email box), with any planting cards below | Pierre's layout direction; the dropdown overlays so opening it never changes a card's size |
 | 2026-09-27 | Plantings page leads with Active projects (a site's food forest: trees planted against a target, optional phases), then Upcoming plantings; the past-plantings grid is dropped here (held plantings still show on each site page) | Pierre's structure for the page; projects are the lasting thing, plantings are the days that feed them |
 | 2026-09-27 | Every section differs in colour from its neighbours: footer on `night-raised`, Home "What we do" on `paper-sunk`, Plantings' closing band on `dandelion` | Pierre asked that no two neighbouring sections share a ground; the header and page intro stay one night frame, as on the live site |

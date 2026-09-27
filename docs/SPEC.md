@@ -79,7 +79,7 @@ Use Zod schemas in `src/content.config.ts`. Any string field may hold a `TODO:` 
 
 Seed the collections with the three known sites (Silukhanyo Primary, Mhani Gingi Centre of Excellence, Genadendal), one `done` planting (Silukhanyo Primary, 29 August 2026, counts as `TODO:`), the six draft programmes from the Home design, and `TODO:` for everything else.
 
-Derived figures: trees planted = sum of `treesPlanted`; plantings held = count of `done`; schools = count of sites with at least one `done` planting. Hide any figure whose inputs contain a `TODO:` or `undefined`.
+Derived figures: trees planted = the active projects' total (each project's `treesPlanted`, or the sum of its `phases`; `projectTreesTotal()` in `src/lib/projects.ts`); plantings held = count of `done`; schools = count of sites with at least one `done` planting; volunteers = sum of `volunteers` across held plantings. Hide any figure whose inputs contain a `TODO:` or `undefined`: trees planted stays hidden until every active project's count is confirmed, never shown as a partial sum.
 
 ## Forms and integrations
 

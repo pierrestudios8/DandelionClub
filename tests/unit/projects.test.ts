@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { activeProjects, plantedTotal, type ProjectLike } from '../../src/lib/projects';
+import {
+  activeProjects,
+  plantedTotal,
+  projectTreesTotal,
+  type ProjectLike,
+} from '../../src/lib/projects';
 
 const project = (p: Partial<ProjectLike>): ProjectLike => ({
   active: true,
@@ -46,5 +51,43 @@ describe('activeProjects', () => {
       { id: 'b', data: { project: project({ order: 2 }) } },
     ];
     expect(activeProjects(sites).map((s) => s.id)).toEqual(['a', 'b', 'c']);
+  });
+});
+
+describe('projectTreesTotal', () => {
+  // The three confirmed projects (docs/HANDOFF-2026-09-27.md).
+  const silukhanyo = project({ treesTarget: 200, treesPlanted: 92 });
+  const silverleaf = project({
+    treesTarget: 300,
+    phases: [
+      { name: 'Phase 01', treesPlanted: 88 },
+      { name: 'Phase 02', treesPlanted: 80 },
+      { name: 'Phase 03', treesPlanted: 60 },
+    ],
+  });
+  const peacePark = project({ treesTarget: 11, treesPlanted: 11 });
+
+  it('adds up every project, phases included', () => {
+    expect(projectTreesTotal([silukhanyo, silverleaf, peacePark])).toBe(331);
+  });
+
+  it('is null while any project count is a placeholder, not a partial sum', () => {
+    const unconfirmed = project({ treesPlanted: 'TODO: trees planted' });
+    expect(projectTreesTotal([silukhanyo, silverleaf, unconfirmed])).toBeNull();
+  });
+
+  it('is null while any phase is a placeholder', () => {
+    const phased = project({
+      phases: [
+        { name: 'Phase 01', treesPlanted: 88 },
+        { name: 'Phase 02', treesPlanted: 'TODO: phase 2 count' },
+      ],
+    });
+    expect(projectTreesTotal([silukhanyo, phased])).toBeNull();
+  });
+
+  it('is null when a project has no count at all, or there are no projects', () => {
+    expect(projectTreesTotal([silukhanyo, project({})])).toBeNull();
+    expect(projectTreesTotal([])).toBeNull();
   });
 });

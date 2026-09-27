@@ -5,8 +5,9 @@
  * Held: the same header with the recap and counts instead of the form
  * (no design yet; follows the system).
  */
-import { getEntry, render } from 'astro:content';
+import { getEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Body from '../../components/Body.astro';
 import Button from '../../components/Button.astro';
 import Form from '../../components/Form.astro';
 import FormField from '../../components/FormField.astro';
@@ -37,7 +38,6 @@ interface Props {
 const { planting, held } = Astro.props;
 const { data } = planting;
 const site = await getEntry(data.site);
-const { Content } = await render(planting);
 
 const siteName = site?.data.name ?? data.site.id;
 const date = formatDate(data.date, { weekday: true });
@@ -99,13 +99,7 @@ const heardOptions = [
       <div class="about">
         <div class="about__intro">
           <h2 class="t-display about__title">The day.</h2>
-          <div class="t-body prose">
-            {isTodo(planting.body?.trim()) ? (
-              <Placeholder value={planting.body?.trim()} />
-            ) : (
-              <Content />
-            )}
-          </div>
+          <Body entry={planting} />
         </div>
 
         {held ? (
@@ -354,14 +348,6 @@ const heardOptions = [
     .about__title {
       display: none;
     }
-  }
-
-  .prose {
-    max-width: var(--measure-text);
-  }
-
-  .prose :global(p + p) {
-    margin-top: var(--space-4);
   }
 
   .details {

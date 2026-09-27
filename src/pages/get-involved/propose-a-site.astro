@@ -1,0 +1,163 @@
+---
+/** Propose a site (docs/SPEC.md, Forms): for schools and community groups. */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Button from '../../components/Button.astro';
+import Form from '../../components/Form.astro';
+import FormField from '../../components/FormField.astro';
+import PageIntro from '../../components/PageIntro.astro';
+import Placeholder from '../../components/Placeholder.astro';
+import Section from '../../components/Section.astro';
+import { THANK_YOU } from '../../lib/forms/types';
+---
+
+<BaseLayout
+  title="Propose a site"
+  description="Schools and community groups can ask Dandelion Club to plant a food forest with them. Tell us about the ground and the people who'll look after it."
+>
+  <PageIntro eyebrow="Propose a site" title="Got a school in mind?">
+    Schools and community groups can ask us to plant with them. Tell us about the ground and the
+    people who'll look after it.
+  </PageIntro>
+
+  <Section ground="paper">
+    <div class="layout">
+      <Form
+        id="propose-a-site"
+        action="/api/propose-a-site"
+        aria-labelledby="propose-heading"
+        class="enquiry"
+        successTitle={THANK_YOU.site.title}
+      >
+        <h2 class="t-display heading" id="propose-heading">
+          The site.
+        </h2>
+        <FormField
+          id="site-organisation"
+          name="organisation"
+          label="School or organisation"
+          autocomplete="organization"
+          invalid="Enter the name of the school or organisation."
+        />
+        <div class="pair">
+          <FormField
+            id="site-contact"
+            name="contactName"
+            label="Your name"
+            autocomplete="name"
+            invalid="Enter your name."
+          />
+          <FormField
+            id="site-phone"
+            name="phone"
+            label="Phone"
+            type="tel"
+            autocomplete="tel"
+            invalid="Enter a phone number we can reach you on."
+          />
+        </div>
+        <FormField
+          id="site-email"
+          name="email"
+          label="Email"
+          type="email"
+          autocomplete="email"
+          invalid="Enter a full email address, like name@example.com."
+        />
+        <FormField
+          id="site-location"
+          name="location"
+          label="Where is it?"
+          hint="Street address or area, and the town."
+          invalid="Tell us where the site is."
+        />
+        <FormField
+          id="site-now"
+          name="whatsThere"
+          label="What's there now?"
+          type="textarea"
+          hint="How big it is, what grows there, whether there's water."
+          invalid="Tell us a little about the ground."
+        />
+        <FormField
+          id="site-carers"
+          name="caretakers"
+          label="Who will look after it?"
+          type="textarea"
+          hint="Teachers, learners, parents, a garden club: whoever will water and weed."
+          invalid="Tell us who will look after the food forest."
+        />
+        <FormField
+          id="site-consent"
+          name="consent"
+          type="checkbox"
+          invalid="Tick this box so we can contact you about the site."
+        >
+          I agree that Dandelion Club may store these details to consider this site.{' '}
+          <a href="/privacy">Privacy</a>
+        </FormField>
+        <div>
+          <Button type="submit">Send the proposal</Button>
+        </div>
+        <p slot="success">{THANK_YOU.site.line}</p>
+      </Form>
+
+      <aside class="next" aria-labelledby="next-heading">
+        <p class="t-eyebrow-sm" id="next-heading">
+          What happens next
+        </p>
+        <p class="t-body">
+          <Placeholder value="TODO: what happens after a site is proposed, and how long it takes" />
+        </p>
+      </aside>
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .layout {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  .layout :global(.enquiry) {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  @media (max-width: 599px) {
+    .heading {
+      font-size: var(--type-display-sm-size);
+      line-height: var(--type-display-sm-leading);
+    }
+  }
+
+  .pair {
+    display: grid;
+    gap: var(--space-5);
+    max-width: var(--field-measure);
+  }
+
+  .next {
+    display: grid;
+    gap: var(--space-3);
+    align-content: start;
+    padding-top: var(--space-5);
+    border-top: var(--border-strong) solid var(--night);
+  }
+
+  @media (min-width: 600px) {
+    .pair {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .layout {
+      grid-template-columns: 7fr 1fr 4fr;
+    }
+
+    .next {
+      grid-column: 3;
+    }
+  }
+</style>

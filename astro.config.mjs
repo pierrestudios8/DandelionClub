@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import vercel from '@astrojs/vercel';
 import sitemap from '@astrojs/sitemap';
+import rehypeTodo from './src/lib/rehype-todo.ts';
 
 /** The styleguide is for dev and Vercel previews; production never gets the route. */
 const includeStyleguide = process.env.VERCEL_ENV !== 'production';
@@ -26,5 +27,9 @@ export default defineConfig({
   // The dev toolbar adds its own headings, which the e2e and axe checks would see.
   devToolbar: { enabled: !process.env.DC_E2E },
   adapter: vercel(),
-  integrations: [styleguide, sitemap({ filter: (page) => !page.includes('/styleguide') })],
+  markdown: { rehypePlugins: [rehypeTodo] },
+  integrations: [
+    styleguide,
+    sitemap({ filter: (page) => !/\/(styleguide|thank-you)\//.test(page) }),
+  ],
 });

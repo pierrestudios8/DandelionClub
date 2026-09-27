@@ -1,0 +1,208 @@
+---
+/**
+ * Our work: approach and programmes (docs/SPEC.md, Pages without designs).
+ * Night header, the food forest layers, one section per programme, then the sites.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Body from '../components/Body.astro';
+import Button from '../components/Button.astro';
+import PageIntro from '../components/PageIntro.astro';
+import Placeholder from '../components/Placeholder.astro';
+import Section from '../components/Section.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import SiteCard from '../components/SiteCard.astro';
+import { getProgrammes, getSites } from '../lib/content';
+import { numberWord } from '../lib/format';
+
+const [programmes, sites] = await Promise.all([getProgrammes(), getSites()]);
+
+const layers = [
+  { name: 'Canopy', line: 'TODO: what the canopy layer is and does' },
+  { name: 'Shrubs', line: 'TODO: what the shrub layer is and does' },
+  { name: 'Ground cover', line: 'TODO: what the ground cover layer is and does' },
+  { name: 'Roots', line: 'TODO: what the root layer is and does' },
+];
+---
+
+<BaseLayout
+  title="Our work"
+  description="How Dandelion Club plants food forests with Western Cape schools, and the programmes that grow around each site."
+>
+  <PageIntro eyebrow="What we do" title="Our work">
+    <Placeholder value="TODO: one or two lines on the approach" />
+  </PageIntro>
+
+  <Section ground="paper" aria-labelledby="layers-heading">
+    <div class="layers">
+      <div class="layers__intro">
+        <SectionHeading eyebrow="How a food forest works" id="layers-heading">
+          In layers.
+        </SectionHeading>
+        <p class="t-body">
+          A food forest grows in layers, so every bit of sun and soil is doing something.
+        </p>
+      </div>
+      <ol class="layers__list" role="list">
+        {layers.map((layer, i) => (
+          <li class="layer">
+            <span class="layer__number" aria-hidden="true">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <h3 class="layer__name">{layer.name}</h3>
+            <p class="t-body muted">
+              <Placeholder value={layer.line} />
+            </p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </Section>
+
+  {programmes.map((p, i) => (
+    <Section
+      ground={i % 2 === 0 ? 'paper-sunk' : 'paper'}
+      id={p.id}
+      aria-labelledby={`${p.id}-heading`}
+    >
+      <div class="programme">
+        <div class="programme__head">
+          <p class="t-eyebrow-sm muted">Programme {String(i + 1).padStart(2, '0')}</p>
+          <h2 class="programme__title" id={`${p.id}-heading`}>
+            {p.data.title}
+          </h2>
+          <p class="t-lead">
+            <Placeholder value={p.data.summary} />
+          </p>
+        </div>
+        <Body entry={p} />
+      </div>
+    </Section>
+  ))}
+
+  {sites.length > 0 && (
+    <Section ground="night" aria-labelledby="sites-heading">
+      <SectionHeading eyebrow="Where we work" id="sites-heading">
+        {`${numberWord(sites.length)} ${sites.length === 1 ? 'site' : 'sites'} so far.`}
+      </SectionHeading>
+      <div class="sites">
+        {sites.map((s) => (
+          <SiteCard
+            name={s.data.name}
+            summary={s.data.summary}
+            href={`/sites/${s.id}`}
+            image={s.data.heroImage}
+          />
+        ))}
+      </div>
+      <div class="sites__cta">
+        <Button href="/get-involved/propose-a-site" variant="ghost">
+          Propose a site
+        </Button>
+      </div>
+    </Section>
+  )}
+</BaseLayout>
+
+<style>
+  .layers {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  .layers__intro {
+    display: grid;
+    gap: var(--space-5);
+    align-content: start;
+  }
+
+  .layers__list {
+    display: grid;
+  }
+
+  .layer {
+    display: grid;
+    grid-template-columns: calc(var(--space-9) + var(--space-2)) 1fr;
+    column-gap: var(--space-5);
+    row-gap: var(--space-2);
+    padding-block: var(--space-5);
+    border-top: var(--border-strong) solid var(--night);
+  }
+
+  .layer:last-child {
+    border-bottom: var(--border-strong) solid var(--night);
+  }
+
+  .layer__number {
+    grid-row: span 2;
+    font-family: var(--type-display-sm-family);
+    font-size: var(--type-display-sm-size);
+    line-height: var(--type-display-sm-leading);
+    font-weight: var(--type-display-sm-weight);
+  }
+
+  .layer__name {
+    font-family: var(--type-eyebrow-lg-family);
+    font-size: var(--type-eyebrow-lg-size);
+    line-height: var(--type-eyebrow-lg-leading);
+    font-weight: var(--type-eyebrow-lg-weight);
+    text-transform: uppercase;
+  }
+
+  .programme {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .programme__head {
+    display: grid;
+    gap: var(--space-3);
+    align-content: start;
+  }
+
+  .programme__title {
+    font-family: var(--type-display-sm-family);
+    font-size: var(--type-display-sm-size);
+    line-height: var(--type-display-sm-leading);
+    font-weight: var(--type-display-sm-weight);
+    text-transform: uppercase;
+  }
+
+  .sites {
+    display: grid;
+    gap: var(--space-7) var(--space-5);
+    margin-top: var(--space-8);
+  }
+
+  .sites__cta {
+    margin-top: var(--space-8);
+  }
+
+  @media (min-width: 600px) {
+    .programme__title {
+      font-size: var(--type-display-size);
+      line-height: var(--type-display-leading);
+    }
+  }
+
+  @media (min-width: 768px) {
+    .sites {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .layers,
+    .programme {
+      grid-template-columns: 5fr 1fr 6fr;
+    }
+
+    .layers__list,
+    .programme :global(.prose) {
+      grid-column: 3;
+    }
+
+    .sites {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

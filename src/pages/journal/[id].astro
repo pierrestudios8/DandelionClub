@@ -1,0 +1,138 @@
+---
+/**
+ * A journal post (docs/SPEC.md, Pages without designs): night header, hero image,
+ * the body in the reading measure, and links to the related sites or plantings.
+ */
+import { Image } from 'astro:assets';
+import { getEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Body from '../../components/Body.astro';
+import Placeholder from '../../components/Placeholder.astro';
+import Section from '../../components/Section.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import { getJournal } from '../../lib/content';
+import { formatDate } from '../../lib/format';
+
+export async function getStaticPaths() {
+  return (await getJournal()).map((post) => ({ params: { id: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { data } = post;
+
+const related = (
+  await Promise.all(
+    data.related.map(async (ref) => {
+      const entry = await getEntry(ref);
+      if (!entry) return undefined;
+      if (entry.collection === 'sites') {
+        return { label: entry.data.name, href: `/sites/${entry.id}`, kind: 'Site' };
+      }
+      if (entry.collection === 'plantings') {
+        const site = await getEntry(entry.data.site);
+        return {
+          label: `${site?.data.name ?? entry.data.site.id}, ${formatDate(entry.data.date)}`,
+          href: `/plantings/${entry.id}`,
+          kind: 'Planting',
+        };
+      }
+      return undefined;
+    }),
+  )
+).filter((r) => r !== undefined);
+---
+
+<BaseLayout
+  title={data.title.startsWith('TODO:') ? 'Journal post' : data.title}
+  description={`${data.tags.join(', ')} · ${formatDate(data.date)} · Dandelion Club journal`}
+  ogType="article"
+>
+  <Section ground="night">
+    <a class="back t-small" href="/journal">
+      <span aria-hidden="true">←</span> Journal
+    </a>
+    <div class="head">
+      <SectionHeading eyebrow={data.tags.join(' · ')} level={1}>
+        <Placeholder value={data.title} />
+      </SectionHeading>
+      <p class="t-lead muted">
+        <time datetime={data.date.toISOString().slice(0, 10)}>{formatDate(data.date)}</time> ·{' '}
+        <Placeholder value={data.author} />
+      </p>
+    </div>
+  </Section>
+
+  {data.heroImage && (
+    <div class="hero-image on-night">
+      <div class="container">
+        <Image
+          src={data.heroImage}
+          alt=""
+          widths={[390, 780, 1200, 1600]}
+          sizes="(min-width: 1264px) 1200px, 100vw"
+        />
+      </div>
+    </div>
+  )}
+
+  <Section ground="paper" width="text">
+    <Body entry={post} />
+    {related.length > 0 && (
+      <aside class="related" aria-labelledby="related-heading">
+        <p class="t-eyebrow-sm" id="related-heading">
+          Related
+        </p>
+        <ul role="list">
+          {related.map((r) => (
+            <li>
+              <span class="muted t-small">{r.kind}</span>{' '}
+              <a class="t-lead" href={r.href}>
+                {r.label} <span aria-hidden="true">→</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </aside>
+    )}
+  </Section>
+</BaseLayout>
+
+<style>
+  .back {
+    color: var(--ink-muted-on-night);
+    text-decoration: none;
+  }
+
+  .back:hover {
+    text-decoration: underline;
+  }
+
+  .head {
+    display: grid;
+    gap: var(--space-5);
+    margin-top: var(--space-5);
+    max-width: var(--measure-text);
+  }
+
+  .hero-image {
+    padding-bottom: var(--space-9);
+  }
+
+  .hero-image :global(img) {
+    width: 100%;
+    height: auto;
+  }
+
+  .related {
+    display: grid;
+    gap: var(--space-3);
+    margin-top: var(--space-8);
+    padding-top: var(--space-5);
+    border-top: var(--border-strong) solid var(--night);
+  }
+
+  .related ul {
+    display: grid;
+    gap: var(--space-2);
+  }
+</style>

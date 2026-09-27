@@ -1,0 +1,281 @@
+---
+/**
+ * One site (docs/SPEC.md, Pages without designs): photo header fading into night,
+ * the story, partners, plantings held there, dedicated trees, gallery, what's next,
+ * and a donate call to action. Sections without content yet stay hidden.
+ */
+import { Image } from 'astro:assets';
+import { getEntries } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Body from '../../components/Body.astro';
+import Button from '../../components/Button.astro';
+import Hero from '../../components/Hero.astro';
+import NewsletterSignup from '../../components/NewsletterSignup.astro';
+import Placeholder from '../../components/Placeholder.astro';
+import PlantingCard from '../../components/PlantingCard.astro';
+import Section from '../../components/Section.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import {
+  getPastPlantings,
+  getSites,
+  getUpcomingPlantings,
+  includeUnpublished,
+  plantingCard,
+  type Site,
+} from '../../lib/content';
+import { isTodo } from '../../lib/todo';
+
+export async function getStaticPaths() {
+  return (await getSites()).map((site) => ({ params: { slug: site.id }, props: { site } }));
+}
+
+interface Props {
+  site: Site;
+}
+
+const { site } = Astro.props;
+const { data } = site;
+const atSite = (p: { data: { site: { id: string } } }) => p.data.site.id === site.id;
+
+const [upcoming, past, partners] = await Promise.all([
+  getUpcomingPlantings().then((list) => Promise.all(list.filter(atSite).map(plantingCard))),
+  getPastPlantings().then((list) => Promise.all(list.filter(atSite).map(plantingCard))),
+  getEntries(data.partners),
+]);
+const visiblePartners = partners.filter((p) => p.data.publish || includeUnpublished);
+const mapUrl = isTodo(data.mapUrl) ? undefined : data.mapUrl;
+---
+
+<BaseLayout
+  title={data.name}
+  description={
+    isTodo(data.summary)
+      ? `${data.name}, a Dandelion Club food forest site in the Western Cape.`
+      : data.summary
+  }
+>
+  <Hero eyebrow="Food forest site" headline={data.name} image={data.heroImage} imageAlt={data.name}>
+    <a slot="kicker" class="back t-small" href="/our-work#sites-heading">
+      <span aria-hidden="true">←</span> All sites
+    </a>
+    <p>
+      <Placeholder value={data.area} />
+    </p>
+    <p class="muted">
+      <Placeholder value={data.summary} />
+    </p>
+  </Hero>
+
+  <Section ground="paper" aria-labelledby="story-heading">
+    <div class="story">
+      <div class="story__text">
+        <h2 class="t-display story__title" id="story-heading">
+          The site.
+        </h2>
+        <Body entry={site} />
+      </div>
+      <dl class="where">
+        <div>
+          <dt class="t-eyebrow-sm">Where</dt>
+          <dd class="t-lead">
+            <Placeholder value={data.address} />
+          </dd>
+          {mapUrl && (
+            <dd>
+              <a class="t-small where__link" href={mapUrl}>
+                Open in maps <span aria-hidden="true">→</span>
+              </a>
+            </dd>
+          )}
+        </div>
+        {visiblePartners.length > 0 && (
+          <div>
+            <dt class="t-eyebrow-sm">Partners here</dt>
+            {visiblePartners.map((p) => (
+              <dd class="t-lead">
+                {p.data.url && !isTodo(p.data.url) ? (
+                  <a href={p.data.url}>{p.data.name}</a>
+                ) : (
+                  p.data.name
+                )}
+              </dd>
+            ))}
+          </div>
+        )}
+      </dl>
+    </div>
+  </Section>
+
+  {past.length > 0 && (
+    <Section ground="paper-sunk" aria-labelledby="held-heading">
+      <h2 class="t-display heading" id="held-heading">
+        Planted here.
+      </h2>
+      <div class="grid">
+        {past.map((p) => (
+          <PlantingCard variant="past" {...p} />
+        ))}
+      </div>
+    </Section>
+  )}
+
+  <Section ground="paper" aria-labelledby="trees-heading">
+    <div class="trees">
+      <SectionHeading eyebrow="The tree register" id="trees-heading">
+        Trees with names.
+      </SectionHeading>
+      <p class="t-body">
+        <Placeholder value="TODO: names and messages of trees dedicated here, where the giver chose to show them (from paid dedications, Phase 6)" />
+      </p>
+      <div>
+        <Button href="/dedicate-a-tree">Dedicate a tree</Button>
+      </div>
+    </div>
+  </Section>
+
+  {data.gallery.length > 0 && (
+    <Section ground="paper" aria-labelledby="gallery-heading">
+      <h2 class="t-display heading" id="gallery-heading">
+        Photos.
+      </h2>
+      <ul class="gallery" role="list">
+        {data.gallery.map((img) => (
+          <li>
+            <Image src={img} alt="" widths={[390, 780]} sizes="(min-width: 768px) 33vw, 100vw" />
+          </li>
+        ))}
+      </ul>
+    </Section>
+  )}
+
+  <Section ground="paper-sunk" aria-labelledby="next-heading">
+    <h2 class="t-display heading" id="next-heading">
+      What's next.
+    </h2>
+    {upcoming.length > 0 ? (
+      <div class="grid">
+        {upcoming.map((p) => (
+          <PlantingCard {...p} />
+        ))}
+      </div>
+    ) : (
+      <div class="next-empty">
+        <p class="t-lead" id="next-empty-heading">
+          No planting date is set at {data.name} yet. Leave your email and we'll tell you first.
+        </p>
+        <NewsletterSignup id="site-newsletter" labelledBy="next-empty-heading" button="Tell me" />
+      </div>
+    )}
+  </Section>
+
+  <Section ground="night" aria-labelledby="give-heading">
+    <div class="give">
+      <SectionHeading eyebrow="Help this site" id="give-heading">
+        Pay for the next planting.
+      </SectionHeading>
+      <Button href="/donate">Donate</Button>
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .back {
+    color: var(--ink-muted-on-night);
+    text-decoration: none;
+  }
+
+  .back:hover {
+    text-decoration: underline;
+  }
+
+  .heading,
+  .story__title {
+    margin-bottom: var(--space-7);
+  }
+
+  @media (max-width: 599px) {
+    .heading,
+    .story__title {
+      font-size: var(--type-display-sm-size);
+      line-height: var(--type-display-sm-leading);
+    }
+  }
+
+  .story {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  .where {
+    display: grid;
+    gap: var(--space-5);
+    align-content: start;
+    padding-top: var(--space-5);
+    border-top: var(--border-strong) solid var(--night);
+  }
+
+  .where div {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .where__link {
+    font-weight: var(--type-lead-weight);
+  }
+
+  .grid {
+    display: grid;
+    gap: var(--space-5);
+    align-items: start;
+  }
+
+  .trees,
+  .next-empty {
+    display: grid;
+    gap: var(--space-5);
+    max-width: var(--measure-text);
+  }
+
+  .gallery {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .gallery :global(img) {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  .give {
+    display: grid;
+    gap: var(--space-7);
+  }
+
+  @media (min-width: 768px) {
+    .grid,
+    .gallery {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .story {
+      grid-template-columns: 7fr 1fr 4fr;
+    }
+
+    .where {
+      grid-column: 3;
+    }
+
+    .grid,
+    .gallery {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .give {
+      grid-template-columns: 1fr auto;
+      align-items: center;
+    }
+  }
+</style>

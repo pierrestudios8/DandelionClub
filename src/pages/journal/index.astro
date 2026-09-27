@@ -1,0 +1,68 @@
+---
+/** Journal list (docs/SPEC.md, Pages without designs): newest first, as cards. */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import JournalCard from '../../components/JournalCard.astro';
+import NewsletterSignup from '../../components/NewsletterSignup.astro';
+import PageIntro from '../../components/PageIntro.astro';
+import Section from '../../components/Section.astro';
+import { getJournal } from '../../lib/content';
+import { formatDate } from '../../lib/format';
+
+const posts = await getJournal();
+---
+
+<BaseLayout
+  title="Journal"
+  description="Field notes from Dandelion Club: planting days, what we're learning, and the partners who make it happen."
+>
+  <PageIntro eyebrow="Journal" title="Field notes.">
+    Planting days, what we're learning, and the people who make it happen.
+  </PageIntro>
+
+  <Section ground="paper" aria-label="Posts">
+    {posts.length > 0 ? (
+      <ul class="posts" role="list">
+        {posts.map((post) => (
+          <li>
+            <JournalCard
+              title={post.data.title}
+              href={`/journal/${post.id}`}
+              date={formatDate(post.data.date)}
+              author={post.data.author}
+              tag={post.data.tags[0]}
+              image={post.data.heroImage}
+              headingLevel={2}
+            />
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <div class="empty">
+        <p class="t-lead" id="journal-empty">
+          The first posts are on their way. Leave your email and we'll tell you when there's
+          something to read.
+        </p>
+        <NewsletterSignup id="journal-newsletter" labelledBy="journal-empty" button="Tell me" />
+      </div>
+    )}
+  </Section>
+</BaseLayout>
+
+<style>
+  .posts {
+    display: grid;
+    gap: var(--space-8) var(--space-7);
+  }
+
+  .empty {
+    display: grid;
+    gap: var(--space-5);
+    max-width: var(--measure-text);
+  }
+
+  @media (min-width: 1024px) {
+    .posts {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

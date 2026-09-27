@@ -125,6 +125,17 @@ ol[role='list'] {
   padding-top: 0;
 }
 
+/* A `TODO:` value: from Placeholder.astro and from Markdown via rehype-todo. */
+.placeholder {
+  display: inline;
+  outline: var(--border-strong) dashed currentColor;
+  outline-offset: calc(var(--border-strong) * -1);
+  padding: 0 var(--space-1);
+  background: color-mix(in srgb, currentColor 8%, transparent);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
 /* Page gutter and content column, shared by Section, Header and Footer. */
 .container {
   width: 100%;

@@ -1,0 +1,176 @@
+---
+/**
+ * POPIA notice. States only what the site itself does (what each form collects,
+ * where it goes); everything the club must confirm is a placeholder, including a
+ * legal review before launch.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageIntro from '../components/PageIntro.astro';
+import Placeholder from '../components/Placeholder.astro';
+import Section from '../components/Section.astro';
+import { getSettings } from '../lib/content';
+
+const settings = await getSettings();
+
+const forms = [
+  {
+    name: 'Joining a planting',
+    what: 'Your name, email, mobile number if you give it, how many adults and children are coming, and how you heard about us.',
+    why: 'To save your spot, send you the details and a calendar invite, and tell you about day-of changes such as rain.',
+  },
+  {
+    name: 'The newsletter',
+    what: 'Your email address.',
+    why: 'To tell you about the next planting.',
+  },
+  {
+    name: 'Dedicating a tree',
+    what: 'Your name and email, the name the tree is dedicated to, your message, the site and the number of trees.',
+    why: 'To process the dedication, send you a confirmation and, if you choose, show the name and message on the site register.',
+  },
+  {
+    name: 'Donating',
+    what: 'Your name, email, the amount, how often, and whether you want a tax certificate.',
+    why: 'To process the donation, thank you and, if you ask, issue a certificate.',
+  },
+  {
+    name: 'Proposing a site or a partnership',
+    what: 'Your contact details, your organisation and what you tell us about the site or your idea.',
+    why: 'To consider it and reply to you.',
+  },
+];
+---
+
+<BaseLayout
+  title="Privacy"
+  description="How Dandelion Club collects, uses and looks after your personal information, and your rights under POPIA."
+>
+  <PageIntro eyebrow="Privacy" title="Your information.">
+    What we collect, why, where it's kept, and your rights under the Protection of Personal
+    Information Act (POPIA).
+  </PageIntro>
+
+  <Section ground="paper" width="text">
+    <div class="notice t-body">
+      <p class="review">
+        <Placeholder value="TODO: legal review of this notice before launch" />
+      </p>
+
+      <h2>Who we are</h2>
+      <p>
+        Dandelion Club is run by {settings.npcName}, registration{' '}
+        <Placeholder value={settings.npcRegistration} />. We're responsible for the personal
+        information you give us through this site. Our information officer is{' '}
+        <Placeholder value="TODO: information officer's name" />, and you can reach us at{' '}
+        <a href={`mailto:${settings.email}`}>{settings.email}</a>.
+      </p>
+
+      <h2>What we collect and why</h2>
+      <p>We only collect what you type into our forms, and only for the reason you gave it.</p>
+      <dl class="forms">
+        {forms.map((f) => (
+          <div>
+            <dt>{f.name}</dt>
+            <dd>
+              <strong>What:</strong> {f.what}
+            </dd>
+            <dd>
+              <strong>Why:</strong> {f.why}
+            </dd>
+          </div>
+        ))}
+      </dl>
+      <p>
+        Every form asks for your consent first. We don't use your details for anything else without
+        asking.
+      </p>
+
+      <h2>Where it's kept</h2>
+      <p>
+        Form details are stored in our Google Workspace account (Google Sheets and email). Card
+        payments are handled by <Placeholder value="TODO: payment provider (PayFast?)" />; we never
+        see or store your card details.
+      </p>
+      <p>
+        <Placeholder value="TODO: confirm that we don't sell or share your details with anyone else" />
+      </p>
+
+      <h2>The public tree register</h2>
+      <p>
+        When you dedicate a tree, the name and message appear on the site's page only if you tick
+        the box to show them. You can ask us to take them down at any time.
+      </p>
+
+      <h2>How long we keep it</h2>
+      <p>
+        <Placeholder value="TODO: how long each kind of record is kept" />
+      </p>
+
+      <h2>Analytics and cookies</h2>
+      <p>
+        We count visits with Plausible, which doesn't use cookies or collect personal information.
+        This site sets no tracking cookies.
+      </p>
+
+      <h2>Your rights</h2>
+      <p>Under POPIA you can ask us to:</p>
+      <ul>
+        <li>tell you what personal information we hold about you,</li>
+        <li>correct it or delete it,</li>
+        <li>stop using it, for example to stop emailing you.</li>
+      </ul>
+      <p>
+        Email <a href={`mailto:${settings.email}`}>{settings.email}</a> and we'll reply within{' '}
+        <Placeholder value="TODO: reply time" />. If you're not happy with how we've handled your
+        information, you can complain to the{' '}
+        <a href="https://inforegulator.org.za">Information Regulator</a>.
+      </p>
+
+      <p class="updated muted t-small">
+        Last updated <Placeholder value="TODO: date of the reviewed notice" />
+      </p>
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .notice {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .notice h2 {
+    margin-top: var(--space-7);
+    font-size: var(--type-subtitle-size);
+    line-height: var(--type-subtitle-leading);
+    font-weight: var(--type-subtitle-weight);
+  }
+
+  .notice ul {
+    padding-left: var(--space-5);
+  }
+
+  .forms {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .forms div {
+    display: grid;
+    gap: var(--space-1);
+    padding-top: var(--space-4);
+    border-top: var(--border-hairline) solid var(--hairline);
+  }
+
+  .forms dt {
+    font-weight: var(--type-lead-weight);
+  }
+
+  .review {
+    font-weight: var(--type-lead-weight);
+  }
+
+  .updated {
+    margin-top: var(--space-7);
+  }
+</style>

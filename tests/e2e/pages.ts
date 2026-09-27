@@ -1,4 +1,4 @@
-/** The pages built so far, and the routes still to come (Phase 4). */
+/** Every page in the sitemap (docs/SPEC.md), with fixtures standing in for missing content. */
 export const PAGES = {
   home: '/',
   plantings: '/plantings',
@@ -7,19 +7,15 @@ export const PAGES = {
   'get-involved': '/get-involved',
   'dedicate-a-tree': '/dedicate-a-tree',
   donate: '/donate',
+  'propose-a-site': '/get-involved/propose-a-site',
+  partner: '/get-involved/partner',
+  'our-work': '/our-work',
+  'site-silukhanyo': '/sites/silukhanyo-primary',
+  'site-mhani-gingi': '/sites/mhani-gingi-centre-of-excellence',
+  'site-genadendal': '/sites/genadendal',
+  about: '/about',
+  journal: '/journal',
+  'journal-post': '/journal/example-post',
+  privacy: '/privacy',
   'thank-you': '/thank-you/planting',
 } as const;
-
-/**
- * Linked from Phase 3 pages but built in Phase 4. The link check allows these;
- * Phase 4 must empty this list.
- */
-export const PHASE_4_ROUTES = [
-  /^\/our-work$/,
-  /^\/about$/,
-  /^\/journal$/,
-  /^\/privacy$/,
-  /^\/get-involved\/propose-a-site$/,
-  /^\/get-involved\/partner$/,
-  /^\/sites\/[\w-]+$/,
-];

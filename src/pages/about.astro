@@ -1,0 +1,196 @@
+---
+/**
+ * About (docs/SPEC.md, Pages without designs): origin story (warm), approach,
+ * people, and governance (plain). Unconfirmed content stays as placeholders.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import PageIntro from '../components/PageIntro.astro';
+import Placeholder from '../components/Placeholder.astro';
+import Section from '../components/Section.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import { getSettings } from '../lib/content';
+
+const settings = await getSettings();
+
+const principles = [
+  { title: 'TODO: principle one', line: 'TODO: one line on what it means in practice' },
+  { title: 'TODO: principle two', line: 'TODO: one line on what it means in practice' },
+  { title: 'TODO: principle three', line: 'TODO: one line on what it means in practice' },
+];
+---
+
+<BaseLayout
+  title="About"
+  description={`Who Dandelion Club is, how we work, and how ${settings.npcName} governs it.`}
+>
+  <PageIntro eyebrow="About" title="About Dandelion Club.">
+    <Placeholder value="TODO: one or two lines on where Dandelion Club started" />
+  </PageIntro>
+
+  <Section ground="paper" width="text" aria-labelledby="story-heading">
+    <SectionHeading eyebrow="How it started" id="story-heading">
+      Our story.
+    </SectionHeading>
+    <div class="t-body stack">
+      <p>
+        <Placeholder value="TODO: the origin story, in the warm register (two or three short paragraphs)" />
+      </p>
+    </div>
+  </Section>
+
+  <Section ground="paper-sunk" aria-labelledby="approach-heading">
+    <SectionHeading eyebrow="How we work" id="approach-heading">
+      Our approach.
+    </SectionHeading>
+    <ul class="principles" role="list">
+      {principles.map((p) => (
+        <li class="principle">
+          <h3 class="principle__title">
+            <Placeholder value={p.title} />
+          </h3>
+          <p class="muted">
+            <Placeholder value={p.line} />
+          </p>
+        </li>
+      ))}
+    </ul>
+  </Section>
+
+  <Section ground="paper" aria-labelledby="people-heading">
+    <SectionHeading eyebrow="Who we are" id="people-heading">
+      The people.
+    </SectionHeading>
+    <p class="t-body people">
+      <Placeholder value="TODO: people, each with a portrait (with consent), name and one line" />
+    </p>
+  </Section>
+
+  <Section ground="night" aria-labelledby="governance-heading">
+    <div class="governance">
+      <SectionHeading eyebrow="Governance" id="governance-heading">
+        Accountable.
+      </SectionHeading>
+      <dl class="facts">
+        <div class="fact">
+          <dt class="t-eyebrow-sm">Run by</dt>
+          <dd class="t-lead">{settings.npcName}</dd>
+        </div>
+        <div class="fact">
+          <dt class="t-eyebrow-sm">NPC registration</dt>
+          <dd class="t-detail">
+            <Placeholder value={settings.npcRegistration} />
+          </dd>
+        </div>
+        <div class="fact">
+          <dt class="t-eyebrow-sm">Board</dt>
+          <dd class="t-lead">
+            <Placeholder value="TODO: board members and roles" />
+          </dd>
+        </div>
+        <div class="fact">
+          <dt class="t-eyebrow-sm">Section 18A</dt>
+          <dd class="t-lead">
+            {settings.section18a === true ? (
+              'We can issue Section 18A tax certificates.'
+            ) : settings.section18a === false ? (
+              "We can't issue Section 18A tax certificates yet."
+            ) : (
+              <Placeholder value={settings.section18a} />
+            )}
+          </dd>
+        </div>
+        <div class="fact">
+          <dt class="t-eyebrow-sm">Annual reports</dt>
+          <dd class="t-lead">
+            <Placeholder value="TODO: annual reports, once published" />
+          </dd>
+        </div>
+        <div class="fact">
+          <dt class="t-eyebrow-sm">Contact</dt>
+          <dd class="t-lead">
+            <a href={`mailto:${settings.email}`}>{settings.email}</a>
+          </dd>
+        </div>
+      </dl>
+      <div class="governance__actions">
+        <Button href="/get-involved/partner">Partner with us</Button>
+        <Button href="/donate" variant="ghost">
+          Donate
+        </Button>
+      </div>
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .stack,
+  .people {
+    margin-top: var(--space-7);
+  }
+
+  .principles {
+    display: grid;
+    gap: var(--space-7) var(--space-5);
+    margin-top: var(--space-8);
+  }
+
+  .principle {
+    display: grid;
+    gap: var(--space-2);
+    align-content: start;
+    padding-top: var(--space-4);
+    border-top: var(--border-strong) solid var(--night);
+  }
+
+  .principle__title {
+    font-size: var(--type-subtitle-size);
+    line-height: var(--type-subtitle-leading);
+    font-weight: var(--type-subtitle-weight);
+  }
+
+  .governance {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  .facts {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .fact {
+    display: grid;
+    gap: var(--space-2);
+    padding-top: var(--space-4);
+    border-top: var(--border-hairline) solid var(--hairline-on-night);
+  }
+
+  .fact dt {
+    color: var(--dandelion);
+  }
+
+  .fact a {
+    color: var(--dandelion);
+  }
+
+  .governance__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  @media (min-width: 768px) {
+    .principles,
+    .facts {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .principles,
+    .facts {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

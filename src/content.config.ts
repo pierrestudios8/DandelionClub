@@ -9,6 +9,7 @@ import { z } from 'astro/zod';
 import settingsJson from './content/settings.json';
 import { isTodo } from './lib/todo';
 import { EXAMPLE_ID, exampleBody, examplePlanting } from '../tests/fixtures/example-planting';
+import { EXAMPLE_POST_ID, examplePost, examplePostBody } from '../tests/fixtures/example-journal';
 import {
   DEFAULT_BRING,
   calendarDate,
@@ -24,30 +25,33 @@ import {
 const markdown = (dir: string) => glob({ pattern: '**/*.md', base: `./src/content/${dir}` });
 
 /**
- * Plantings from Markdown, plus the example upcoming planting from
+ * Markdown files from src/content/<dir>, plus one example entry from
  * tests/fixtures when DC_FIXTURES is set (e2e tests and the local preview only).
  */
-function plantingsLoader(): Loader {
-  const files = markdown('plantings');
+function withExample(
+  dir: string,
+  example: () => { id: string; data: Record<string, unknown>; body: string },
+): Loader {
+  const files = markdown(dir);
   return {
-    name: 'plantings',
+    name: dir,
     load: async (context) => {
       await files.load(context);
       if (!process.env.DC_FIXTURES) return;
-      const data = await context.parseData({ id: EXAMPLE_ID, data: examplePlanting() });
-      context.store.set({
-        id: EXAMPLE_ID,
-        data,
-        body: exampleBody,
-        rendered: await context.renderMarkdown(exampleBody),
-      });
+      const { id, data: raw, body } = example();
+      const data = await context.parseData({ id, data: raw });
+      context.store.set({ id, data, body, rendered: await context.renderMarkdown(body) });
     },
   };
 }
 
 /** One Markdown file per planting; the body is "about this planting". */
 const plantings = defineCollection({
-  loader: plantingsLoader(),
+  loader: withExample('plantings', () => ({
+    id: EXAMPLE_ID,
+    data: examplePlanting(),
+    body: exampleBody,
+  })),
   schema: ({ image }) =>
     z.object({
       title: orTodo(z.string()),
@@ -103,7 +107,11 @@ const programmes = defineCollection({
 });
 
 const journal = defineCollection({
-  loader: markdown('journal'),
+  loader: withExample('journal', () => ({
+    id: EXAMPLE_POST_ID,
+    data: examplePost,
+    body: examplePostBody,
+  })),
   schema: ({ image }) =>
     z.object({
       title: z.string(),

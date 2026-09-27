@@ -1,0 +1,50 @@
+---
+/**
+ * An entry's Markdown body in the long-form measure. `TODO:` paragraphs,
+ * headings and list items render as placeholders (src/lib/rehype-todo.ts).
+ */
+import { render, type CollectionEntry, type CollectionKey } from 'astro:content';
+
+interface Props {
+  entry: CollectionEntry<CollectionKey>;
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<div class="t-body prose">
+  <Content />
+</div>
+
+<style>
+  .prose {
+    max-width: var(--measure-text);
+  }
+
+  .prose :global(:is(p, ul, ol, blockquote, figure) + *) {
+    margin-top: var(--space-4);
+  }
+
+  .prose :global(:is(h2, h3)) {
+    margin-top: var(--space-8);
+    font-size: var(--type-subtitle-size);
+    line-height: var(--type-subtitle-leading);
+    font-weight: var(--type-subtitle-weight);
+  }
+
+  .prose :global(:is(ul, ol)) {
+    padding-left: var(--space-5);
+  }
+
+  .prose :global(blockquote) {
+    padding-left: var(--space-5);
+    border-left: var(--border-strong) solid currentColor;
+    font-weight: var(--type-lead-weight);
+  }
+
+  .prose :global(img) {
+    width: 100%;
+    height: auto;
+  }
+</style>

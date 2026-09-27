@@ -1,6 +1,6 @@
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
-import { buildCss, DESIGN_DERIVED, readTokens } from '../../scripts/tokens';
+import { buildCss, readTokens } from '../../scripts/tokens';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const tokens = readTokens(root);
@@ -42,9 +42,25 @@ describe('tokens.css generator', () => {
     }
   });
 
-  it('writes the design-derived values', () => {
-    for (const s of DESIGN_DERIVED.type) expect(css).toContain(`.t-${s.name} {`);
-    for (const t of DESIGN_DERIVED.layout) expect(css).toContain(`--${t.name}: ${t.value};`);
+  it('includes the mobile and layout sizes the components rely on', () => {
+    for (const name of [
+      'display-sm',
+      'eyebrow-sm',
+      'eyebrow-lg',
+      'tag',
+      'title-sm',
+      'subtitle-sm',
+      'small-lg',
+    ])
+      expect(css).toContain(`.t-${name} {`);
+    for (const name of [
+      'focus-offset',
+      'logo-width',
+      'seedband-height',
+      'seed-pattern-size',
+      'field-measure',
+    ])
+      expect(css).toContain(`--${name}: `);
   });
 
   it('sets display styles in capitals by CSS, but not detail', () => {

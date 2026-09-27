@@ -4,6 +4,7 @@ Newest first. Add a line for every decision that isn't already in CLAUDE.md or S
 
 | Date | Decision | Reason |
 | --- | --- | --- |
+| 2026-09-27 | Design-derived sizes moved into `design/tokens.json` (Dandelion Club Design System v2); `DESIGN_DERIVED` removed from `scripts/tokens.ts` | The design system is the single source again; the canvas and the code read the same values |
 | 2026-09-27 | Sizes the approved designs use but `tokens.json` lacks (mobile display 32/30, eyebrow 14/18, tag 12/16, card titles 26/32, logo, seed band, focus offset 3px) live in `DESIGN_DERIVED` in `scripts/tokens.ts` and are generated into `tokens.css` | `design/` is read-only and components may only use token values; this keeps one place for every raw value. Move them into `tokens.json` on the next design-system export |
 | 2026-09-27 | Header links collapse into the menu below 1024px, not 600px as Header.md says | Four nav links plus the "Get involved" button don't fit on one line in Unbounded 900 below about 1000px |
 | 2026-09-27 | Mobile menu is a modal `<dialog>`, with a `<noscript>` link list as the fallback | Native focus trap, Escape to close and inert background without a library |

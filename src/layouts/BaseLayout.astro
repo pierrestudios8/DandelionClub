@@ -20,6 +20,7 @@ import AnnouncementBar, {
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import tokens from '../../design/tokens.json';
+import { getAnnouncement } from '../lib/content';
 
 interface Props {
   /** Page title; " · Dandelion Club" is appended except on the home page. */
@@ -29,18 +30,16 @@ interface Props {
   ogImage?: string;
   ogType?: 'website' | 'article';
   noindex?: boolean;
-  /** The next upcoming planting for the announcement bar (from Phase 2 content). */
-  nextPlanting?: AnnouncementProps['planting'];
+  /**
+   * Overrides the announcement bar. By default it shows the next upcoming
+   * planting from the collection; pass null to hide it.
+   */
+  nextPlanting?: AnnouncementProps['planting'] | null;
 }
 
-const {
-  title,
-  description,
-  ogImage,
-  ogType = 'website',
-  noindex = false,
-  nextPlanting,
-} = Astro.props;
+const { title, description, ogImage, ogType = 'website', noindex = false } = Astro.props;
+const nextPlanting =
+  Astro.props.nextPlanting === undefined ? await getAnnouncement() : Astro.props.nextPlanting;
 
 const siteName = 'Dandelion Club';
 const themeColour = tokens.color.tokens.find((t) => t.name === 'night')?.value;
@@ -79,7 +78,7 @@ const ogImageUrl = ogImage ? new URL(ogImage, Astro.site).href : undefined;
     <a class="skip-link" href="#main">
       Skip to content
     </a>
-    <AnnouncementBar planting={nextPlanting} />
+    <AnnouncementBar planting={nextPlanting ?? undefined} />
     <Header />
     <main id="main" tabindex="-1">
       <slot />

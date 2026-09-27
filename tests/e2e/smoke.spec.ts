@@ -13,7 +13,8 @@ for (const path of ['/', '/styleguide']) {
     page,
   }) => {
     const errors = trackConsoleErrors(page);
-    await page.goto(path);
+    // networkidle: the dev server may reload once while Vite optimises dependencies.
+    await page.goto(path, { waitUntil: 'networkidle' });
     await expect(page.locator('h1')).toHaveCount(1);
     await expect(page.locator('html')).toHaveAttribute('lang', 'en-GB');
 

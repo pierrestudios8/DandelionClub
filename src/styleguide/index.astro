@@ -17,8 +17,10 @@ import RouteCard from '../components/RouteCard.astro';
 import Section from '../components/Section.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import SeedBand from '../components/SeedBand.astro';
-import settings from '../content/settings.json';
+import { getSettings } from '../lib/content';
 import tokens from '../../design/tokens.json';
+
+const settings = await getSettings();
 
 const upcoming = {
   date: 'TODO: Saturday, date',

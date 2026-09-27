@@ -8,11 +8,24 @@
     "linkedin": "TODO: LinkedIn URL"
   },
   "treePrice": "TODO: price per tree",
-  "treeIncludes": ["TODO: what a tree dedication includes"],
+  "treeIncludes": [
+    "Name on the site register",
+    "TODO: certificate and planting-day photo",
+    "TODO: Section 18A certificate, if applicable"
+  ],
   "donationAmounts": [
-    { "amount": 100, "note": "TODO: what R100 buys" },
-    { "amount": 350, "note": "TODO: what R350 buys" },
-    { "amount": 1000, "note": "TODO: what R1 000 buys" }
+    {
+      "amount": 100,
+      "note": "TODO: what R100 buys"
+    },
+    {
+      "amount": 350,
+      "note": "TODO: what R350 buys"
+    },
+    {
+      "amount": 1000,
+      "note": "TODO: what R1 000 buys"
+    }
   ],
   "bank": {
     "accountName": "Business Building Institute NPC",

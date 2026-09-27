@@ -4,6 +4,7 @@ Newest first. Add a line for every decision that isn't already in CLAUDE.md or S
 
 | Date | Decision | Reason |
 | --- | --- | --- |
+| 2026-09-27 | An active project's card (Plantings) and its trees in the impact figures show in production once every figure on the card is confirmed (area, target, trees planted, each phase), even while its site is `publish: false`. Until the site page is published the card isn't a link and leaves out "See the project →". `projectConfirmed()` in `src/lib/projects.ts` decides; dev and previews show every active project. | The three projects' figures are confirmed, but their site pages wait on photos, addresses and stories. Tying the cards to the page's `publish` flag hid Active projects and Home's 331 trees on production. |
 | 2026-09-27 | Trees planted (the impact figure) is the active projects' total (`projectTreesTotal`), not a sum over held plantings; it stays hidden until every active project's count is confirmed. Plantings held, schools and volunteers still come from held plantings | Handoff Task B: the projects hold the confirmed counts; a partial sum would understate the work |
 | 2026-09-27 | Project cards show totals; phases open in a dropdown over the photo, and cards in a row share one height. Upcoming plantings is a two-column split (headline and copy, then the email box), with any planting cards below | Pierre's layout direction; the dropdown overlays so opening it never changes a card's size |
 | 2026-09-27 | Plantings page leads with Active projects (a site's food forest: trees planted against a target, optional phases), then Upcoming plantings; the past-plantings grid is dropped here (held plantings still show on each site page) | Pierre's structure for the page; projects are the lasting thing, plantings are the days that feed them |
@@ -63,3 +64,4 @@ Newest first. Add a line for every decision that isn't already in CLAUDE.md or S
 | 2026-09-26 | PayFast recommended for payments, sandbox until the club confirms | South African, supports monthly giving; final choice open |
 | 2026-09-26 | Unconfirmed facts stay as `TODO:` placeholders and block publishing | Nothing invented goes live |
 | 2026-09-26 | Rive taproot story is a later phase; a `RiveSlot` holds its place | Launch doesn't wait on animation |
+

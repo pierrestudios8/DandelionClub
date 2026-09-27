@@ -54,6 +54,21 @@ export function projectTreesTotal(projects: ProjectLike[]): number | null {
   return total;
 }
 
+/**
+ * Whether a project's card can show in production before its site page is
+ * published: every figure on the card (area, target, trees planted, each phase)
+ * is confirmed, so the card carries no placeholders.
+ */
+export function projectConfirmed(area: string, project: ProjectLike): boolean {
+  const confirmed = (v: unknown) => typeof v === 'number' || (typeof v === 'string' && !isTodo(v));
+  return (
+    confirmed(area) &&
+    typeof project.treesTarget === 'number' &&
+    typeof plantedTotal(project) === 'number' &&
+    project.phases.every((phase) => typeof phase.treesPlanted === 'number')
+  );
+}
+
 /** Active projects, in their set order. */
 export function activeProjects<S extends { data: { project?: ProjectLike } }>(sites: S[]): S[] {
   const order = (s: S) => s.data.project?.order ?? 0;

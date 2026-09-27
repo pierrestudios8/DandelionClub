@@ -6,7 +6,7 @@ import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
 import { formatDate, formatTimeRange } from './format';
 import { isTodo } from './todo';
 import { impactFigures, sortPlantings, type ImpactFigures } from './plantings';
-import { activeProjects, plantedTotal, projectTreesTotal } from './projects';
+import { activeProjects, plantedTotal, projectConfirmed, projectTreesTotal } from './projects';
 
 export type Planting = CollectionEntry<'plantings'>;
 export type Site = CollectionEntry<'sites'>;
@@ -55,22 +55,45 @@ export async function getSites(): Promise<Site[]> {
   return sites.sort((a, b) => rank(a) - rank(b) || a.data.name.localeCompare(b.data.name));
 }
 
+/**
+ * Active projects that can show. A project's card and figures don't wait for its
+ * site page: in production an unpublished site's project shows once every figure
+ * on its card is confirmed (docs/DECISIONS.md, 27 September 2026).
+ */
+async function getShownProjects(): Promise<Site[]> {
+  const sites = await getCollection('sites');
+  return activeProjects(sites).filter(
+    (site) =>
+      includeUnpublished ||
+      site.data.publish ||
+      (site.data.project !== undefined && projectConfirmed(site.data.area, site.data.project)),
+  );
+}
+
 /** Impact figures; any figure with unconfirmed inputs is null and must be hidden. */
 export async function getImpactFigures(): Promise<ImpactFigures> {
-  const [past, sites] = await Promise.all([getPastPlantings(), getSites()]);
-  const projects = activeProjects(sites).flatMap((s) => (s.data.project ? [s.data.project] : []));
+  const [past, sites, shown] = await Promise.all([
+    getPastPlantings(),
+    getSites(),
+    getShownProjects(),
+  ]);
+  const projects = shown.flatMap((s) => (s.data.project ? [s.data.project] : []));
   return impactFigures(past, sites, projectTreesTotal(projects));
 }
 
-/** What ProjectCard needs for each active project, in order. */
+/**
+ * What ProjectCard needs for each active project, in order. `href` is set only
+ * when the site page is built (published, or in dev and previews), so a card
+ * never links to a missing page.
+ */
 export async function getActiveProjects() {
-  return activeProjects(await getSites()).flatMap((site) => {
+  return (await getShownProjects()).flatMap((site) => {
     const { name, area, project } = site.data;
     if (!project) return [];
     return {
       name,
       area,
-      href: `/sites/${site.id}`,
+      href: includeUnpublished || site.data.publish ? `/sites/${site.id}` : undefined,
       treesTarget: project.treesTarget,
       treesPlanted: plantedTotal(project),
       phases: project.phases,

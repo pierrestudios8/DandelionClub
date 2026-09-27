@@ -1,0 +1,277 @@
+---
+/**
+ * Night bar: yellow logo left, nav in capitals right, "Get involved" button.
+ * Under 1024px the links move into a full-screen night menu (a modal <dialog>,
+ * so focus is trapped and Escape closes it). See design/components/Header.md.
+ */
+import Button from './Button.astro';
+import { isCurrent, mainAction, mainNav } from '../lib/nav';
+
+interface Props {
+  /** Defaults to the current URL. */
+  pathname?: string;
+}
+
+const { pathname = Astro.url.pathname } = Astro.props;
+const current = (href: string) => (isCurrent(href, pathname) ? 'page' : undefined);
+---
+
+<header class="header on-night">
+  <div class="container header__bar">
+    <a class="header__logo" href="/">
+      <img
+        src="/brand/dandelion-club-logo-yellow.svg"
+        alt="Dandelion Club"
+        width="160"
+        height="65"
+      />
+    </a>
+
+    <nav class="header__nav" aria-label="Main">
+      <ul role="list">
+        {mainNav.map((link) => (
+          <li>
+            <a class="header__link" href={link.href} aria-current={current(link.href)}>
+              {link.label}
+            </a>
+          </li>
+        ))}
+        <li>
+          <Button href={mainAction.href} aria-current={current(mainAction.href)}>
+            {mainAction.label}
+          </Button>
+        </li>
+      </ul>
+    </nav>
+
+    <button
+      class="header__toggle"
+      type="button"
+      aria-controls="site-menu"
+      aria-expanded="false"
+      aria-haspopup="dialog"
+      data-menu-open
+    >
+      <span class="visually-hidden">Open menu</span>
+      <span class="header__bars" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+    </button>
+  </div>
+
+  <dialog class="menu on-night" id="site-menu" aria-label="Menu">
+    <div class="container menu__bar">
+      <a class="header__logo" href="/">
+        <img
+          src="/brand/dandelion-club-logo-yellow.svg"
+          alt="Dandelion Club"
+          width="160"
+          height="65"
+        />
+      </a>
+      <button class="header__toggle menu__close" type="button" data-menu-close>
+        <span class="visually-hidden">Close menu</span>
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <nav class="container menu__nav" aria-label="Main">
+      <ul role="list">
+        {mainNav.map((link) => (
+          <li>
+            <a class="menu__link" href={link.href} aria-current={current(link.href)}>
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <Button href={mainAction.href} block aria-current={current(mainAction.href)}>
+        {mainAction.label}
+      </Button>
+    </nav>
+  </dialog>
+
+  <noscript>
+    <nav class="container header__fallback" aria-label="Main">
+      <ul role="list">
+        {[...mainNav, mainAction].map((link) => (
+          <li>
+            <a class="header__link" href={link.href}>
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    <style>
+      .header__toggle {
+        display: none !important;
+      }
+    </style>
+  </noscript>
+</header>
+
+<script>
+  const menu = document.querySelector<HTMLDialogElement>('#site-menu');
+  const opener = document.querySelector<HTMLButtonElement>('[data-menu-open]');
+
+  if (menu && opener) {
+    opener.addEventListener('click', () => {
+      menu.showModal();
+      opener.setAttribute('aria-expanded', 'true');
+      document.documentElement.classList.add('menu-open');
+    });
+    menu.querySelector('[data-menu-close]')?.addEventListener('click', () => menu.close());
+    menu.addEventListener('close', () => {
+      opener.setAttribute('aria-expanded', 'false');
+      document.documentElement.classList.remove('menu-open');
+      opener.focus();
+    });
+    // Close if the viewport grows past the breakpoint while the menu is open.
+    matchMedia('(min-width: 1024px)').addEventListener('change', (e) => {
+      if (e.matches && menu.open) menu.close();
+    });
+  }
+</script>
+
+<style>
+  .header__bar,
+  .menu__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding-block: var(--space-4);
+  }
+
+  .header__logo {
+    flex: none;
+  }
+
+  .header__logo img {
+    width: var(--logo-width);
+    height: var(--logo-height);
+  }
+
+  .header__nav ul {
+    display: flex;
+    align-items: center;
+    gap: var(--space-7);
+  }
+
+  .header__link,
+  .menu__link {
+    font-family: var(--type-eyebrow-family);
+    font-weight: var(--type-eyebrow-weight);
+    text-transform: uppercase;
+    color: var(--dandelion);
+    text-decoration: none;
+  }
+
+  .header__link {
+    font-size: var(--type-eyebrow-size);
+    line-height: var(--type-eyebrow-leading);
+  }
+
+  .header__link:hover,
+  .header__link[aria-current='page'],
+  .menu__link:hover,
+  .menu__link[aria-current='page'] {
+    text-decoration: underline;
+    text-decoration-thickness: var(--border-strong);
+    text-underline-offset: var(--space-2);
+  }
+
+  .header__toggle {
+    display: none;
+    flex: none;
+    width: var(--space-8);
+    height: var(--space-8);
+    align-items: center;
+    justify-content: center;
+    background: var(--night);
+    color: var(--dandelion);
+    border: var(--border-strong) solid var(--dandelion);
+    border-radius: var(--radius-none);
+    font-family: var(--font-display);
+    font-weight: var(--type-display-weight);
+    font-size: var(--type-subtitle-size);
+    line-height: 1;
+  }
+
+  .header__bars {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .header__bars span {
+    display: block;
+    width: var(--space-5);
+    height: var(--border-strong);
+    background: var(--dandelion);
+  }
+
+  /* Full-screen night menu. */
+  .menu {
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    max-height: none;
+    padding: 0;
+    border: 0;
+    overflow-y: auto;
+  }
+
+  .menu::backdrop {
+    background: var(--night);
+  }
+
+  .menu__nav {
+    display: grid;
+    gap: var(--space-8);
+    padding-block: var(--space-8);
+  }
+
+  .menu__nav ul {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .menu__link {
+    font-size: var(--type-display-sm-size);
+    line-height: var(--type-display-sm-leading);
+  }
+
+  .menu__close {
+    display: flex;
+  }
+
+  .header__fallback ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3) var(--space-5);
+    padding-bottom: var(--space-4);
+  }
+
+  @media (max-width: 1023px) {
+    .header__nav {
+      display: none;
+    }
+
+    .header__toggle {
+      display: flex;
+    }
+  }
+
+  @media (max-width: 599px) {
+    .header__logo img {
+      width: var(--logo-width-sm);
+      height: var(--logo-height-sm);
+    }
+  }
+
+  :global(html.menu-open) {
+    overflow: hidden;
+  }
+</style>

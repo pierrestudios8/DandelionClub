@@ -1,0 +1,93 @@
+---
+/**
+ * A whole-card link on the Get involved hub: who it's for, the route name,
+ * one line, and an arrow. See design/components/RouteCard.md.
+ *
+ * night (large, first row) or paper (smaller, second row), as in GetInvolved.dc.html.
+ */
+interface Props {
+  href: string;
+  /** Matches the button text used elsewhere, e.g. "Join a planting". */
+  title: string;
+  /** Who it's for, e.g. "For anyone with a free Saturday". */
+  audience: string;
+  tone?: 'night' | 'paper';
+  headingLevel?: 2 | 3;
+}
+
+const { href, title, audience, tone = 'night', headingLevel = 2 } = Astro.props;
+const Heading = `h${headingLevel}` as 'h2' | 'h3';
+---
+
+<a class:list={['route', `route--${tone}`, tone === 'night' ? 'on-night' : 'on-paper']} href={href}>
+  <div class="route__text">
+    <p class="t-eyebrow-sm muted">{audience}</p>
+    <Heading class="route__title">{title}</Heading>
+    <p class="t-lead">
+      <slot />
+    </p>
+  </div>
+  <span class="route__arrow" aria-hidden="true">
+    →
+  </span>
+</a>
+
+<style>
+  .route {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--space-7);
+    padding: var(--space-7);
+    border: var(--border-strong) solid var(--night);
+    border-radius: var(--radius-none);
+    text-decoration: none;
+    transition: border-color 150ms ease-out;
+  }
+
+  .route__text {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .route__title,
+  .route__arrow {
+    font-family: var(--type-eyebrow-lg-family);
+    font-weight: var(--type-eyebrow-lg-weight);
+    text-transform: uppercase;
+  }
+
+  .route__title {
+    font-size: var(--type-eyebrow-lg-size);
+    line-height: var(--type-eyebrow-lg-leading);
+  }
+
+  .route__arrow {
+    font-size: var(--type-eyebrow-size);
+    line-height: var(--type-eyebrow-leading);
+  }
+
+  .route--night .route__title,
+  .route--night .route__arrow {
+    color: var(--dandelion);
+  }
+
+  .route--night:hover {
+    border-color: var(--dandelion);
+  }
+
+  .route--paper:hover {
+    background: var(--paper-sunk);
+  }
+
+  @media (min-width: 1024px) {
+    .route--night {
+      padding: var(--space-8);
+    }
+
+    .route--night .route__title {
+      font-size: var(--type-display-size);
+      line-height: var(--type-display-leading);
+    }
+  }
+</style>

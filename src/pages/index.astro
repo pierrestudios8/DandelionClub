@@ -1,7 +1,14 @@
 ---
+// Phase 1 placeholder home. Phase 3 builds the designed page.
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/Section.astro';
+import SectionHeading from '../components/SectionHeading.astro';
 ---
 
 <BaseLayout title="Dandelion Club" description="Food forests at schools in the Western Cape.">
-  <h1>Dandelion Club</h1>
+  <Section ground="paper">
+    <SectionHeading eyebrow="Dandelion Club" level={1}>
+      Plant it forward.
+    </SectionHeading>
+  </Section>
 </BaseLayout>

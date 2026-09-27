@@ -1,0 +1,58 @@
+---
+/**
+ * Slim dandelion strip above the header naming the next planting.
+ * Renders nothing when no planting is upcoming. See design/components/AnnouncementBar.md.
+ */
+import Placeholder from './Placeholder.astro';
+
+export interface Props {
+  /** The next upcoming planting, or nothing. Never a past date. */
+  planting?: {
+    date: string;
+    site: string;
+    href: string;
+  };
+}
+
+const { planting } = Astro.props;
+---
+
+{planting && (
+  <aside class="announce" aria-label="Next planting">
+    <p>
+      <span>
+        Next planting: <Placeholder value={planting.date} />, <Placeholder value={planting.site} />
+      </span>{' '}
+      <a href={planting.href}>Join us</a>
+    </p>
+  </aside>
+)}
+
+<style>
+  .announce {
+    background: var(--dandelion);
+    color: var(--night);
+    padding: var(--space-2) var(--space-4);
+    font-family: var(--font-text);
+    font-size: var(--type-small-size);
+    line-height: var(--type-small-leading);
+    font-weight: var(--type-lead-weight);
+    text-align: center;
+  }
+
+  .announce p {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    column-gap: var(--space-3);
+  }
+
+  .announce a {
+    font-weight: var(--type-lead-strong-weight);
+    white-space: nowrap;
+  }
+
+  .announce :global(:focus-visible) {
+    outline-color: var(--focus-on-paper);
+  }
+</style>

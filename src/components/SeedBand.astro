@@ -1,0 +1,38 @@
+---
+/**
+ * Dandelion interlude: paper seed pattern with one large night seed in the middle.
+ * Decorative, one per page at most, never with text. The seed is the Rive slot.
+ * See design/components/SeedBand.md.
+ */
+import RiveSlot from './RiveSlot.astro';
+---
+
+<div class="seedband on-dandelion" aria-hidden="true">
+  <RiveSlot class="seedband__seed" src="/brand/seed-night.svg" width={106} height={134} />
+</div>
+
+<style>
+  .seedband {
+    display: grid;
+    place-items: center;
+    min-height: var(--seedband-height-sm);
+    background-image: url('/brand/seed-pattern-paper.svg');
+    background-repeat: repeat;
+    background-size: var(--seed-pattern-size-sm) var(--seed-pattern-size-sm);
+  }
+
+  .seedband :global(.seedband__seed) {
+    width: var(--seed-size-sm);
+  }
+
+  @media (min-width: 600px) {
+    .seedband {
+      min-height: var(--seedband-height);
+      background-size: var(--seed-pattern-size) var(--seed-pattern-size);
+    }
+
+    .seedband :global(.seedband__seed) {
+      width: var(--seed-size);
+    }
+  }
+</style>

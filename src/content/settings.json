@@ -1,0 +1,24 @@
+{
+  "npcName": "Business Building Institute NPC",
+  "npcRegistration": "TODO: NPC registration number",
+  "section18a": "TODO: can the NPC issue Section 18A certificates?",
+  "email": "info@dandelionclub.co.za",
+  "social": {
+    "instagram": "TODO: Instagram URL",
+    "linkedin": "TODO: LinkedIn URL"
+  },
+  "treePrice": "TODO: price per tree",
+  "treeIncludes": ["TODO: what a tree dedication includes"],
+  "donationAmounts": [
+    { "amount": 100, "note": "TODO: what R100 buys" },
+    { "amount": 350, "note": "TODO: what R350 buys" },
+    { "amount": 1000, "note": "TODO: what R1 000 buys" }
+  ],
+  "bank": {
+    "accountName": "Business Building Institute NPC",
+    "bank": "FNB",
+    "account": "63122832446",
+    "branch": "200912",
+    "swift": "FIRNZAJJ"
+  }
+}

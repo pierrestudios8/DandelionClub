@@ -1,0 +1,54 @@
+---
+/**
+ * Eyebrow directly above a display headline, with no gap (BRAND.md, Type).
+ * Write both in sentence case; capitals come from CSS.
+ * The headline is dandelion on night and night everywhere else.
+ */
+interface Props {
+  eyebrow?: string;
+  level?: 1 | 2 | 3;
+  size?: 'display' | 'display-xl';
+  id?: string;
+}
+
+const { eyebrow, level = 2, size = 'display', id } = Astro.props;
+const Heading = `h${level}` as 'h1' | 'h2' | 'h3';
+---
+
+<div class="heading">
+  {eyebrow && <p class="t-eyebrow heading__eyebrow">{eyebrow}</p>}
+  <Heading class:list={['heading__title', `heading__title--${size}`]} id={id}>
+    <slot />
+  </Heading>
+</div>
+
+<style>
+  .heading {
+    display: grid;
+  }
+
+  .heading__title {
+    font-family: var(--type-display-family);
+    font-weight: var(--type-display-weight);
+    text-transform: uppercase;
+    font-size: var(--type-display-size);
+    line-height: var(--type-display-leading);
+  }
+
+  .heading__title--display-xl {
+    font-size: var(--type-display-xl-size);
+    line-height: var(--type-display-xl-leading);
+  }
+
+  :global(.on-night) .heading__title {
+    color: var(--dandelion);
+  }
+
+  /* Section headlines step down on phones, as in the mobile designs. */
+  @media (max-width: 599px) {
+    .heading__title--display {
+      font-size: var(--type-display-sm-size);
+      line-height: var(--type-display-sm-leading);
+    }
+  }
+</style>

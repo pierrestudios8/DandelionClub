@@ -1,0 +1,127 @@
+---
+/**
+ * Inline email + button used in the footer and on the Plantings and Get involved pages.
+ * Posts to the newsletter endpoint (stubbed in Phase 3, wired in Phase 5).
+ * The POPIA consent line sits under the field.
+ */
+import Button from './Button.astro';
+
+interface Props {
+  id: string;
+  /** Visible heading above the form; also its accessible name. */
+  label?: string;
+  button?: string;
+  action?: string;
+}
+
+const {
+  id,
+  label = 'Hear about the next planting',
+  button = 'Sign up',
+  action = '/api/newsletter',
+} = Astro.props;
+---
+
+<form class="signup" method="post" action={action} aria-labelledby={`${id}-heading`}>
+  <p class="t-eyebrow-sm signup__heading" id={`${id}-heading`}>
+    {label}
+  </p>
+  <div class="signup__row">
+    <label class="visually-hidden" for={`${id}-email`}>
+      Email address
+    </label>
+    <input
+      class="signup__input"
+      id={`${id}-email`}
+      name="email"
+      type="email"
+      autocomplete="email"
+      placeholder="Your email"
+      required
+    />
+    <Button type="submit" compact>
+      {button}
+    </Button>
+  </div>
+  <label class="signup__consent t-small">
+    <input type="checkbox" name="consent" required />
+    <span>
+      Dandelion Club may email me about plantings. <a href="/privacy">Privacy</a>
+    </span>
+  </label>
+  <div class="signup__trap" aria-hidden="true">
+    <label>
+      Leave this empty <input type="text" name="website" tabindex="-1" autocomplete="off" />
+    </label>
+  </div>
+</form>
+
+<style>
+  .signup {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .signup__row {
+    display: flex;
+  }
+
+  .signup__input {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: var(--space-3) var(--space-4);
+    font-size: var(--type-small-lg-size);
+    line-height: var(--type-small-lg-leading);
+    border: var(--border-strong) solid var(--night);
+    border-right: 0;
+    border-radius: var(--radius-none);
+    background: var(--paper);
+    color: var(--night);
+  }
+
+  .signup__input::placeholder {
+    color: var(--ink-muted);
+  }
+
+  .signup__consent {
+    display: flex;
+    gap: var(--space-2);
+    align-items: flex-start;
+  }
+
+  .signup__consent input {
+    flex: none;
+    width: var(--space-4);
+    height: var(--space-4);
+    margin-top: var(--space-1);
+    accent-color: var(--night);
+  }
+
+  /* Honeypot: off-screen, not display:none, so simple bots still fill it. */
+  .signup__trap {
+    position: absolute;
+    left: -100vw;
+  }
+
+  :global(.on-night) .signup__heading {
+    color: var(--dandelion);
+  }
+
+  :global(.on-night) .signup__input {
+    background: var(--night-raised);
+    color: var(--paper);
+    border-color: var(--dandelion);
+  }
+
+  :global(.on-night) .signup__input::placeholder {
+    color: var(--ink-muted-on-night);
+  }
+
+  :global(.on-night) .signup__consent {
+    color: var(--ink-muted-on-night);
+  }
+
+  :global(.on-night) .signup__consent input {
+    accent-color: var(--dandelion);
+  }
+</style>

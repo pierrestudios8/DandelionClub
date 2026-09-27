@@ -1,0 +1,33 @@
+---
+/**
+ * Renders a content value. A value starting with `TODO:` shows as a visible,
+ * dashed-outline placeholder so unconfirmed facts can't pass for real ones.
+ * Production builds of `publish: true` pages refuse TODOs (Phase 8).
+ */
+import { isTodo, todoLabel } from '../lib/todo';
+
+interface Props {
+  value: unknown;
+}
+
+const { value } = Astro.props;
+---
+
+{isTodo(value) ? (
+  <span class="placeholder" title="Placeholder: waiting on the club to confirm">
+    [{todoLabel(value)}]
+  </span>
+) : (
+  <>{value}</>
+)}
+
+<style>
+  .placeholder {
+    display: inline;
+    outline: var(--border-strong) dashed currentColor;
+    outline-offset: calc(var(--border-strong) * -1);
+    padding: 0 var(--space-1);
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+</style>

@@ -44,7 +44,7 @@ const tally =
         </h2>
         {tally && <p class="t-lead">{tally}</p>}
       </div>
-      <div class="grid grid--three">
+      <div class="grid grid--three projects">
         {projects.map((project) => (
           <ProjectCard {...project} />
         ))}
@@ -53,24 +53,28 @@ const tally =
   )}
 
   <Section ground="paper-sunk" aria-labelledby="coming-up">
-    <h2 class="t-display section-title" id="coming-up">
-      Upcoming plantings.
-    </h2>
-    <div class="grid grid--two">
-      {upcoming.map((p) => (
-        <PlantingCard {...p} />
-      ))}
-      <div class="notify">
-        <p class="t-eyebrow" id="notify-heading">
-          {upcoming.length ? 'More dates to come' : 'Next date not set yet'}
-        </p>
+    <div class="split">
+      <div class="split__text">
+        <SectionHeading
+          eyebrow={upcoming.length ? 'More dates to come' : 'Next date not set yet'}
+          id="coming-up"
+        >
+          Upcoming plantings.
+        </SectionHeading>
         <p class="t-lead">
           We announce plantings <Placeholder value="TODO: how far ahead plantings are announced" />.
           Leave your email and we'll tell you first.
         </p>
-        <NewsletterSignup id="plantings-notify" labelledBy="notify-heading" button="Tell me" />
       </div>
+      <NewsletterSignup id="plantings-notify" labelledBy="coming-up" button="Tell me" />
     </div>
+    {upcoming.length > 0 && (
+      <div class="grid grid--two upcoming">
+        {upcoming.map((p) => (
+          <PlantingCard {...p} />
+        ))}
+      </div>
+    )}
   </Section>
 
   <Section ground="dandelion" aria-labelledby="propose-heading">
@@ -110,14 +114,6 @@ const tally =
     background: var(--paper);
   }
 
-  .notify {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-4);
-    padding: var(--space-5);
-    border: var(--border-strong) dashed var(--night);
-  }
-
   .section-head {
     display: flex;
     flex-wrap: wrap;
@@ -131,20 +127,29 @@ const tally =
     margin-bottom: 0;
   }
 
-  .propose {
+  .propose,
+  .split {
     display: grid;
     gap: var(--space-7);
+  }
+
+  .split__text {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .upcoming {
+    margin-top: var(--space-9);
+  }
+
+  /* Every project card in a row is the same height. */
+  .projects {
+    align-items: stretch;
   }
 
   .propose__text {
     display: grid;
     gap: var(--space-3);
-  }
-
-  @media (min-width: 600px) {
-    .notify {
-      padding: var(--space-7);
-    }
   }
 
   @media (min-width: 768px) {
@@ -155,6 +160,12 @@ const tally =
 
     .propose {
       grid-template-columns: 1fr auto;
+      align-items: center;
+    }
+
+    /* Headline and copy in the first half, the email box in the second. */
+    .split {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       align-items: center;
     }
   }

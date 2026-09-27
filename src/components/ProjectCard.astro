@@ -1,8 +1,10 @@
 ---
 /**
- * One active project (a site's food forest): name, location, trees planted
- * against the target, and the phases when there are several. The whole card
- * links to the site page. Sits on paper; styled like the planting cards.
+ * One active project (a site's food forest): name, location and trees planted
+ * against the target. When a project has phases, a "Phases" dropdown opens over
+ * the photo, so the card never changes size. The whole card links to the site
+ * page (a stretched link); the dropdown sits above it. Cards in a row share one
+ * height.
  */
 import type { ImageMetadata } from 'astro';
 import { Image } from 'astro:assets';
@@ -40,53 +42,81 @@ const complete =
 const fmt = (n: number | string) => (typeof n === 'number' ? n.toLocaleString('en-ZA') : n);
 ---
 
-<a class="project" href={href}>
+<article class="project">
   <div class="project__media">
     {image ? (
       <Image src={image} alt="" widths={[390, 780]} sizes="(min-width: 1024px) 33vw, 100vw" />
     ) : (
       <span class="t-small">Photo of the site to come</span>
     )}
+    {phases.length > 1 && (
+      <details class="phases">
+        <summary class="phases__toggle">
+          {phases.length} phases <span class="phases__chevron" aria-hidden="true" />
+        </summary>
+        <ul class="phases__list on-night" aria-label={`${name}: trees planted per phase`}>
+          {phases.map((phase) => (
+            <li>
+              <span>{phase.name}</span>
+              <span>
+                <Placeholder value={fmt(phase.treesPlanted)} /> trees
+              </span>
+            </li>
+          ))}
+        </ul>
+      </details>
+    )}
   </div>
   <div class="project__body">
     <span class="tag">{complete ? 'Target reached' : 'Active'}</span>
     <div class="project__what">
-      <Heading class="project__name">{name}</Heading>
+      <Heading class="project__name">
+        <a class="project__link" href={href}>
+          {name}
+        </a>
+      </Heading>
       <p class="project__area">
         <Placeholder value={area} />
       </p>
     </div>
     <TreeCounter verb="planted" value={treesPlanted} target={treesTarget} />
-    {phases.length > 1 && (
-      <ul class="project__phases t-small" aria-label={`${name} planting phases`}>
-        {phases.map((phase) => (
-          <li>
-            <span>{phase.name}</span>
-            <span>
-              <Placeholder value={fmt(phase.treesPlanted)} /> trees
-            </span>
-          </li>
-        ))}
-      </ul>
-    )}
-    <span class="project__more">
-      See the project{' '}
-      <span class="arrow" aria-hidden="true">
-        →
-      </span>
+    <span class="project__more" aria-hidden="true">
+      See the project <span class="arrow">→</span>
     </span>
   </div>
-</a>
+</article>
 
 <style>
   .project {
-    display: grid;
-    align-content: start;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     background: var(--paper);
     color: var(--night);
     border: var(--border-strong) solid var(--night);
     border-radius: var(--radius-none);
+  }
+
+  /* The whole card is the link to the project page. */
+  .project__link {
+    color: inherit;
     text-decoration: none;
+  }
+
+  .project__link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .project__link:focus-visible {
+    outline: none;
+  }
+
+  .project:has(.project__link:focus-visible) {
+    outline: var(--border-strong) solid var(--focus-on-paper);
+    outline-offset: var(--focus-offset);
   }
 
   .project:hover .project__more {
@@ -95,6 +125,7 @@ const fmt = (n: number | string) => (typeof n === 'number' ? n.toLocaleString('e
   }
 
   .project__media {
+    position: relative;
     aspect-ratio: 3 / 2;
     background: var(--night-raised);
     color: var(--ink-muted-on-night);
@@ -109,14 +140,93 @@ const fmt = (n: number | string) => (typeof n === 'number' ? n.toLocaleString('e
     object-fit: cover;
   }
 
-  .project__body {
+  /* Phases: a dropdown over the photo, above the stretched link. */
+  .phases {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .phases__toggle {
+    position: absolute;
+    top: var(--space-3);
+    right: var(--space-3);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    background: var(--night);
+    color: var(--dandelion);
+    border: var(--border-strong) solid var(--dandelion);
+    font-family: var(--type-tag-family);
+    font-size: var(--type-tag-size);
+    line-height: var(--type-tag-leading);
+    font-weight: var(--type-tag-weight);
+    text-transform: uppercase;
+    list-style: none;
+    cursor: pointer;
+    pointer-events: auto;
+    z-index: 2;
+  }
+
+  .phases__toggle::-webkit-details-marker {
+    display: none;
+  }
+
+  .phases__toggle:focus-visible {
+    outline: var(--border-strong) solid var(--focus-on-night);
+    outline-offset: var(--focus-offset);
+  }
+
+  .phases__chevron {
+    width: var(--space-2);
+    height: var(--space-2);
+    border-right: var(--border-strong) solid currentColor;
+    border-bottom: var(--border-strong) solid currentColor;
+    transform: translateY(calc(var(--border-strong) * -1)) rotate(45deg);
+    transition: transform 150ms ease-out;
+  }
+
+  .phases[open] .phases__chevron {
+    transform: translateY(var(--border-strong)) rotate(-135deg);
+  }
+
+  .phases__list {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    padding: calc(var(--space-9) - var(--space-2)) var(--space-5) var(--space-5);
+    list-style: none;
     display: grid;
+    align-content: center;
+    font-size: var(--type-small-lg-size);
+    line-height: var(--type-small-lg-leading);
+    pointer-events: auto;
+  }
+
+  .phases__list li {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding-block: var(--space-2);
+    border-bottom: var(--border-hairline) solid var(--hairline-on-night);
+  }
+
+  .phases__list li:first-child {
+    border-top: var(--border-hairline) solid var(--hairline-on-night);
+  }
+
+  .project__body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
     gap: var(--space-3);
     padding: var(--space-5);
   }
 
   .tag {
-    justify-self: start;
+    align-self: flex-start;
     padding: var(--space-1) var(--space-2);
     background: var(--night);
     color: var(--dandelion);
@@ -144,22 +254,10 @@ const fmt = (n: number | string) => (typeof n === 'number' ? n.toLocaleString('e
     font-weight: var(--type-lead-weight);
   }
 
-  .project__phases {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    border-top: var(--border-hairline) solid var(--hairline);
-  }
-
-  .project__phases li {
-    display: flex;
-    justify-content: space-between;
-    gap: var(--space-3);
-    padding-block: var(--space-2);
-    border-bottom: var(--border-hairline) solid var(--hairline);
-  }
-
+  /* Pinned to the bottom, so every card in a row lines up. */
   .project__more {
+    margin-top: auto;
+    padding-top: var(--space-2);
     font-family: var(--type-eyebrow-sm-family);
     font-size: var(--type-eyebrow-sm-size);
     line-height: var(--type-eyebrow-sm-leading);
@@ -169,5 +267,11 @@ const fmt = (n: number | string) => (typeof n === 'number' ? n.toLocaleString('e
 
   .arrow {
     font-family: var(--font-text);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .phases__chevron {
+      transition: none;
+    }
   }
 </style>

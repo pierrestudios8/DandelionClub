@@ -18,6 +18,10 @@ for (const [name, path] of Object.entries(PAGES)) {
     );
     expect(errors).toEqual([]);
 
+    // Nothing pokes out sideways (CLAUDE.md: no horizontal scroll at phone width).
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
+    expect(overflow).toBeLessThanOrEqual(0);
+
     await page.evaluate(() => document.fonts.ready);
     await page.screenshot({ path: `screenshots/${name}-${info.project.name}.png`, fullPage: true });
   });

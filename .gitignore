@@ -21,4 +21,4 @@ coverage/
 .DS_Store
 
 # local screenshots from e2e runs
-screenshots/
+/screenshots/

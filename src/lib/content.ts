@@ -4,6 +4,7 @@
  */
 import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
 import { formatDate, formatTimeRange } from './format';
+import { isTodo } from './todo';
 import { impactFigures, sortPlantings, type ImpactFigures } from './plantings';
 
 export type Planting = CollectionEntry<'plantings'>;
@@ -84,14 +85,17 @@ export async function getAnnouncement() {
 export async function plantingCard(planting: Planting) {
   const site = await getEntry(planting.data.site);
   const { data } = planting;
+  const siteName = site?.data.name ?? data.site.id;
+  const area = site && !isTodo(site.data.area) ? site.data.area : undefined;
   return {
     date: formatDate(data.date, { weekday: true }),
     time: formatTimeRange(data.start, data.end),
-    site: site?.data.name ?? data.site.id,
-    summary: data.summary,
+    project: data.title,
+    location: area ? `${siteName}, ${area}` : siteName,
     href: `/plantings/${planting.id}`,
+    treesTarget: data.treesTarget,
+    treesDonated: data.treesDonated,
     treesPlanted: data.treesPlanted,
-    volunteers: data.volunteers,
     image: data.heroImage ?? site?.data.heroImage,
   };
 }

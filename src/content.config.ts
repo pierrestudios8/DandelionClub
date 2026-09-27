@@ -69,6 +69,13 @@ const plantings = defineCollection({
       capacity: z.number().int().positive().optional(),
       heroImage: image().optional(),
       publish: z.boolean(),
+      /** How many trees this planting aims for. */
+      treesTarget: orTodo(z.number().int().positive()).optional(),
+      /**
+       * Trees dedicated for this planting so far. Entered by hand until Phase 6
+       * can count paid dedications.
+       */
+      treesDonated: orTodo(z.number().int().nonnegative()).optional(),
       // After the day
       treesPlanted: orTodo(z.number().int().nonnegative()).optional(),
       volunteers: orTodo(z.number().int().nonnegative()).optional(),

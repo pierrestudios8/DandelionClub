@@ -2,15 +2,16 @@
 /**
  * One card per Plantings entry. See design/components/PlantingCard.md.
  *
- * upcoming: paper-sunk card, date, time, site, one line, Join + Details.
- * past:     whole-card link (as in design/pages/Plantings.dc.html) with the day's
- *           photo, date, site, counts once known, and "See the day →".
+ * upcoming: paper-sunk card: date and time, project, location, trees donated
+ *           against the target, Join + Details.
+ * past:     whole-card link with the day's photo, date, project, location,
+ *           trees planted against the target, and "See the day →".
  */
 import type { ImageMetadata } from 'astro';
 import { Image } from 'astro:assets';
 import Button from './Button.astro';
 import Placeholder from './Placeholder.astro';
-import { isTodo } from '../lib/todo';
+import TreeCounter from './TreeCounter.astro';
 
 interface Props {
   variant?: 'upcoming' | 'past';
@@ -18,13 +19,16 @@ interface Props {
   date: string;
   /** Formatted, e.g. "09:00 to 12:30". */
   time?: string;
-  site: string;
-  summary?: string;
+  /** The planting's name, e.g. "First food forest planting". */
+  project?: string;
+  /** Site name, with its area when known. */
+  location: string;
   href: string;
   /** Where the Join button goes; defaults to the sign-up form on the detail page. */
   joinHref?: string;
+  treesTarget?: number | string;
+  treesDonated?: number | string;
   treesPlanted?: number | string;
-  volunteers?: number | string;
   image?: ImageMetadata;
   imageAlt?: string;
   headingLevel?: 2 | 3;
@@ -34,23 +38,19 @@ const {
   variant = 'upcoming',
   date,
   time,
-  site,
-  summary,
+  project,
+  location,
   href,
   joinHref = `${href}#sign-up`,
+  treesTarget,
+  treesDonated,
   treesPlanted,
-  volunteers,
   image,
   imageAlt = '',
   headingLevel = 3,
 } = Astro.props;
 
 const Heading = `h${headingLevel}` as 'h2' | 'h3';
-const known = (v: unknown): v is number => typeof v === 'number' && !isTodo(v);
-const counts = [
-  known(treesPlanted) && `${treesPlanted} trees`,
-  known(volunteers) && `${volunteers} volunteers`,
-].filter(Boolean);
 ---
 
 {variant === 'upcoming' ? (
@@ -66,14 +66,17 @@ const counts = [
         </p>
       )}
     </div>
-    <Heading class="card__site">
-      <Placeholder value={site} />
-    </Heading>
-    {summary && (
-      <p class="t-lead">
-        <Placeholder value={summary} />
-      </p>
-    )}
+    <div class="card__what">
+      <Heading class="card__project">
+        <Placeholder value={project ?? location} />
+      </Heading>
+      {project && (
+        <p class="card__location">
+          <Placeholder value={location} />
+        </p>
+      )}
+    </div>
+    <TreeCounter verb="donated" value={treesDonated} target={treesTarget} />
     <div class="card__actions">
       <Button href={joinHref}>Join</Button>
       <Button href={href} variant="ghost">
@@ -100,10 +103,17 @@ const counts = [
       <p class="card__date">
         <Placeholder value={date} />
       </p>
-      <Heading class="card__site card__site--sm">
-        <Placeholder value={site} />
-      </Heading>
-      {counts.length > 0 && <p class="t-small muted">{counts.join(' · ')}</p>}
+      <div class="card__what">
+        <Heading class="card__project card__project--sm">
+          <Placeholder value={project ?? location} />
+        </Heading>
+        {project && (
+          <p class="card__location">
+            <Placeholder value={location} />
+          </p>
+        )}
+      </div>
+      <TreeCounter verb="planted" value={treesPlanted} target={treesTarget} />
       <span class="card__more">
         See the day <span aria-hidden="true">→</span>
       </span>
@@ -155,7 +165,18 @@ const counts = [
     font-weight: var(--type-subtitle-weight);
   }
 
-  .card__site {
+  .card__what {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .card__location {
+    font-size: var(--type-lead-size);
+    line-height: var(--type-lead-leading);
+    font-weight: var(--type-lead-weight);
+  }
+
+  .card__project {
     font-size: var(--type-title-sm-size);
     line-height: var(--type-title-sm-leading);
     font-weight: var(--type-title-sm-weight);
@@ -184,7 +205,7 @@ const counts = [
 
   .card__body {
     display: grid;
-    gap: var(--space-2);
+    gap: var(--space-3);
     padding: var(--space-5);
   }
 
@@ -201,7 +222,7 @@ const counts = [
       padding: var(--space-7);
     }
 
-    .card__site:not(.card__site--sm) {
+    .card__project:not(.card__project--sm) {
       font-size: var(--type-title-size);
       line-height: var(--type-title-leading);
     }

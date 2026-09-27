@@ -25,8 +25,10 @@ const settings = await getSettings();
 const upcoming = {
   date: 'TODO: Saturday, date',
   time: 'TODO: 09:00 to 12:30',
-  site: 'TODO: site name',
-  summary: "TODO: one line on what we're planting this time",
+  project: 'TODO: project name',
+  location: 'TODO: site and area',
+  treesTarget: 'TODO: tree target',
+  treesDonated: 'TODO: trees donated so far',
   href: '/plantings/example',
 };
 
@@ -168,17 +170,20 @@ const heardOptions = [
           <PlantingCard
             variant="past"
             date="29 August 2026"
-            site="Silukhanyo Primary"
+            project="First food forest planting"
+            location="Silukhanyo Primary"
+            treesTarget="TODO: tree target"
             href="/plantings/silukhanyo-primary-2026-08-29"
             treesPlanted="TODO: trees planted"
           />
           <PlantingCard
             variant="past"
             date="[date]"
-            site="[With confirmed counts]"
+            project="[Example with confirmed counts]"
+            location="[Site, area]"
+            treesTarget={60}
             href="/plantings/example"
             treesPlanted={40}
-            volunteers={25}
           />
         </div>
       </Section>

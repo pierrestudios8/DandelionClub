@@ -4,6 +4,9 @@ Newest first. Add a line for every decision that isn't already in CLAUDE.md or S
 
 | Date | Decision | Reason |
 | --- | --- | --- |
+| 2026-09-27 | Plantings page (Pierre's change): "Coming up." is now "Upcoming plantings." and "Already planted." is now "Projects." Upcoming cards show project (the planting's title), location (site and area), date, target and trees donated so far; project cards add trees planted against the target. The one-line summary is no longer on the upcoming card | Requested by Pierre on review of Phase 3 |
+| 2026-09-27 | New planting fields `treesTarget` and `treesDonated` (numbers or `TODO:`). `treesDonated` is entered by hand until Phase 6 can count paid dedications | Paid dedications only exist once payments are live |
+| 2026-09-27 | Headings wrap long words (`overflow-wrap: anywhere`, `hyphens: auto`), and an e2e check fails any page that scrolls sideways at 390px | A 40px headline with one long word overflowed a phone; the newsletter row overflowed the Plantings grid |
 | 2026-09-27 | Email goes through the club's Google Workspace (Gmail API, service account with domain-wide delegation as `GMAIL_DELEGATED_USER`), not a transactional provider | The build plan's first choice; mail comes from info@ and sits in its Sent folder. The `Mailer` interface keeps a provider swap small if delegation proves impractical |
 | 2026-09-27 | Google Sheets and Gmail are called over REST with a JWT signed by Node's crypto, not the `googleapis` package | One small module instead of a large dependency in the serverless function |
 | 2026-09-27 | Without the Google variables, forms run in "log" mode outside production (rows and emails printed to the server log); production refuses to run without Google, `GMAIL_DELEGATED_USER` and `TURNSTILE_SECRET_KEY` | Forms work in dev, tests and unconfigured previews; production can't lose submissions or emails silently |

@@ -107,7 +107,7 @@ export interface ImpactFigures {
 }
 
 /** Sums a count across plantings, or null if any input is missing or a TODO. */
-function sumOrNull(plantings: PlantingLike[], key: 'treesPlanted' | 'volunteers'): number | null {
+function sumOrNull(plantings: PlantingLike[], key: 'volunteers'): number | null {
   if (plantings.length === 0) return null;
   let total = 0;
   for (const p of plantings) {
@@ -119,20 +119,25 @@ function sumOrNull(plantings: PlantingLike[], key: 'treesPlanted' | 'volunteers'
 }
 
 /**
- * Figures for the impact strip (docs/SPEC.md, Derived figures), computed from
- * held plantings. A figure is null until every input is real; with no plantings
- * held yet, every figure is null.
+ * Figures for the impact strip (docs/SPEC.md, Derived figures). Trees planted is
+ * the active projects' total (`projectTreesTotal`, passed in); the other figures
+ * come from held plantings. A figure is null until every input is real; with no
+ * plantings held, the planting figures are null.
  */
-export function impactFigures(held: PlantingLike[], sites: SiteLike[]): ImpactFigures {
+export function impactFigures(
+  held: PlantingLike[],
+  sites: SiteLike[],
+  projectTrees: number | null,
+): ImpactFigures {
   if (held.length === 0) {
-    return { treesPlanted: null, plantingsHeld: null, schools: null, volunteers: null };
+    return { treesPlanted: projectTrees, plantingsHeld: null, schools: null, volunteers: null };
   }
   const siteIds = new Set(sites.map((s) => s.id));
   const sitesWithPlanting = new Set(
     held.map((p) => p.data.site.id).filter((id) => siteIds.has(id)),
   );
   return {
-    treesPlanted: sumOrNull(held, 'treesPlanted'),
+    treesPlanted: projectTrees,
     plantingsHeld: held.length,
     schools: sitesWithPlanting.size,
     volunteers: sumOrNull(held, 'volunteers'),

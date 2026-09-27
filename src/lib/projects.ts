@@ -38,6 +38,22 @@ export function plantedTotal(project: ProjectLike): Count | undefined {
   return total;
 }
 
+/**
+ * Trees planted across projects (the impact figure), or null when there are no
+ * projects or any project's count isn't confirmed yet: a partial sum would
+ * understate the work.
+ */
+export function projectTreesTotal(projects: ProjectLike[]): number | null {
+  if (projects.length === 0) return null;
+  let total = 0;
+  for (const project of projects) {
+    const planted = plantedTotal(project);
+    if (typeof planted !== 'number') return null;
+    total += planted;
+  }
+  return total;
+}
+
 /** Active projects, in their set order. */
 export function activeProjects<S extends { data: { project?: ProjectLike } }>(sites: S[]): S[] {
   const order = (s: S) => s.data.project?.order ?? 0;

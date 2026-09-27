@@ -102,8 +102,8 @@ describe('sortPlantings', () => {
 });
 
 describe('impactFigures', () => {
-  it('returns null for every figure when nothing has been held', () => {
-    expect(impactFigures([], sites)).toEqual({
+  it('returns null for every figure when nothing has been held and no project total is known', () => {
+    expect(impactFigures([], sites, null)).toEqual({
       treesPlanted: null,
       plantingsHeld: null,
       schools: null,
@@ -111,7 +111,16 @@ describe('impactFigures', () => {
     });
   });
 
-  it('sums real counts and counts sites with at least one held planting', () => {
+  it('takes trees planted from the projects, even before any planting is held', () => {
+    expect(impactFigures([], sites, 331)).toEqual({
+      treesPlanted: 331,
+      plantingsHeld: null,
+      schools: null,
+      volunteers: null,
+    });
+  });
+
+  it('counts held plantings, schools and volunteers; trees come from the projects', () => {
     const held = [
       planting('a', '2026-08-29', { status: 'done', treesPlanted: 40, volunteers: 25 }),
       planting('b', '2026-09-12', { status: 'done', treesPlanted: 30, volunteers: 12 }),
@@ -122,15 +131,15 @@ describe('impactFigures', () => {
         site: { id: 'genadendal' },
       }),
     ];
-    expect(impactFigures(held, sites)).toEqual({
-      treesPlanted: 80,
+    expect(impactFigures(held, sites, 331)).toEqual({
+      treesPlanted: 331,
       plantingsHeld: 3,
       schools: 2,
       volunteers: 45,
     });
   });
 
-  it('hides a sum when any input is a TODO or missing, but keeps the counts', () => {
+  it('hides trees while the project total is unconfirmed, and volunteers while any count is', () => {
     const held = [
       planting('a', '2026-08-29', {
         status: 'done',
@@ -139,7 +148,7 @@ describe('impactFigures', () => {
       }),
       planting('b', '2026-09-12', { status: 'done', treesPlanted: 30 }),
     ];
-    expect(impactFigures(held, sites)).toEqual({
+    expect(impactFigures(held, sites, null)).toEqual({
       treesPlanted: null,
       plantingsHeld: 2,
       schools: 1,
@@ -149,7 +158,7 @@ describe('impactFigures', () => {
 
   it("doesn't count a site that isn't visible", () => {
     const held = [planting('a', '2026-08-29', { status: 'done', site: { id: 'hidden' } })];
-    expect(impactFigures(held, sites).schools).toBe(0);
+    expect(impactFigures(held, sites, null).schools).toBe(0);
   });
 });
 

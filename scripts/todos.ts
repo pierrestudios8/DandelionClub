@@ -24,16 +24,9 @@ export function findTodos(dir: string, root = dir): Todo[] {
     readFileSync(path, 'utf8')
       .split('\n')
       .forEach((content, i) => {
-        const at = content.indexOf('TODO:');
-        if (at === -1) return;
-        todos.push({
-          file: relative(root, path),
-          line: i + 1,
-          text: content
-            .slice(at)
-            .replace(/["',]+\s*$/, '')
-            .trim(),
-        });
+        const match = /TODO:[^"\n]*/.exec(content);
+        if (!match) return;
+        todos.push({ file: relative(root, path), line: i + 1, text: match[0].trim() });
       });
   }
   return todos.sort((a, b) => a.file.localeCompare(b.file) || a.line - b.line);

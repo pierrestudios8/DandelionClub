@@ -1,0 +1,88 @@
+---
+/**
+ * Night closing block: centred Contribute button and the NPC's EFT details in
+ * light Unbounded. Details stay selectable text so people can copy them.
+ * See design/components/Contribute.md.
+ */
+import Button from './Button.astro';
+import Placeholder from './Placeholder.astro';
+
+interface Props {
+  npcName: string;
+  bank: {
+    accountName: string;
+    bank: string;
+    account: string;
+    branch: string;
+    swift: string;
+  };
+  href?: string;
+}
+
+const { npcName, bank, href = '/donate' } = Astro.props;
+---
+
+<div class="contribute on-night">
+  <Button href={href} variant="ghost" quiet>
+    Contribute
+  </Button>
+  <dl class="contribute__details t-detail">
+    <div>
+      <dt class="visually-hidden">Account name</dt>
+      <dd>
+        <Placeholder value={bank.accountName} />
+      </dd>
+    </div>
+    <div>
+      <dt>Bank</dt>
+      <dd>
+        <Placeholder value={bank.bank} />
+      </dd>
+    </div>
+    <div>
+      <dt>Account</dt>
+      <dd>
+        <Placeholder value={bank.account} />
+      </dd>
+    </div>
+    <div>
+      <dt>Branch code</dt>
+      <dd>
+        <Placeholder value={bank.branch} />
+      </dd>
+    </div>
+    <div>
+      <dt>SWIFT</dt>
+      <dd>
+        <Placeholder value={bank.swift} />
+      </dd>
+    </div>
+  </dl>
+  {bank.accountName !== npcName && <p class="t-small muted">{npcName}</p>}
+</div>
+
+<style>
+  .contribute {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-5);
+    text-align: center;
+    padding: var(--space-9) var(--space-4);
+  }
+
+  .contribute__details {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .contribute__details div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-2);
+  }
+
+  .contribute__details dd {
+    user-select: all;
+  }
+</style>

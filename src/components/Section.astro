@@ -1,0 +1,61 @@
+---
+/**
+ * A full-bleed band on one of the four grounds, with the content column inside.
+ * Pages are built from these: night header and hero, paper content,
+ * at most one dandelion band, night close.
+ */
+import type { HTMLAttributes } from 'astro/types';
+
+type Props = {
+  ground?: 'night' | 'paper' | 'paper-sunk' | 'dandelion';
+  as?: 'section' | 'div' | 'aside' | 'article';
+  /** Column width: the content measure (default), long-form text, or edge to edge. */
+  width?: 'content' | 'text' | 'full';
+  /** Vertical padding: section rhythm (default), a tighter band, or none. */
+  space?: 'normal' | 'tight' | 'none';
+  class?: string;
+} & HTMLAttributes<'section'>;
+
+const {
+  ground = 'paper',
+  as: Tag = 'section',
+  width = 'content',
+  space = 'normal',
+  class: className,
+  ...rest
+} = Astro.props;
+---
+
+<Tag class:list={['section', `on-${ground}`, `section--${space}`, className]} {...rest}>
+  {width === 'full' ? (
+    <slot />
+  ) : (
+    <div class:list={['container', width === 'text' && 'container--text']}>
+      <slot />
+    </div>
+  )}
+</Tag>
+
+<style>
+  .section--normal {
+    padding-block: var(--space-9);
+  }
+
+  .section--tight {
+    padding-block: var(--space-8);
+  }
+
+  @media (min-width: 1024px) {
+    .section--normal {
+      padding-block: var(--space-10);
+    }
+
+    .section--tight {
+      padding-block: var(--space-9);
+    }
+  }
+
+  .container--text {
+    max-width: calc(var(--measure-text) + 2 * var(--space-7));
+  }
+</style>

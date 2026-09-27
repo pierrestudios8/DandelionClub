@@ -1,0 +1,29 @@
+---
+/**
+ * Holds the place of the Rive taproot animation (a later phase).
+ * Today it renders the static seed. When `riv` is set, a later loader swaps in a
+ * <canvas> once the slot scrolls into view, unless prefers-reduced-motion is set.
+ */
+interface Props {
+  /** Static image shown now, and as the fallback afterwards. */
+  src: string;
+  width: number;
+  height: number;
+  /** Future .riv file. Unused until the animation phase. */
+  riv?: string;
+  class?: string;
+}
+
+const { src, width, height, riv, class: className } = Astro.props;
+---
+
+<div class:list={['rive-slot', className]} data-riv={riv}>
+  <img src={src} alt="" width={width} height={height} loading="lazy" decoding="async" />
+</div>
+
+<style>
+  .rive-slot img {
+    width: 100%;
+    height: auto;
+  }
+</style>

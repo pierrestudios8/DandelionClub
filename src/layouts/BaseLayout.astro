@@ -1,12 +1,52 @@
 ---
-// Phase 0 shell. Phase 1 adds meta/Open Graph slots, the skip link,
-// AnnouncementBar, Header and Footer.
+/**
+ * Every page: <html lang="en-GB">, meta and Open Graph, fonts, skip link,
+ * AnnouncementBar, Header, <main>, Footer.
+ *
+ * Slots: default = page content, "head" = extra <head> tags.
+ */
+import '@fontsource/unbounded/latin-300.css';
+import '@fontsource/unbounded/latin-900.css';
+import '@fontsource/geist/latin-400.css';
+import '@fontsource/geist/latin-700.css';
+import '@fontsource/geist/latin-900.css';
+import '../styles/tokens.css';
+import '../styles/global.css';
+import unbounded900 from '@fontsource/unbounded/files/unbounded-latin-900-normal.woff2?url';
+import geist700 from '@fontsource/geist/files/geist-latin-700-normal.woff2?url';
+import AnnouncementBar, {
+  type Props as AnnouncementProps,
+} from '../components/AnnouncementBar.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import tokens from '../../design/tokens.json';
+
 interface Props {
+  /** Page title; " · Dandelion Club" is appended except on the home page. */
   title: string;
-  description?: string;
+  description: string;
+  /** Absolute or root-relative Open Graph image. */
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  noindex?: boolean;
+  /** The next upcoming planting for the announcement bar (from Phase 2 content). */
+  nextPlanting?: AnnouncementProps['planting'];
 }
 
-const { title, description } = Astro.props;
+const {
+  title,
+  description,
+  ogImage,
+  ogType = 'website',
+  noindex = false,
+  nextPlanting,
+} = Astro.props;
+
+const siteName = 'Dandelion Club';
+const themeColour = tokens.color.tokens.find((t) => t.name === 'night')?.value;
+const fullTitle = title === siteName ? title : `${title} · ${siteName}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImageUrl = ogImage ? new URL(ogImage, Astro.site).href : undefined;
 ---
 
 <!doctype html>
@@ -14,12 +54,61 @@ const { title, description } = Astro.props;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title}</title>
-    {description && <meta name="description" content={description} />}
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="icon" href="/brand/seed-night.svg" type="image/svg+xml" />
+    <meta name="theme-color" content={themeColour} />
+
+    <link rel="preload" href={unbounded900} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={geist700} as="font" type="font/woff2" crossorigin />
+
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    {ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
+    <meta name="twitter:card" content={ogImageUrl ? 'summary_large_image' : 'summary'} />
+
+    <slot name="head" />
   </head>
   <body>
-    <main>
+    <a class="skip-link" href="#main">
+      Skip to content
+    </a>
+    <AnnouncementBar planting={nextPlanting} />
+    <Header />
+    <main id="main" tabindex="-1">
       <slot />
     </main>
+    <Footer />
   </body>
 </html>
+
+<style>
+  .skip-link {
+    position: absolute;
+    left: var(--space-4);
+    top: var(--space-4);
+    z-index: 10;
+    padding: var(--space-3) var(--space-4);
+    background: var(--dandelion);
+    color: var(--night);
+    font-family: var(--type-button-family);
+    font-weight: var(--type-button-weight);
+    text-transform: uppercase;
+    transform: translateY(-200%);
+  }
+
+  .skip-link:focus-visible {
+    transform: none;
+    outline-color: var(--focus-on-paper);
+  }
+
+  main:focus {
+    outline: none;
+  }
+</style>

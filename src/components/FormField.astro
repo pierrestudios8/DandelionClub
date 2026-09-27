@@ -1,0 +1,213 @@
+---
+/**
+ * A labelled form control in the brand. Label above (never placeholder-only),
+ * 2px night border, paper fill, square corners. An error is written as a fix,
+ * tied to the control with aria-describedby, and sets aria-invalid.
+ * Forms live on paper grounds. See design/components/FormField.md.
+ *
+ * type="checkbox" renders the consent-style check row; the label is the default slot
+ * (or `label`) so it can contain a link.
+ */
+import type { HTMLAttributes } from 'astro/types';
+
+type Option = { value: string; label: string };
+
+type Props = {
+  id: string;
+  name?: string;
+  label?: string;
+  type?: 'text' | 'email' | 'tel' | 'number' | 'select' | 'textarea' | 'checkbox';
+  hint?: string;
+  error?: string;
+  /** Adds "(optional)" to the label. Fields are required unless marked optional. */
+  optional?: boolean;
+  options?: Option[];
+  value?: string | number;
+  checked?: boolean;
+  /** Stretch to the container instead of the field measure. */
+  wide?: boolean;
+} & Omit<HTMLAttributes<'input'>, 'type' | 'value' | 'checked'>;
+
+const {
+  id,
+  name = id,
+  label,
+  type = 'text',
+  hint,
+  error,
+  optional = false,
+  options = [],
+  value,
+  checked,
+  wide = false,
+  ...rest
+} = Astro.props;
+
+const hintId = hint ? `${id}-hint` : undefined;
+const errorId = error ? `${id}-error` : undefined;
+const describedBy = [errorId, hintId].filter(Boolean).join(' ') || undefined;
+const control = {
+  id,
+  name,
+  required: !optional,
+  'aria-invalid': error ? ('true' as const) : undefined,
+  'aria-describedby': describedBy,
+};
+---
+
+{type === 'checkbox' ? (
+  <div class:list={['check', error && 'check--error', wide && 'field--wide']}>
+    <label class="check__row" for={id}>
+      <input type="checkbox" value={value ?? 'yes'} checked={checked} {...control} {...rest} />
+      <span>
+        <slot>{label}</slot>
+      </span>
+    </label>
+    {error && (
+      <p class="field__error" id={errorId}>
+        {error}
+      </p>
+    )}
+    {hint && (
+      <p class="field__hint" id={hintId}>
+        {hint}
+      </p>
+    )}
+  </div>
+) : (
+  <div class:list={['field', error && 'field--error', wide && 'field--wide']}>
+    <label class="field__label" for={id}>
+      {label}
+      {optional && <span class="field__optional"> (optional)</span>}
+    </label>
+    {type === 'select' ? (
+      <select class="field__input" {...control} {...(rest as HTMLAttributes<'select'>)}>
+        {options.map((o) => (
+          <option value={o.value} selected={o.value === value}>
+            {o.label}
+          </option>
+        ))}
+      </select>
+    ) : type === 'textarea' ? (
+      <textarea
+        class="field__input"
+        rows={4}
+        {...control}
+        {...(rest as HTMLAttributes<'textarea'>)}
+      >
+          {value}
+        </textarea>
+    ) : (
+      <input class="field__input" type={type} value={value} {...control} {...rest} />
+    )}
+    {error && (
+      <p class="field__error" id={errorId}>
+        {error}
+      </p>
+    )}
+    {hint && (
+      <p class="field__hint" id={hintId}>
+        {hint}
+      </p>
+    )}
+  </div>
+)}
+
+<style>
+  .field,
+  .check {
+    display: grid;
+    gap: var(--space-2);
+    max-width: var(--field-measure);
+  }
+
+  .field--wide {
+    max-width: none;
+  }
+
+  .field__label {
+    font-family: var(--type-lead-family);
+    font-size: var(--type-lead-size);
+    line-height: var(--type-lead-leading);
+    font-weight: var(--type-lead-weight);
+  }
+
+  .field__optional {
+    font-weight: var(--type-body-weight);
+  }
+
+  .field__input {
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
+    font-family: var(--type-body-family);
+    font-size: var(--type-body-size);
+    line-height: var(--type-body-leading);
+    color: var(--night);
+    background: var(--paper);
+    border: var(--border-strong) solid var(--night);
+    border-radius: var(--radius-none);
+  }
+
+  select.field__input {
+    appearance: none;
+    padding-right: var(--space-8);
+    background-image:
+      linear-gradient(45deg, transparent 50%, var(--night) 50%),
+      linear-gradient(135deg, var(--night) 50%, transparent 50%);
+    background-position:
+      right var(--space-5) center,
+      right var(--space-4) center;
+    background-size: var(--space-1) var(--space-1);
+    background-repeat: no-repeat;
+  }
+
+  .field__input::placeholder {
+    color: var(--ink-muted);
+  }
+
+  .field__input:focus-visible {
+    outline-color: var(--focus-on-paper);
+  }
+
+  .field__hint {
+    font-size: var(--type-small-size);
+    line-height: var(--type-small-leading);
+    color: var(--ink-muted);
+  }
+
+  .field__error {
+    font-size: var(--type-small-size);
+    line-height: var(--type-small-leading);
+    font-weight: var(--type-lead-weight);
+    color: var(--error);
+  }
+
+  .field--error .field__input {
+    border-color: var(--error);
+  }
+
+  .check__row {
+    display: flex;
+    gap: var(--space-3);
+    align-items: flex-start;
+    font-size: var(--type-small-size);
+    line-height: var(--type-small-leading);
+  }
+
+  .check__row input {
+    flex: none;
+    width: var(--space-5);
+    height: var(--space-5);
+    accent-color: var(--night);
+  }
+
+  .check--error .check__row input {
+    outline: var(--border-strong) solid var(--error);
+    outline-offset: var(--border-strong);
+  }
+
+  .check--error .check__row input:focus-visible {
+    outline-color: var(--focus-on-paper);
+    outline-offset: var(--focus-offset);
+  }
+</style>

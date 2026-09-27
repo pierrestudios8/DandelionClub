@@ -1,0 +1,462 @@
+---
+/**
+ * /styleguide: every component in every variant, on each ground it's allowed on.
+ * Injected by astro.config.mjs in dev and Vercel previews only; never in production.
+ * Sample copy comes from the approved designs. Anything in [brackets] is a placeholder.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import Contribute from '../components/Contribute.astro';
+import FormField from '../components/FormField.astro';
+import Hero from '../components/Hero.astro';
+import NewsletterSignup from '../components/NewsletterSignup.astro';
+import NextPlanting from '../components/NextPlanting.astro';
+import Placeholder from '../components/Placeholder.astro';
+import PlantingCard from '../components/PlantingCard.astro';
+import RouteCard from '../components/RouteCard.astro';
+import Section from '../components/Section.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import SeedBand from '../components/SeedBand.astro';
+import settings from '../content/settings.json';
+import tokens from '../../design/tokens.json';
+import { DESIGN_DERIVED } from '../../scripts/tokens';
+
+const upcoming = {
+  date: 'TODO: Saturday, date',
+  time: 'TODO: 09:00 to 12:30',
+  site: 'TODO: site name',
+  summary: "TODO: one line on what we're planting this time",
+  href: '/plantings/example',
+};
+
+const typeStyles = [
+  ...tokens.type.groups.flatMap((g) => g.styles.map((s) => ({ ...s, derived: false }))),
+  ...DESIGN_DERIVED.type.map((s) => ({ ...s, sample: s.name, usage: '', derived: true })),
+];
+
+const grounds = ['paper', 'paper-sunk', 'night', 'dandelion'] as const;
+
+const heardOptions = [
+  { value: '', label: 'Choose one' },
+  { value: 'friend', label: 'A friend' },
+  { value: 'school', label: 'The school' },
+  { value: 'social', label: 'Social media' },
+  { value: 'other', label: 'Somewhere else' },
+];
+---
+
+<BaseLayout
+  title="Styleguide"
+  description="Every Dandelion Club component in every variant."
+  noindex
+  nextPlanting={{ date: 'TODO: date', site: 'TODO: site', href: '/plantings/example' }}
+>
+  <Section ground="paper" space="tight">
+    <SectionHeading eyebrow="Dev and preview only" level={1}>
+      Styleguide.
+    </SectionHeading>
+    <p class="t-body sg-intro">
+      Every component from <code>design/components/</code> in each variant, on each ground it's
+      allowed on. The announcement bar, header and footer above and below are the real ones. Check
+      at 390px and 1440px.
+    </p>
+    <nav aria-label="Styleguide sections" class="sg-toc t-small">
+      <a href="#colour">Colour</a>
+      <a href="#type">Type</a>
+      <a href="#buttons">Button</a>
+      <a href="#placeholder">Placeholder</a>
+      <a href="#hero">Hero</a>
+      <a href="#next-planting">NextPlanting</a>
+      <a href="#planting-card">PlantingCard</a>
+      <a href="#seed-band">SeedBand</a>
+      <a href="#contribute">Contribute</a>
+      <a href="#route-card">RouteCard</a>
+      <a href="#forms">FormField</a>
+      <a href="#sections">Section</a>
+    </nav>
+  </Section>
+
+  <!-- Colour -->
+  <Section ground="paper-sunk" id="colour" space="tight">
+    <h2 class="t-title sg-h">Colour</h2>
+    <ul role="list" class="sg-swatches">
+      {tokens.color.tokens.map((c) => (
+        <li class="sg-swatch">
+          <span class="sg-swatch__chip" style={`background: var(--${c.name})`} />
+          <span class="t-lead">{c.name}</span>
+          <span class="t-small muted">{c.value}</span>
+        </li>
+      ))}
+    </ul>
+  </Section>
+
+  <!-- Type -->
+  <Section ground="paper" id="type" space="tight">
+    <h2 class="t-title sg-h">Type</h2>
+    <ul role="list" class="sg-type">
+      {typeStyles.map((s) => (
+        <li>
+          <p class="t-small muted">
+            .t-{s.name} · {s.fontSize}/{s.lineHeight} · {s.fontWeight}
+            {s.derived && ' · from the page designs'}
+          </p>
+          <p class={`t-${s.name}`}>{s.sample}</p>
+        </li>
+      ))}
+    </ul>
+  </Section>
+
+  <!-- Buttons on every ground -->
+  <div id="buttons">
+    {grounds.map((g) => (
+      <Section ground={g} space="tight">
+        <h2 class="t-title sg-h">Button on {g}</h2>
+        <div class="sg-row">
+          <Button href="#buttons">Join now</Button>
+          <Button href="#buttons" variant="ghost">
+            Details
+          </Button>
+          <Button href="#buttons" variant="ghost" quiet>
+            Contribute
+          </Button>
+          <Button disabled>Disabled</Button>
+          <Button variant="ghost" disabled>
+            Disabled
+          </Button>
+        </div>
+        <div class="sg-stack">
+          <Button href="#buttons">Join a planting</Button>
+          <Button href="#buttons">Dedicate a tree</Button>
+        </div>
+      </Section>
+    ))}
+  </div>
+
+  <!-- Placeholder -->
+  <Section ground="paper" id="placeholder" space="tight">
+    <h2 class="t-title sg-h">Placeholder</h2>
+    <p class="t-lead">
+      A tree costs R<Placeholder value={settings.treePrice} />. Confirmed values render as plain
+      text: <Placeholder value={settings.email} />.
+    </p>
+  </Section>
+
+  <!-- Hero -->
+  <div id="hero">
+    <Hero eyebrow="Food forests for Western Cape schools" headline="Plant it forward." level={2}>
+      <p>
+        We turn bare school ground into food forests, one planting day at a time. Bring gloves if
+        you've got them. We'll bring everything else.
+      </p>
+      <Fragment slot="actions">
+        <Button href="#hero">Join a planting</Button>
+        <Button href="#hero">Dedicate a tree</Button>
+      </Fragment>
+    </Hero>
+  </div>
+
+  <!-- NextPlanting, with and without a planting -->
+  <div id="next-planting">
+    <NextPlanting id="sg-next" planting={upcoming} />
+    <NextPlanting id="sg-next-none" />
+  </div>
+
+  <!-- PlantingCard -->
+  <div id="planting-card">
+    {(['paper', 'paper-sunk'] as const).map((g) => (
+      <Section ground={g} space="tight">
+        <h2 class="t-title sg-h">PlantingCard on {g}</h2>
+        <div class="sg-cards">
+          <PlantingCard {...upcoming} />
+          <PlantingCard
+            variant="past"
+            date="29 August 2026"
+            site="Silukhanyo Primary"
+            href="/plantings/silukhanyo-primary-2026-08-29"
+            treesPlanted="TODO: trees planted"
+          />
+          <PlantingCard
+            variant="past"
+            date="[date]"
+            site="[With confirmed counts]"
+            href="/plantings/example"
+            treesPlanted={40}
+            volunteers={25}
+          />
+        </div>
+      </Section>
+    ))}
+  </div>
+
+  <!-- SeedBand -->
+  <div id="seed-band">
+    <Section ground="paper" space="tight">
+      <h2 class="t-title sg-h">SeedBand</h2>
+      <p class="t-small muted">Decorative and hidden from screen readers. One per page at most.</p>
+    </Section>
+    <SeedBand />
+  </div>
+
+  <!-- Contribute -->
+  <div id="contribute">
+    <Section ground="paper" space="tight">
+      <h2 class="t-title sg-h">Contribute</h2>
+    </Section>
+    <Contribute npcName={settings.npcName} bank={settings.bank} />
+  </div>
+
+  <!-- RouteCard -->
+  <Section ground="paper" id="route-card" space="tight">
+    <h2 class="t-title sg-h">RouteCard</h2>
+    <div class="sg-routes sg-routes--two">
+      <RouteCard
+        href="#route-card"
+        title="Join a planting"
+        audience="For anyone with a free Saturday"
+        headingLevel={3}
+      >
+        Bring gloves, bring friends, bring the kids.
+      </RouteCard>
+      <RouteCard
+        href="#route-card"
+        title="Dedicate a tree"
+        audience="For a gift, a memory, a milestone"
+        headingLevel={3}
+      >
+        Put a name to a tree that will feed a school.
+      </RouteCard>
+    </div>
+    <div class="sg-routes sg-routes--three">
+      <RouteCard
+        href="#route-card"
+        title="Donate"
+        audience="For individuals"
+        tone="paper"
+        headingLevel={3}
+      >
+        Once-off or monthly, by card or EFT.
+      </RouteCard>
+      <RouteCard
+        href="#route-card"
+        title="Propose a site"
+        audience="For schools and community groups"
+        tone="paper"
+        headingLevel={3}
+      >
+        Tell us about the ground and the people who'll look after it.
+      </RouteCard>
+      <RouteCard
+        href="#route-card"
+        title="Partner with us"
+        audience="For businesses and funders"
+        tone="paper"
+        headingLevel={3}
+      >
+        Fund a site, a school or a programme.
+      </RouteCard>
+    </div>
+  </Section>
+
+  <!-- FormField on paper and paper-sunk -->
+  <div id="forms">
+    {(['paper', 'paper-sunk'] as const).map((g) => (
+      <Section ground={g} space="tight">
+        <h2 class="t-title sg-h">FormField on {g}</h2>
+        <form class="sg-form" action="#forms" onsubmit="return false">
+          <FormField id={`${g}-name`} label="Your name" autocomplete="name" />
+          <FormField
+            id={`${g}-email`}
+            label="Email"
+            type="email"
+            autocomplete="email"
+            hint="We'll send the details and a calendar invite here."
+          />
+          <FormField
+            id={`${g}-email-error`}
+            label="Email"
+            type="email"
+            value="pierre@"
+            error="Enter a full email address, like name@example.com."
+          />
+          <FormField
+            id={`${g}-phone`}
+            label="Mobile number"
+            type="tel"
+            autocomplete="tel"
+            optional
+            hint="Only for day-of changes, like a rain delay."
+          />
+          <div class="sg-pair">
+            <FormField id={`${g}-adults`} label="Adults" type="number" value={1} min="1" />
+            <FormField id={`${g}-kids`} label="Children" type="number" value={0} min="0" />
+          </div>
+          <FormField
+            id={`${g}-heard`}
+            label="How did you hear about us?"
+            type="select"
+            optional
+            options={heardOptions}
+          />
+          <FormField
+            id={`${g}-message`}
+            label="Message"
+            type="textarea"
+            optional
+            hint="Up to 80 characters."
+            maxlength="80"
+          />
+          <FormField id={`${g}-register`} type="checkbox" optional checked>
+            Show the dedication on the public site register.
+          </FormField>
+          <FormField
+            id={`${g}-consent`}
+            type="checkbox"
+            error="Tick this box so we can store your details."
+          >
+            I agree that Dandelion Club may store these details to organise this planting.{' '}
+            <a href="/privacy">Privacy</a>
+          </FormField>
+          <div>
+            <Button type="submit">Save my spot</Button>
+          </div>
+        </form>
+      </Section>
+    ))}
+    <Section ground="night" space="tight">
+      <h2 class="t-title sg-h">Forms on night go in a paper panel</h2>
+      <div class="sg-panel on-paper">
+        <FormField id="night-panel-email" label="Email" type="email" autocomplete="email" />
+      </div>
+      <div class="sg-signup">
+        <NewsletterSignup id="sg-newsletter-night" label="Hear about the next one" />
+      </div>
+    </Section>
+    <Section ground="paper" space="tight">
+      <h2 class="t-title sg-h">Newsletter sign-up on paper</h2>
+      <div class="sg-signup">
+        <NewsletterSignup id="sg-newsletter-paper" label="Next date not set yet" button="Tell me" />
+      </div>
+    </Section>
+  </div>
+
+  <!-- Section grounds -->
+  <div id="sections">
+    {grounds.map((g) => (
+      <Section ground={g}>
+        <SectionHeading eyebrow={`Section · ${g}`}>A band on {g}.</SectionHeading>
+        {g !== 'dandelion' && (
+          <p class="t-body sg-intro">
+            Full-bleed band, content column capped at the content measure, gutter 32px or 16px under
+            600px.
+          </p>
+        )}
+      </Section>
+    ))}
+  </div>
+</BaseLayout>
+
+<style>
+  .sg-intro {
+    margin-top: var(--space-5);
+    max-width: var(--measure-text);
+  }
+
+  .sg-toc {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-4);
+    margin-top: var(--space-5);
+  }
+
+  .sg-h {
+    margin-bottom: var(--space-5);
+  }
+
+  .sg-swatches {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(calc(var(--space-10) + var(--space-7)), 1fr));
+    gap: var(--space-5);
+  }
+
+  .sg-swatch {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .sg-swatch__chip {
+    display: block;
+    aspect-ratio: 3 / 2;
+    border: var(--border-hairline) solid var(--hairline);
+  }
+
+  .sg-type {
+    display: grid;
+    gap: var(--space-7);
+  }
+
+  .sg-row,
+  .sg-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .sg-stack {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: var(--space-5);
+  }
+
+  .sg-cards,
+  .sg-routes {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .sg-cards {
+    align-items: start;
+  }
+
+  .sg-routes--three {
+    margin-top: var(--space-5);
+  }
+
+  .sg-form {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .sg-pair {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+    max-width: var(--field-measure);
+  }
+
+  .sg-panel {
+    padding: var(--space-7);
+    max-width: var(--card-measure);
+  }
+
+  .sg-signup {
+    margin-top: var(--space-7);
+    max-width: var(--field-measure);
+  }
+
+  @media (min-width: 768px) {
+    .sg-cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .sg-routes--two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .sg-cards,
+    .sg-routes--three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

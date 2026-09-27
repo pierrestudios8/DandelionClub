@@ -1,0 +1,209 @@
+---
+/**
+ * One card per Plantings entry. See design/components/PlantingCard.md.
+ *
+ * upcoming: paper-sunk card, date, time, site, one line, Join + Details.
+ * past:     whole-card link (as in design/pages/Plantings.dc.html) with the day's
+ *           photo, date, site, counts once known, and "See the day →".
+ */
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+import Button from './Button.astro';
+import Placeholder from './Placeholder.astro';
+import { isTodo } from '../lib/todo';
+
+interface Props {
+  variant?: 'upcoming' | 'past';
+  /** Formatted, e.g. "Saturday, 29 August 2026". */
+  date: string;
+  /** Formatted, e.g. "09:00 to 12:30". */
+  time?: string;
+  site: string;
+  summary?: string;
+  href: string;
+  /** Where the Join button goes; defaults to the sign-up form on the detail page. */
+  joinHref?: string;
+  treesPlanted?: number | string;
+  volunteers?: number | string;
+  image?: ImageMetadata;
+  imageAlt?: string;
+  headingLevel?: 2 | 3;
+}
+
+const {
+  variant = 'upcoming',
+  date,
+  time,
+  site,
+  summary,
+  href,
+  joinHref = `${href}#sign-up`,
+  treesPlanted,
+  volunteers,
+  image,
+  imageAlt = '',
+  headingLevel = 3,
+} = Astro.props;
+
+const Heading = `h${headingLevel}` as 'h2' | 'h3';
+const known = (v: unknown): v is number => typeof v === 'number' && !isTodo(v);
+const counts = [
+  known(treesPlanted) && `${treesPlanted} trees`,
+  known(volunteers) && `${volunteers} volunteers`,
+].filter(Boolean);
+---
+
+{variant === 'upcoming' ? (
+  <article class="card card--upcoming">
+    <span class="tag">Upcoming</span>
+    <div>
+      <p class="card__date">
+        <Placeholder value={date} />
+      </p>
+      {time && (
+        <p class="t-small muted">
+          <Placeholder value={time} />
+        </p>
+      )}
+    </div>
+    <Heading class="card__site">
+      <Placeholder value={site} />
+    </Heading>
+    {summary && (
+      <p class="t-lead">
+        <Placeholder value={summary} />
+      </p>
+    )}
+    <div class="card__actions">
+      <Button href={joinHref}>Join</Button>
+      <Button href={href} variant="ghost">
+        Details
+      </Button>
+    </div>
+  </article>
+) : (
+  <a class="card card--past" href={href}>
+    <div class="card__media">
+      {image ? (
+        <Image
+          src={image}
+          alt={imageAlt}
+          widths={[390, 780]}
+          sizes="(min-width: 1024px) 33vw, 100vw"
+        />
+      ) : (
+        <span class="t-small">Photo from the day to come</span>
+      )}
+    </div>
+    <div class="card__body">
+      <span class="tag">Planted</span>
+      <p class="card__date">
+        <Placeholder value={date} />
+      </p>
+      <Heading class="card__site card__site--sm">
+        <Placeholder value={site} />
+      </Heading>
+      {counts.length > 0 && <p class="t-small muted">{counts.join(' · ')}</p>}
+      <span class="card__more">
+        See the day <span aria-hidden="true">→</span>
+      </span>
+    </div>
+  </a>
+)}
+
+<style>
+  .card {
+    display: grid;
+    align-content: start;
+    border: var(--border-strong) solid var(--night);
+    border-radius: var(--radius-none);
+    color: var(--night);
+  }
+
+  .card--upcoming {
+    gap: var(--space-4);
+    padding: var(--space-5);
+    background: var(--paper-sunk);
+    max-width: var(--card-measure);
+  }
+
+  .card--past {
+    background: var(--paper);
+    text-decoration: none;
+  }
+
+  .card--past:hover .card__more {
+    text-decoration: underline;
+    text-decoration-thickness: var(--border-strong);
+  }
+
+  .tag {
+    justify-self: start;
+    padding: var(--space-1) var(--space-2);
+    background: var(--night);
+    color: var(--dandelion);
+    font-family: var(--type-tag-family);
+    font-size: var(--type-tag-size);
+    line-height: var(--type-tag-leading);
+    font-weight: var(--type-tag-weight);
+    text-transform: uppercase;
+  }
+
+  .card__date {
+    font-size: var(--type-subtitle-size);
+    line-height: var(--type-subtitle-leading);
+    font-weight: var(--type-subtitle-weight);
+  }
+
+  .card__site {
+    font-size: var(--type-title-sm-size);
+    line-height: var(--type-title-sm-leading);
+    font-weight: var(--type-title-sm-weight);
+  }
+
+  .card__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .card__media {
+    aspect-ratio: 3 / 2;
+    background: var(--night-raised);
+    color: var(--ink-muted-on-night);
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+  }
+
+  .card__media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .card__body {
+    display: grid;
+    gap: var(--space-2);
+    padding: var(--space-5);
+  }
+
+  .card__more {
+    font-family: var(--type-eyebrow-sm-family);
+    font-size: var(--type-eyebrow-sm-size);
+    line-height: var(--type-eyebrow-sm-leading);
+    font-weight: var(--type-eyebrow-sm-weight);
+    text-transform: uppercase;
+  }
+
+  @media (min-width: 600px) {
+    .card--upcoming {
+      padding: var(--space-7);
+    }
+
+    .card__site:not(.card__site--sm) {
+      font-size: var(--type-title-size);
+      line-height: var(--type-title-leading);
+    }
+  }
+</style>

@@ -9,3 +9,4 @@ test-results/
 src/styles/tokens.css
 # Markdown is hand-written prose (and the brief is read-only)
 *.md
+screenshots/

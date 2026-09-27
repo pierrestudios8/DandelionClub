@@ -1,0 +1,140 @@
+---
+/**
+ * The site's call to action: square, night fill, 2px dandelion outline and label.
+ * Renders a link when `href` is set, otherwise a <button>.
+ * See design/components/Button.md.
+ */
+import type { HTMLAttributes } from 'astro/types';
+
+type Props = {
+  variant?: 'primary' | 'ghost';
+  /** Sentence case instead of capitals. Single-word secondary actions only. */
+  quiet?: boolean;
+  /** Fill the container width (stacked mobile actions). */
+  block?: boolean;
+  /** Tighter padding, for buttons joined to an input. */
+  compact?: boolean;
+  href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
+  class?: string;
+} & Omit<HTMLAttributes<'a'> & HTMLAttributes<'button'>, 'type'>;
+
+const {
+  variant = 'primary',
+  quiet = false,
+  block = false,
+  compact = false,
+  href,
+  type = 'button',
+  disabled = false,
+  class: className,
+  ...rest
+} = Astro.props;
+
+const classes = [
+  'btn',
+  `btn--${variant}`,
+  quiet && 'btn--quiet',
+  block && 'btn--block',
+  compact && 'btn--compact',
+  className,
+];
+---
+
+{href && !disabled ? (
+  <a class:list={classes} href={href} {...rest}>
+    <slot />
+  </a>
+) : (
+  <button class:list={classes} type={type} disabled={disabled} {...rest}>
+    <slot />
+  </button>
+)}
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-5) var(--space-6);
+    font-family: var(--type-button-family);
+    font-size: var(--type-button-size);
+    line-height: var(--type-button-leading);
+    font-weight: var(--type-button-weight);
+    text-transform: uppercase;
+    text-decoration: none;
+    text-align: center;
+    color: var(--dandelion);
+    background: var(--night);
+    border: var(--border-strong) solid var(--dandelion);
+    border-radius: var(--radius-none);
+    cursor: pointer;
+    transition:
+      background-color 150ms ease-out,
+      color 150ms ease-out,
+      border-color 150ms ease-out;
+  }
+
+  .btn:hover {
+    background: var(--dandelion);
+    color: var(--night);
+    border-color: var(--night);
+  }
+
+  /* Ghost: transparent, night outline on paper and dandelion grounds… */
+  .btn--ghost {
+    background: transparent;
+    color: var(--night);
+    border-color: var(--night);
+  }
+
+  .btn--ghost:hover {
+    background: var(--night);
+    color: var(--dandelion);
+    border-color: var(--night);
+  }
+
+  /* …dandelion outline on night. */
+  :global(.on-night) .btn--ghost {
+    color: var(--dandelion);
+    border-color: var(--dandelion);
+  }
+
+  :global(.on-night) .btn--ghost:hover {
+    background: var(--dandelion);
+    color: var(--night);
+  }
+
+  .btn--quiet {
+    text-transform: none;
+  }
+
+  .btn--block {
+    display: flex;
+    width: 100%;
+  }
+
+  .btn--compact {
+    padding: var(--space-3) var(--space-5);
+    white-space: nowrap;
+  }
+
+  .btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  .btn:disabled:hover {
+    background: var(--night);
+    color: var(--dandelion);
+    border-color: var(--dandelion);
+  }
+
+  .btn--ghost:disabled:hover {
+    background: transparent;
+    color: var(--night);
+    border-color: var(--night);
+  }
+</style>

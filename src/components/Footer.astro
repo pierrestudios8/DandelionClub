@@ -1,0 +1,161 @@
+---
+/**
+ * Night footer: logo, Visit and Take part columns, newsletter sign-up,
+ * contact, NPC name and registration, Privacy (docs/SPEC.md, Footer).
+ */
+import NewsletterSignup from './NewsletterSignup.astro';
+import Placeholder from './Placeholder.astro';
+import { footerTakePart, footerVisit } from '../lib/nav';
+import { isTodo } from '../lib/todo';
+import settings from '../content/settings.json';
+
+const { npcName, npcRegistration, email, social } = settings;
+const socials = [
+  { label: 'Instagram', href: social.instagram },
+  { label: 'LinkedIn', href: social.linkedin },
+];
+---
+
+<footer class="footer on-night">
+  <div class="container footer__top">
+    <a class="footer__logo" href="/">
+      <img
+        src="/brand/dandelion-club-logo-yellow.svg"
+        alt="Dandelion Club"
+        width="160"
+        height="65"
+        loading="lazy"
+      />
+    </a>
+    <nav class="footer__col" aria-labelledby="footer-visit">
+      <p class="t-eyebrow-sm footer__heading" id="footer-visit">
+        Visit
+      </p>
+      <ul role="list">
+        {footerVisit.map((l) => (
+          <li>
+            <a href={l.href}>{l.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    <nav class="footer__col" aria-labelledby="footer-take-part">
+      <p class="t-eyebrow-sm footer__heading" id="footer-take-part">
+        Take part
+      </p>
+      <ul role="list">
+        {footerTakePart.map((l) => (
+          <li>
+            <a href={l.href}>{l.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    <div class="footer__signup">
+      <NewsletterSignup id="footer-newsletter" />
+    </div>
+  </div>
+  <div class="container footer__bottom t-small">
+    <p class="muted">
+      <a href={`mailto:${email}`}>{email}</a>
+      {socials.map((s) =>
+        isTodo(s.href) ? (
+          <>
+            {' · '}
+            {s.label} <Placeholder value={s.href} />
+          </>
+        ) : (
+          <>
+            {' · '}
+            <a href={s.href}>{s.label}</a>
+          </>
+        ),
+      )}
+    </p>
+    <p class="muted">
+      {npcName} · Registration <Placeholder value={npcRegistration} />
+    </p>
+    <p class="muted">
+      <a href="/privacy">Privacy</a>
+    </p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: var(--border-hairline) solid var(--hairline-on-night);
+    padding-block: var(--space-9) var(--space-7);
+  }
+
+  .footer__top {
+    display: grid;
+    gap: var(--space-7) var(--space-4);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .footer__logo,
+  .footer__signup {
+    grid-column: 1 / -1;
+  }
+
+  .footer__logo img {
+    width: var(--logo-width-sm);
+    height: var(--logo-height-sm);
+  }
+
+  .footer__heading {
+    color: var(--dandelion);
+    margin-bottom: var(--space-3);
+  }
+
+  .footer__col ul {
+    display: grid;
+    gap: var(--space-3);
+    font-size: var(--type-small-lg-size);
+    line-height: var(--type-small-lg-leading);
+  }
+
+  .footer__col a {
+    text-decoration: none;
+  }
+
+  .footer__col a:hover {
+    text-decoration: underline;
+  }
+
+  .footer__bottom {
+    display: grid;
+    gap: var(--space-2);
+    margin-top: var(--space-8);
+    padding-top: var(--space-5);
+    border-top: var(--border-hairline) solid var(--hairline-on-night);
+  }
+
+  @media (min-width: 1024px) {
+    .footer__top {
+      grid-template-columns: 3fr 2fr 2fr 1fr 4fr;
+    }
+
+    .footer__logo,
+    .footer__signup {
+      grid-column: auto;
+    }
+
+    .footer__signup {
+      grid-column: 5;
+    }
+
+    .footer__logo img {
+      width: var(--logo-width);
+      height: var(--logo-height);
+    }
+
+    .footer__bottom {
+      grid-template-columns: 1fr auto;
+    }
+
+    .footer__bottom p:first-child {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

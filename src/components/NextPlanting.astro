@@ -1,0 +1,92 @@
+---
+/**
+ * Home's "Next planting" section on paper: heading, two or three short lead lines,
+ * the next planting's card, and a link to all plantings. With nothing scheduled
+ * it says so and offers the newsletter instead; it never shows a past date.
+ * See design/components/NextPlanting.md.
+ */
+import NewsletterSignup from './NewsletterSignup.astro';
+import PlantingCard from './PlantingCard.astro';
+import Section from './Section.astro';
+import SectionHeading from './SectionHeading.astro';
+
+interface Props {
+  /** Prefix for element ids; change it if the section appears twice on a page. */
+  id?: string;
+  planting?: {
+    date: string;
+    time?: string;
+    site: string;
+    summary?: string;
+    href: string;
+  };
+}
+
+const { id = 'next-planting', planting } = Astro.props;
+---
+
+<Section ground="paper" aria-labelledby={`${id}-heading`}>
+  <div class="next">
+    <div class="next__intro">
+      <SectionHeading eyebrow="Next planting" id={`${id}-heading`}>
+        {planting ? 'Come and dig with us.' : 'Coming soon.'}
+      </SectionHeading>
+      <div class="next__lines t-lead">
+        <slot>
+          <p>Planting days are on Saturday mornings. Families welcome, no experience needed.</p>
+          <p>
+            Bring gloves if you've got them.
+            <br />
+            We'll bring everything else.
+          </p>
+        </slot>
+      </div>
+      <a class="next__all" href="/plantings">
+        All plantings <span aria-hidden="true">→</span>
+      </a>
+    </div>
+    <div class="next__card">
+      {planting ? (
+        <PlantingCard {...planting} />
+      ) : (
+        <NewsletterSignup id={`${id}-newsletter`} label="Tell me the next date" button="Tell me" />
+      )}
+    </div>
+  </div>
+</Section>
+
+<style>
+  .next {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  .next__intro {
+    display: grid;
+    align-content: start;
+    gap: var(--space-5);
+  }
+
+  .next__lines {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .next__all {
+    font-family: var(--type-eyebrow-sm-family);
+    font-size: var(--type-eyebrow-sm-size);
+    line-height: var(--type-eyebrow-sm-leading);
+    font-weight: var(--type-eyebrow-sm-weight);
+    text-transform: uppercase;
+  }
+
+  @media (min-width: 1024px) {
+    .next {
+      grid-template-columns: 6fr 1fr 5fr;
+    }
+
+    .next__card {
+      grid-column: 3;
+    }
+  }
+</style>

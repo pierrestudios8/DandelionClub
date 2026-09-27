@@ -12,12 +12,17 @@ describe('findTodos', () => {
       join(dir, 'plantings', 'silukhanyo.md'),
       '---\ntitle: Silukhanyo\ntreesPlanted: "TODO: trees planted"\n---\n',
     );
-    writeFileSync(join(dir, 'settings.json'), '{\n  "treePrice": "TODO: price per tree",\n}\n');
+    writeFileSync(
+      join(dir, 'settings.json'),
+      '{\n  "treePrice": "TODO: price per tree",\n  "list": ["TODO: in an array"],\n  "obj": { "note": "TODO: in an object" }\n}\n',
+    );
     writeFileSync(join(dir, 'notes.txt'), 'TODO: not content');
 
     expect(findTodos(dir)).toEqual([
       { file: 'plantings/silukhanyo.md', line: 3, text: 'TODO: trees planted' },
       { file: 'settings.json', line: 2, text: 'TODO: price per tree' },
+      { file: 'settings.json', line: 3, text: 'TODO: in an array' },
+      { file: 'settings.json', line: 4, text: 'TODO: in an object' },
     ]);
   });
 

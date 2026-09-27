@@ -43,6 +43,8 @@ const siteName = site?.data.name ?? data.site.id;
 const date = formatDate(data.date, { weekday: true });
 const time = formatTimeRange(data.start, data.end);
 const mapUrl = site && !isTodo(site.data.mapUrl) ? site.data.mapUrl : undefined;
+const icsUrl =
+  !isTodo(data.start) && !isTodo(data.end) ? `/plantings/${planting.id}.ics` : undefined;
 const counts = [
   typeof data.treesPlanted === 'number' && `${data.treesPlanted} trees planted`,
   typeof data.volunteers === 'number' && `${data.volunteers} volunteers`,
@@ -134,6 +136,11 @@ const heardOptions = [
                   <p class="t-lead">
                     <Placeholder value={date} />, <Placeholder value={time} />
                   </p>
+                  {icsUrl && (
+                    <a class="details__link t-small" href={icsUrl} download>
+                      Add to calendar <span aria-hidden="true">→</span>
+                    </a>
+                  )}
                 </dd>
               </div>
               <div class="details__row">

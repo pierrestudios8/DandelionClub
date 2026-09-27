@@ -97,7 +97,27 @@ function enhance(form: HTMLFormElement) {
         body: new FormData(form),
         headers: { Accept: 'application/json' },
       });
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      if (response.status === 422) {
+        // The server found something the browser didn't: show it on the field.
+        const { errors } = (await response.json()) as { errors: Record<string, string> };
+        let first: Control | null = null;
+        for (const [name, message] of Object.entries(errors)) {
+          const control = form.querySelector<Control>(`[name="${CSS.escape(name)}"]`);
+          if (control?.id) {
+            setError(control, message);
+            first ??= control;
+          }
+        }
+        if (first) {
+          first.focus();
+          return;
+        }
+        throw new Error('Invalid form');
+      }
+      if (!response.ok) {
+        const body = (await response.json().catch(() => ({}))) as { error?: string };
+        throw new Error(body.error ?? `HTTP ${response.status}`);
+      }
       if (success) {
         form.hidden = true;
         form.dispatchEvent(new CustomEvent('dc:submitted', { bubbles: true }));
@@ -106,8 +126,12 @@ function enhance(form: HTMLFormElement) {
       } else {
         form.reset();
       }
-    } catch {
+    } catch (error) {
       if (failure) {
+        const detail = failure.querySelector<HTMLElement>('[data-failure-detail]');
+        if (detail)
+          detail.textContent =
+            error instanceof Error && !error.message.startsWith('HTTP') ? error.message : '';
         failure.hidden = false;
         failure.focus();
       }

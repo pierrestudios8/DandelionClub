@@ -1,6 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
-import { PAGES, PHASE_4_ROUTES } from './pages';
+import { PAGES } from './pages';
 
 for (const [name, path] of Object.entries(PAGES)) {
   test(`${name}: one h1, no axe violations, no console errors`, async ({ page }, info) => {
@@ -23,7 +23,7 @@ for (const [name, path] of Object.entries(PAGES)) {
   });
 }
 
-test('every internal link resolves (Phase 4 routes excepted)', async ({ page, request }, info) => {
+test('every internal link resolves', async ({ page, request }, info) => {
   test.skip(info.project.name !== 'desktop', 'Links are the same at every width');
   const checked = new Map<string, number>();
   const missingAnchors: string[] = [];
@@ -40,14 +40,14 @@ test('every internal link resolves (Phase 4 routes excepted)', async ({ page, re
           missingAnchors.push(`${path} → ${href}`);
         continue;
       }
-      if (PHASE_4_ROUTES.some((r) => r.test(url.pathname)) || checked.has(url.pathname)) continue;
+      if (checked.has(url.pathname)) continue;
       checked.set(url.pathname, (await request.get(url.pathname)).status());
     }
   }
   const broken = [...checked].filter(([, status]) => status !== 200);
   expect(broken).toEqual([]);
   expect(missingAnchors).toEqual([]);
-  expect(checked.size).toBeGreaterThan(5);
+  expect(checked.size).toBeGreaterThan(15);
 });
 
 test.describe('planting sign-up', () => {
@@ -178,4 +178,54 @@ test('newsletter sign-up explains a bad email', async ({ page }) => {
   await expect(footer.locator('#footer-newsletter-email-error')).toHaveText(
     'Enter a full email address, like name@example.com.',
   );
+});
+
+test.describe('enquiry forms without JavaScript', () => {
+  test.use({ javaScriptEnabled: false });
+
+  test('propose a site posts and lands on the thank-you page', async ({ page }) => {
+    await page.goto(PAGES['propose-a-site']);
+    const form = page.locator('#propose-a-site');
+    await form.getByLabel('School or organisation', { exact: true }).fill('Test Primary');
+    await form.getByLabel('Your name', { exact: true }).fill('Test Person');
+    await form.getByLabel('Phone', { exact: true }).fill('021 000 0000');
+    await form.getByLabel('Email', { exact: true }).fill('test@example.com');
+    await form.getByLabel('Where is it?', { exact: true }).fill('Test Road, Cape Town');
+    await form.getByLabel("What's there now?", { exact: true }).fill('A bare field with a tap.');
+    await form.getByLabel('Who will look after it?', { exact: true }).fill('The eco club.');
+    await form.locator('#site-consent').check();
+    await form.getByRole('button', { name: 'Send the proposal' }).click();
+    await expect(page).toHaveURL(/\/thank-you\/site$/);
+  });
+
+  test('partner enquiry posts and lands on the thank-you page', async ({ page }) => {
+    await page.goto(PAGES.partner);
+    const form = page.locator('#partner');
+    await form.getByLabel('Your name', { exact: true }).fill('Test Person');
+    await form.getByLabel('Organisation', { exact: true }).fill('Test Co');
+    await form.getByLabel('Email', { exact: true }).fill('test@example.com');
+    await form.getByLabel('What are you interested in?').selectOption('programme');
+    await form
+      .getByLabel('Message', { exact: true })
+      .fill('We would like to fund outdoor learning.');
+    await form.locator('#partner-consent').check();
+    await form.getByRole('button', { name: 'Send the enquiry' }).click();
+    await expect(page).toHaveURL(/\/thank-you\/partner$/);
+  });
+});
+
+test('partner enquiry explains an unchosen interest', async ({ page }) => {
+  await page.goto(PAGES.partner);
+  await page.locator('#partner').getByRole('button', { name: 'Send the enquiry' }).click();
+  await expect(page.locator('#partner-interest-error')).toHaveText(
+    "Choose what you're interested in.",
+  );
+});
+
+test('an unknown address shows the 404 page', async ({ page }) => {
+  const response = await page.goto('/this-page-does-not-exist');
+  expect(response?.status()).toBe(404);
+  await expect(page.locator('h1')).toHaveText(/This page blew away/i);
+  const { violations } = await new AxeBuilder({ page }).analyze();
+  expect(violations).toEqual([]);
 });

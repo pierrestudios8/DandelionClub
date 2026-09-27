@@ -1,0 +1,82 @@
+---
+/** Not found: "This page blew away." with the seed (docs/SPEC.md). */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import Section from '../components/Section.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+---
+
+<BaseLayout
+  title="Page not found"
+  description="This page blew away. Try the home page or the plantings."
+  noindex
+>
+  <Section ground="night">
+    <div class="lost">
+      <div class="lost__text">
+        <SectionHeading eyebrow="Page not found" level={1} size="display-xl">
+          This page blew away.
+        </SectionHeading>
+        <p class="t-lead">It may have moved, or the link may be wrong. Try one of these instead.</p>
+        <div class="lost__actions">
+          <Button href="/">Home page</Button>
+          <Button href="/plantings" variant="ghost">
+            Plantings
+          </Button>
+        </div>
+      </div>
+      <img class="lost__seed" src="/brand/seed-yellow.svg" alt="" width="106" height="134" />
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .lost {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  .lost__text {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .lost__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-3);
+  }
+
+  .lost__seed {
+    width: var(--seed-size-sm);
+    justify-self: center;
+    transform: rotate(24deg);
+  }
+
+  @media (min-width: 1024px) {
+    .lost {
+      grid-template-columns: 2fr 1fr;
+      align-items: center;
+    }
+
+    .lost__seed {
+      width: var(--seed-size);
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .lost__seed {
+      animation: drift 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes drift {
+      from {
+        transform: translate(0, 0) rotate(18deg);
+      }
+      to {
+        transform: translate(var(--space-5), calc(var(--space-4) * -1)) rotate(30deg);
+      }
+    }
+  }
+</style>

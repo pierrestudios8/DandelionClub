@@ -1,0 +1,180 @@
+---
+/** Partner enquiry (docs/SPEC.md, Forms): for businesses and funders. Plain register. */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Button from '../../components/Button.astro';
+import Form from '../../components/Form.astro';
+import FormField from '../../components/FormField.astro';
+import PageIntro from '../../components/PageIntro.astro';
+import Placeholder from '../../components/Placeholder.astro';
+import Section from '../../components/Section.astro';
+import { getSettings } from '../../lib/content';
+import { THANK_YOU } from '../../lib/forms/types';
+
+const settings = await getSettings();
+const interests = [
+  { value: '', label: 'Choose one' },
+  { value: 'site', label: 'Funding a site' },
+  { value: 'school', label: 'Supporting a school' },
+  { value: 'programme', label: 'Funding a programme' },
+  { value: 'other', label: 'Something else' },
+];
+---
+
+<BaseLayout
+  title="Partner with us"
+  description={`Fund a food forest site, a school or a programme. ${settings.npcName} runs Dandelion Club in the Western Cape.`}
+>
+  <PageIntro eyebrow="Partner with us" title="Fund a food forest.">
+    Dandelion Club is run by {settings.npcName}. Talk to us about funding a site, a school or one of
+    our programmes.
+  </PageIntro>
+
+  <Section ground="paper">
+    <div class="layout">
+      <Form
+        id="partner"
+        action="/api/partner"
+        aria-labelledby="partner-heading"
+        class="enquiry"
+        successTitle={THANK_YOU.partner.title}
+      >
+        <h2 class="t-display heading" id="partner-heading">
+          Start a conversation.
+        </h2>
+        <div class="pair">
+          <FormField
+            id="partner-name"
+            name="name"
+            label="Your name"
+            autocomplete="name"
+            invalid="Enter your name."
+          />
+          <FormField
+            id="partner-organisation"
+            name="organisation"
+            label="Organisation"
+            autocomplete="organization"
+            invalid="Enter your organisation's name."
+          />
+        </div>
+        <FormField
+          id="partner-email"
+          name="email"
+          label="Email"
+          type="email"
+          autocomplete="email"
+          invalid="Enter a full email address, like name@example.com."
+        />
+        <FormField
+          id="partner-interest"
+          name="interest"
+          label="What are you interested in?"
+          type="select"
+          options={interests}
+          value=""
+          invalid="Choose what you're interested in."
+        />
+        <FormField
+          id="partner-message"
+          name="message"
+          label="Message"
+          type="textarea"
+          hint="What you have in mind, and any timing or reporting you need."
+          invalid="Tell us a little about what you have in mind."
+        />
+        <FormField
+          id="partner-consent"
+          name="consent"
+          type="checkbox"
+          invalid="Tick this box so we can reply to you."
+        >
+          I agree that Dandelion Club may store these details to reply to this enquiry.{' '}
+          <a href="/privacy">Privacy</a>
+        </FormField>
+        <div>
+          <Button type="submit">Send the enquiry</Button>
+        </div>
+        <p slot="success">{THANK_YOU.partner.line}</p>
+      </Form>
+
+      <aside class="facts" aria-labelledby="facts-heading">
+        <p class="t-eyebrow-sm" id="facts-heading">
+          The organisation
+        </p>
+        <dl>
+          <dt class="t-small muted">Run by</dt>
+          <dd class="t-lead">{settings.npcName}</dd>
+          <dt class="t-small muted">NPC registration</dt>
+          <dd class="t-lead">
+            <Placeholder value={settings.npcRegistration} />
+          </dd>
+          <dt class="t-small muted">Email</dt>
+          <dd class="t-lead">
+            <a href={`mailto:${settings.email}`}>{settings.email}</a>
+          </dd>
+        </dl>
+        <p class="t-small">
+          <a href="/about">Governance and reports</a>
+        </p>
+      </aside>
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .layout {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  .layout :global(.enquiry) {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  @media (max-width: 599px) {
+    .heading {
+      font-size: var(--type-display-sm-size);
+      line-height: var(--type-display-sm-leading);
+    }
+  }
+
+  .pair {
+    display: grid;
+    gap: var(--space-5);
+    max-width: var(--field-measure);
+  }
+
+  .facts {
+    display: grid;
+    gap: var(--space-4);
+    align-content: start;
+    padding-top: var(--space-5);
+    border-top: var(--border-strong) solid var(--night);
+  }
+
+  .facts dl {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .facts dd + dt {
+    margin-top: var(--space-3);
+  }
+
+  @media (min-width: 600px) {
+    .pair {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .layout {
+      grid-template-columns: 7fr 1fr 4fr;
+    }
+
+    .facts {
+      grid-column: 3;
+    }
+  }
+</style>

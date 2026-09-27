@@ -11,9 +11,11 @@ interface Props {
   author: string;
   tag: string;
   image?: ImageMetadata;
+  headingLevel?: 2 | 3;
 }
 
-const { title, href, date, author, tag, image } = Astro.props;
+const { title, href, date, author, tag, image, headingLevel = 3 } = Astro.props;
+const Heading = `h${headingLevel}` as 'h2' | 'h3';
 ---
 
 <a class="post" href={href}>
@@ -22,7 +24,9 @@ const { title, href, date, author, tag, image } = Astro.props;
   </div>
   <div class="post__text">
     <span class="post__tag">{tag}</span>
-    <h3 class="post__title">{title}</h3>
+    <Heading class="post__title">
+      <Placeholder value={title} />
+    </Heading>
     <p class="t-small muted">
       {date} · <Placeholder value={author} />
     </p>

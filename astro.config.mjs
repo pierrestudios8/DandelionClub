@@ -28,5 +28,8 @@ export default defineConfig({
   devToolbar: { enabled: !process.env.DC_E2E },
   adapter: vercel(),
   markdown: { rehypePlugins: [rehypeTodo] },
-  integrations: [styleguide, sitemap({ filter: (page) => !/\/(styleguide|thank-you)\//.test(page) })],
+  integrations: [
+    styleguide,
+    sitemap({ filter: (page) => !/\/(styleguide|thank-you)\//.test(page) }),
+  ],
 });

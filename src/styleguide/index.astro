@@ -19,7 +19,6 @@ import SectionHeading from '../components/SectionHeading.astro';
 import SeedBand from '../components/SeedBand.astro';
 import settings from '../content/settings.json';
 import tokens from '../../design/tokens.json';
-import { DESIGN_DERIVED } from '../../scripts/tokens';
 
 const upcoming = {
   date: 'TODO: Saturday, date',
@@ -29,10 +28,7 @@ const upcoming = {
   href: '/plantings/example',
 };
 
-const typeStyles = [
-  ...tokens.type.groups.flatMap((g) => g.styles.map((s) => ({ ...s, derived: false }))),
-  ...DESIGN_DERIVED.type.map((s) => ({ ...s, sample: s.name, usage: '', derived: true })),
-];
+const typeStyles = tokens.type.groups.flatMap((g) => g.styles);
 
 const grounds = ['paper', 'paper-sunk', 'night', 'dandelion'] as const;
 
@@ -98,7 +94,6 @@ const heardOptions = [
         <li>
           <p class="t-small muted">
             .t-{s.name} · {s.fontSize}/{s.lineHeight} · {s.fontWeight}
-            {s.derived && ' · from the page designs'}
           </p>
           <p class={`t-${s.name}`}>{s.sample}</p>
         </li>

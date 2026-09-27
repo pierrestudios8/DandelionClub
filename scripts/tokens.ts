@@ -6,9 +6,8 @@
  * (--type-<name>-size / -leading / -weight / -family) and one utility class
  * per type style (.t-<name>).
  *
- * A few values appear in the approved page designs (design/pages/*.dc.html)
- * but not in tokens.json. They live in DESIGN_DERIVED below, so tokens.css
- * stays the only place a raw value is written. See docs/DECISIONS.md.
+ * design/tokens.json (v2 onwards) holds every value, including the mobile and
+ * layout sizes the approved page designs use.
  */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -40,58 +39,6 @@ export interface Tokens {
 }
 
 /** Sizes taken from the approved page designs that tokens.json doesn't carry. */
-export const DESIGN_DERIVED = {
-  type: [
-    // Mobile section headlines (HomeMobile, PlantingDetailMobile).
-    {
-      name: 'display-sm',
-      family: 'display',
-      fontSize: '32px',
-      lineHeight: '30px',
-      fontWeight: 900,
-    },
-    // Eyebrows under 600px, route-card kickers, footer headings.
-    {
-      name: 'eyebrow-sm',
-      family: 'display',
-      fontSize: '14px',
-      lineHeight: '18px',
-      fontWeight: 900,
-    },
-    // Route-card titles (GetInvolved).
-    {
-      name: 'eyebrow-lg',
-      family: 'display',
-      fontSize: '26px',
-      lineHeight: '28px',
-      fontWeight: 900,
-    },
-    // Tags on cards (components.reference.css .dc-tag).
-    { name: 'tag', family: 'display', fontSize: '12px', lineHeight: '16px', fontWeight: 900 },
-    // Card titles (Plantings past cards, mobile planting card).
-    { name: 'title-sm', family: 'text', fontSize: '26px', lineHeight: '32px', fontWeight: 700 },
-    // Mobile subtitles (HomeMobile site and programme names).
-    { name: 'subtitle-sm', family: 'text', fontSize: '20px', lineHeight: '24px', fontWeight: 700 },
-    // Card descriptions, footer links, mobile body.
-    { name: 'small-lg', family: 'text', fontSize: '16px', lineHeight: '24px', fontWeight: 400 },
-  ] satisfies (TypeStyle & { family: string })[],
-  layout: [
-    { name: 'focus-offset', value: '3px' },
-    { name: 'logo-width', value: '160px' },
-    { name: 'logo-height', value: '65px' },
-    { name: 'logo-width-sm', value: '128px' },
-    { name: 'logo-height-sm', value: '52px' },
-    { name: 'seedband-height', value: '390px' },
-    { name: 'seedband-height-sm', value: '280px' },
-    { name: 'seed-size', value: '150px' },
-    { name: 'seed-size-sm', value: '110px' },
-    { name: 'seed-pattern-size', value: '144px' },
-    { name: 'seed-pattern-size-sm', value: '120px' },
-    { name: 'card-measure', value: '560px' },
-    { name: 'field-measure', value: '560px' },
-  ] satisfies NamedToken[],
-};
-
 const toPx = (v: string | number) => (typeof v === 'number' ? String(v) : v);
 
 /** Resolves `{name}` references against the colour list. */
@@ -135,7 +82,6 @@ export function buildCss(tokens: Tokens): string {
   const styles = tokens.type.groups.flatMap((g) =>
     g.styles.map((s) => ({ ...s, family: g.family })),
   );
-  const allStyles = [...styles, ...DESIGN_DERIVED.type];
 
   const root = [
     '  /* colour */',
@@ -156,10 +102,6 @@ export function buildCss(tokens: Tokens): string {
     '',
     '  /* type styles */',
     ...styles.flatMap((s) => typeVars(s, s.family)),
-    '',
-    '  /* from the approved page designs, not in tokens.json */',
-    ...DESIGN_DERIVED.type.flatMap((s) => typeVars(s, s.family)),
-    ...DESIGN_DERIVED.layout.map((t) => `  --${t.name}: ${t.value};`),
   ];
 
   return [
@@ -183,7 +125,7 @@ export function buildCss(tokens: Tokens): string {
     '  }',
     '}',
     '',
-    ...allStyles.map((s) => typeClass(s.name, s.family)),
+    ...styles.map((s) => typeClass(s.name, s.family)),
     '',
   ].join('\n');
 }

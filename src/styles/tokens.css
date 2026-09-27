@@ -1,4 +1,4 @@
-/* Generated from design/tokens.json (Dandelion Club v1) by scripts/tokens.ts. Do not edit. */
+/* Generated from design/tokens.json (Dandelion Club v2) by scripts/tokens.ts. Do not edit. */
 
 :root {
   /* colour */
@@ -41,6 +41,19 @@
   /* layout */
   --measure-content: 1200px;
   --measure-text: 680px;
+  --focus-offset: 3px;
+  --logo-width: 160px;
+  --logo-height: 65px;
+  --logo-width-sm: 128px;
+  --logo-height-sm: 52px;
+  --seedband-height: 390px;
+  --seedband-height-sm: 280px;
+  --seed-size: 150px;
+  --seed-size-sm: 110px;
+  --seed-pattern-size: 144px;
+  --seed-pattern-size-sm: 120px;
+  --card-measure: 560px;
+  --field-measure: 560px;
 
   /* type styles */
   --type-display-xl-family: var(--font-display);
@@ -63,6 +76,22 @@
   --type-detail-size: 18px;
   --type-detail-leading: 21.6px;
   --type-detail-weight: 300;
+  --type-display-sm-family: var(--font-display);
+  --type-display-sm-size: 32px;
+  --type-display-sm-leading: 30px;
+  --type-display-sm-weight: 900;
+  --type-eyebrow-lg-family: var(--font-display);
+  --type-eyebrow-lg-size: 26px;
+  --type-eyebrow-lg-leading: 28px;
+  --type-eyebrow-lg-weight: 900;
+  --type-eyebrow-sm-family: var(--font-display);
+  --type-eyebrow-sm-size: 14px;
+  --type-eyebrow-sm-leading: 18px;
+  --type-eyebrow-sm-weight: 900;
+  --type-tag-family: var(--font-display);
+  --type-tag-size: 12px;
+  --type-tag-leading: 16px;
+  --type-tag-weight: 900;
   --type-title-family: var(--font-text);
   --type-title-size: 32px;
   --type-title-leading: 38.4px;
@@ -71,6 +100,14 @@
   --type-subtitle-size: 24px;
   --type-subtitle-leading: 28.8px;
   --type-subtitle-weight: 700;
+  --type-title-sm-family: var(--font-text);
+  --type-title-sm-size: 26px;
+  --type-title-sm-leading: 32px;
+  --type-title-sm-weight: 700;
+  --type-subtitle-sm-family: var(--font-text);
+  --type-subtitle-sm-size: 20px;
+  --type-subtitle-sm-leading: 24px;
+  --type-subtitle-sm-weight: 700;
   --type-lead-family: var(--font-text);
   --type-lead-size: 18px;
   --type-lead-leading: 19.8px;
@@ -83,53 +120,14 @@
   --type-body-size: 18px;
   --type-body-leading: 28px;
   --type-body-weight: 400;
-  --type-small-family: var(--font-text);
-  --type-small-size: 14px;
-  --type-small-leading: 20px;
-  --type-small-weight: 400;
-
-  /* from the approved page designs, not in tokens.json */
-  --type-display-sm-family: var(--font-display);
-  --type-display-sm-size: 32px;
-  --type-display-sm-leading: 30px;
-  --type-display-sm-weight: 900;
-  --type-eyebrow-sm-family: var(--font-display);
-  --type-eyebrow-sm-size: 14px;
-  --type-eyebrow-sm-leading: 18px;
-  --type-eyebrow-sm-weight: 900;
-  --type-eyebrow-lg-family: var(--font-display);
-  --type-eyebrow-lg-size: 26px;
-  --type-eyebrow-lg-leading: 28px;
-  --type-eyebrow-lg-weight: 900;
-  --type-tag-family: var(--font-display);
-  --type-tag-size: 12px;
-  --type-tag-leading: 16px;
-  --type-tag-weight: 900;
-  --type-title-sm-family: var(--font-text);
-  --type-title-sm-size: 26px;
-  --type-title-sm-leading: 32px;
-  --type-title-sm-weight: 700;
-  --type-subtitle-sm-family: var(--font-text);
-  --type-subtitle-sm-size: 20px;
-  --type-subtitle-sm-leading: 24px;
-  --type-subtitle-sm-weight: 700;
   --type-small-lg-family: var(--font-text);
   --type-small-lg-size: 16px;
   --type-small-lg-leading: 24px;
   --type-small-lg-weight: 400;
-  --focus-offset: 3px;
-  --logo-width: 160px;
-  --logo-height: 65px;
-  --logo-width-sm: 128px;
-  --logo-height-sm: 52px;
-  --seedband-height: 390px;
-  --seedband-height-sm: 280px;
-  --seed-size: 150px;
-  --seed-size-sm: 110px;
-  --seed-pattern-size: 144px;
-  --seed-pattern-size-sm: 120px;
-  --card-measure: 560px;
-  --field-measure: 560px;
+  --type-small-family: var(--font-text);
+  --type-small-size: 14px;
+  --type-small-leading: 20px;
+  --type-small-weight: 400;
 }
 
 /* display-xl is desktop-only; it steps down to display below 1024px. */
@@ -186,6 +184,34 @@
   line-height: var(--type-detail-leading);
   font-weight: var(--type-detail-weight);
 }
+.t-display-sm {
+  font-family: var(--type-display-sm-family);
+  font-size: var(--type-display-sm-size);
+  line-height: var(--type-display-sm-leading);
+  font-weight: var(--type-display-sm-weight);
+  text-transform: uppercase;
+}
+.t-eyebrow-lg {
+  font-family: var(--type-eyebrow-lg-family);
+  font-size: var(--type-eyebrow-lg-size);
+  line-height: var(--type-eyebrow-lg-leading);
+  font-weight: var(--type-eyebrow-lg-weight);
+  text-transform: uppercase;
+}
+.t-eyebrow-sm {
+  font-family: var(--type-eyebrow-sm-family);
+  font-size: var(--type-eyebrow-sm-size);
+  line-height: var(--type-eyebrow-sm-leading);
+  font-weight: var(--type-eyebrow-sm-weight);
+  text-transform: uppercase;
+}
+.t-tag {
+  font-family: var(--type-tag-family);
+  font-size: var(--type-tag-size);
+  line-height: var(--type-tag-leading);
+  font-weight: var(--type-tag-weight);
+  text-transform: uppercase;
+}
 .t-title {
   font-family: var(--type-title-family);
   font-size: var(--type-title-size);
@@ -197,6 +223,18 @@
   font-size: var(--type-subtitle-size);
   line-height: var(--type-subtitle-leading);
   font-weight: var(--type-subtitle-weight);
+}
+.t-title-sm {
+  font-family: var(--type-title-sm-family);
+  font-size: var(--type-title-sm-size);
+  line-height: var(--type-title-sm-leading);
+  font-weight: var(--type-title-sm-weight);
+}
+.t-subtitle-sm {
+  font-family: var(--type-subtitle-sm-family);
+  font-size: var(--type-subtitle-sm-size);
+  line-height: var(--type-subtitle-sm-leading);
+  font-weight: var(--type-subtitle-sm-weight);
 }
 .t-lead {
   font-family: var(--type-lead-family);
@@ -216,55 +254,15 @@
   line-height: var(--type-body-leading);
   font-weight: var(--type-body-weight);
 }
-.t-small {
-  font-family: var(--type-small-family);
-  font-size: var(--type-small-size);
-  line-height: var(--type-small-leading);
-  font-weight: var(--type-small-weight);
-}
-.t-display-sm {
-  font-family: var(--type-display-sm-family);
-  font-size: var(--type-display-sm-size);
-  line-height: var(--type-display-sm-leading);
-  font-weight: var(--type-display-sm-weight);
-  text-transform: uppercase;
-}
-.t-eyebrow-sm {
-  font-family: var(--type-eyebrow-sm-family);
-  font-size: var(--type-eyebrow-sm-size);
-  line-height: var(--type-eyebrow-sm-leading);
-  font-weight: var(--type-eyebrow-sm-weight);
-  text-transform: uppercase;
-}
-.t-eyebrow-lg {
-  font-family: var(--type-eyebrow-lg-family);
-  font-size: var(--type-eyebrow-lg-size);
-  line-height: var(--type-eyebrow-lg-leading);
-  font-weight: var(--type-eyebrow-lg-weight);
-  text-transform: uppercase;
-}
-.t-tag {
-  font-family: var(--type-tag-family);
-  font-size: var(--type-tag-size);
-  line-height: var(--type-tag-leading);
-  font-weight: var(--type-tag-weight);
-  text-transform: uppercase;
-}
-.t-title-sm {
-  font-family: var(--type-title-sm-family);
-  font-size: var(--type-title-sm-size);
-  line-height: var(--type-title-sm-leading);
-  font-weight: var(--type-title-sm-weight);
-}
-.t-subtitle-sm {
-  font-family: var(--type-subtitle-sm-family);
-  font-size: var(--type-subtitle-sm-size);
-  line-height: var(--type-subtitle-sm-leading);
-  font-weight: var(--type-subtitle-sm-weight);
-}
 .t-small-lg {
   font-family: var(--type-small-lg-family);
   font-size: var(--type-small-lg-size);
   line-height: var(--type-small-lg-leading);
   font-weight: var(--type-small-lg-weight);
+}
+.t-small {
+  font-family: var(--type-small-family);
+  font-size: var(--type-small-size);
+  line-height: var(--type-small-leading);
+  font-weight: var(--type-small-weight);
 }

@@ -1,0 +1,110 @@
+---
+/** Get involved hub: design/pages/GetInvolved.dc.html. */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import NewsletterSignup from '../../components/NewsletterSignup.astro';
+import PageIntro from '../../components/PageIntro.astro';
+import RouteCard from '../../components/RouteCard.astro';
+import Section from '../../components/Section.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import { getNextPlanting } from '../../lib/content';
+
+const next = await getNextPlanting();
+const joinHref = next ? `/plantings/${next.id}#sign-up` : '/plantings';
+---
+
+<BaseLayout
+  title="Get involved"
+  description="Plant with us on a Saturday, dedicate a tree, donate, propose a site or partner with Dandelion Club."
+>
+  <PageIntro eyebrow="Get involved" title="Find your way in.">
+    Plant with us on a Saturday, put your name to a tree, give, bring us a site, or fund the work.
+    Pick the one that fits.
+  </PageIntro>
+
+  <Section ground="paper" aria-label="Ways to get involved">
+    <div class="routes routes--two">
+      <RouteCard href={joinHref} title="Join a planting" audience="For anyone with a free Saturday">
+        Bring gloves, bring friends, bring the kids.
+      </RouteCard>
+      <RouteCard
+        href="/dedicate-a-tree"
+        title="Dedicate a tree"
+        audience="For a gift, a memory, a milestone"
+      >
+        Put a name to a tree that will feed a school.
+      </RouteCard>
+    </div>
+    <div class="routes routes--three">
+      <RouteCard href="/donate" title="Donate" audience="For individuals" tone="paper">
+        Once-off or monthly, by card or EFT.
+      </RouteCard>
+      <RouteCard
+        href="/get-involved/propose-a-site"
+        title="Propose a site"
+        audience="For schools and community groups"
+        tone="paper"
+      >
+        Tell us about the ground and the people who'll look after it.
+      </RouteCard>
+      <RouteCard
+        href="/get-involved/partner"
+        title="Partner with us"
+        audience="For businesses and funders"
+        tone="paper"
+      >
+        Fund a site, a school or a programme.
+      </RouteCard>
+    </div>
+  </Section>
+
+  <Section ground="night" aria-labelledby="not-ready">
+    <div class="later">
+      <SectionHeading eyebrow="Not ready yet?" id="not-ready">
+        Hear about the next one.
+      </SectionHeading>
+      <NewsletterSignup id="get-involved-newsletter" labelledBy="not-ready" />
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .routes {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .routes + .routes {
+    margin-top: var(--space-5);
+  }
+
+  .later {
+    display: grid;
+    gap: var(--space-7);
+  }
+
+  @media (min-width: 768px) {
+    .routes--two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .routes--three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .routes :global(.route--night) {
+      min-height: calc(var(--space-10) * 2 + var(--space-10) / 2);
+    }
+
+    .routes :global(.route--paper) {
+      min-height: calc(var(--space-10) * 2 + var(--space-9) / 2);
+    }
+
+    .later {
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: var(--space-10);
+    }
+  }
+</style>

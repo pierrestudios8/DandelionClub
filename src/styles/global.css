@@ -50,6 +50,11 @@ a {
   color: inherit;
 }
 
+/* `hidden` always wins over a component's display rule. */
+[hidden] {
+  display: none !important;
+}
+
 ul[role='list'],
 ol[role='list'] {
   list-style: none;
@@ -111,6 +116,13 @@ ol[role='list'] {
   clip: rect(0 0 0 0);
   white-space: nowrap;
   border: 0;
+}
+
+/* Two bands on the same ground in a row read as one: drop the second's top padding. */
+.section.on-paper + .section.on-paper,
+.section.on-paper-sunk + .section.on-paper-sunk,
+.section.on-night + .section.on-night {
+  padding-top: 0;
 }
 
 /* Page gutter and content column, shared by Section, Header and Footer. */

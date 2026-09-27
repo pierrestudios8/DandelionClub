@@ -1,0 +1,165 @@
+---
+/** Plantings list and archive: design/pages/Plantings.dc.html. */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Button from '../../components/Button.astro';
+import NewsletterSignup from '../../components/NewsletterSignup.astro';
+import PageIntro from '../../components/PageIntro.astro';
+import Placeholder from '../../components/Placeholder.astro';
+import PlantingCard from '../../components/PlantingCard.astro';
+import Section from '../../components/Section.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import {
+  getImpactFigures,
+  getPastPlantings,
+  getUpcomingPlantings,
+  plantingCard,
+} from '../../lib/content';
+
+const [upcoming, past, figures] = await Promise.all([
+  getUpcomingPlantings().then((list) => Promise.all(list.map(plantingCard))),
+  getPastPlantings().then((list) => Promise.all(list.map(plantingCard))),
+  getImpactFigures(),
+]);
+
+const tally = [
+  figures.plantingsHeld !== null &&
+    `${figures.plantingsHeld} ${figures.plantingsHeld === 1 ? 'planting' : 'plantings'}`,
+  figures.treesPlanted !== null && `${figures.treesPlanted} trees in the ground`,
+].filter(Boolean);
+---
+
+<BaseLayout
+  title="Plantings"
+  description="Saturday morning planting days at Western Cape schools. Pick a date, bring gloves if you've got them, and bring the family."
+>
+  <PageIntro eyebrow="Plantings" title="Saturdays in the soil.">
+    Each planting is a morning with a school community. Pick a date, bring gloves if you've got
+    them, and bring the family.
+  </PageIntro>
+
+  <Section ground="paper" aria-labelledby="coming-up">
+    <h2 class="t-display section-title" id="coming-up">
+      Coming up.
+    </h2>
+    <div class="grid grid--two">
+      {upcoming.map((p) => (
+        <PlantingCard {...p} />
+      ))}
+      <div class="notify">
+        <p class="t-eyebrow" id="notify-heading">
+          {upcoming.length ? 'More dates to come' : 'Next date not set yet'}
+        </p>
+        <p class="t-lead">
+          We announce plantings <Placeholder value="TODO: how far ahead plantings are announced" />.
+          Leave your email and we'll tell you first.
+        </p>
+        <NewsletterSignup id="plantings-notify" labelledBy="notify-heading" button="Tell me" />
+      </div>
+    </div>
+  </Section>
+
+  {past.length > 0 && (
+    <Section ground="paper-sunk" aria-labelledby="already-planted">
+      <div class="past-head">
+        <h2 class="t-display section-title" id="already-planted">
+          Already planted.
+        </h2>
+        {tally.length > 0 && <p class="t-lead">{tally.join(' · ')}</p>}
+      </div>
+      <div class="grid grid--three">
+        {past.map((p) => (
+          <PlantingCard variant="past" {...p} />
+        ))}
+      </div>
+    </Section>
+  )}
+
+  <Section ground="night" aria-labelledby="propose-heading">
+    <div class="propose">
+      <div class="propose__text">
+        <SectionHeading eyebrow="Got a school in mind?" id="propose-heading">
+          Propose a site.
+        </SectionHeading>
+        <p class="t-lead muted">Schools and community groups can ask us to plant with them.</p>
+      </div>
+      <Button href="/get-involved/propose-a-site">Tell us about it</Button>
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .section-title {
+    margin-bottom: var(--space-7);
+  }
+
+  @media (max-width: 599px) {
+    .section-title {
+      font-size: var(--type-display-sm-size);
+      line-height: var(--type-display-sm-leading);
+    }
+  }
+
+  .grid {
+    display: grid;
+    gap: var(--space-5);
+    align-items: start;
+  }
+
+  .grid :global(.card--upcoming) {
+    max-width: none;
+  }
+
+  .notify {
+    display: grid;
+    gap: var(--space-4);
+    padding: var(--space-5);
+    border: var(--border-strong) dashed var(--night);
+  }
+
+  .past-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-3) var(--space-5);
+    margin-bottom: var(--space-7);
+  }
+
+  .past-head .section-title {
+    margin-bottom: 0;
+  }
+
+  .propose {
+    display: grid;
+    gap: var(--space-7);
+  }
+
+  .propose__text {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  @media (min-width: 600px) {
+    .notify {
+      padding: var(--space-7);
+    }
+  }
+
+  @media (min-width: 768px) {
+    .grid--two,
+    .grid--three {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .propose {
+      grid-template-columns: 1fr auto;
+      align-items: center;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .grid--three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

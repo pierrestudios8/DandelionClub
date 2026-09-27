@@ -1,0 +1,547 @@
+---
+/** Dedicate a tree: design/pages/DedicateTree.dc.html. Works as a plain form without JavaScript. */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import Form from '../components/Form.astro';
+import FormField from '../components/FormField.astro';
+import PageIntro from '../components/PageIntro.astro';
+import Placeholder from '../components/Placeholder.astro';
+import Section from '../components/Section.astro';
+import { getSettings, getSites } from '../lib/content';
+import { formatRand } from '../lib/format';
+import { MAX_TREES, MIN_TREES } from '../lib/trees';
+
+const [settings, sites] = await Promise.all([getSettings(), getSites()]);
+const price = typeof settings.treePrice === 'number' ? settings.treePrice : undefined;
+const siteOptions = [
+  { value: 'anywhere', label: "Wherever it's needed most" },
+  ...sites.map((s) => ({ value: s.id, label: s.data.name })),
+];
+const steps = [
+  {
+    title: 'Choose a site and a name',
+    text: "Pick one of our schools, or let us plant it where it's needed most.",
+  },
+  {
+    title: 'We plant it',
+    text: 'Your tree goes in on the next planting day at that site, planted by volunteers and learners.',
+  },
+  {
+    title: 'You get the proof',
+    text: 'TODO: a certificate by email, and a photo from the planting day?',
+  },
+];
+---
+
+<BaseLayout
+  title="Dedicate a tree"
+  description="Put a name to a tree in a Western Cape school food forest: for a birthday, a memory, a new baby or a team."
+>
+  <PageIntro eyebrow="Dedicate a tree" title="Put a name to a tree.">
+    For a birthday, a memory, a new baby or a team. Your tree goes into a school food forest and its
+    name goes on the site register.
+    <img
+      slot="aside"
+      class="intro-seed"
+      src="/brand/seed-yellow.svg"
+      alt=""
+      width="106"
+      height="134"
+    />
+  </PageIntro>
+
+  <Section ground="paper" aria-labelledby="how-heading">
+    <h2 class="t-display heading" id="how-heading">
+      How it works.
+    </h2>
+    <ol class="steps" role="list">
+      {steps.map((step, i) => (
+        <li class="step">
+          <span class="step__number" aria-hidden="true">
+            {String(i + 1).padStart(2, '0')}
+          </span>
+          <h3 class="step__title">{step.title}</h3>
+          <p class="step__text muted">
+            <Placeholder value={step.text} />
+          </p>
+        </li>
+      ))}
+    </ol>
+  </Section>
+
+  <Section ground="paper-sunk">
+    <div class="checkout">
+      <Form
+        id="dedicate"
+        action="/api/dedicate"
+        aria-labelledby="dedication-heading"
+        class="checkout__form"
+        successTitle="Thank you."
+      >
+        <h2 class="t-display heading" id="dedication-heading">
+          Your dedication.
+        </h2>
+
+        <fieldset class="trees" data-field>
+          <legend class="trees__legend" id="trees-legend">
+            Number of trees
+          </legend>
+          <div class="stepper">
+            <button
+              type="button"
+              class="stepper__button"
+              data-step="-1"
+              aria-label="One fewer tree"
+              aria-controls="dedicate-trees"
+              hidden
+            >
+              −
+            </button>
+            <input
+              class="stepper__input"
+              id="dedicate-trees"
+              name="trees"
+              type="number"
+              inputmode="numeric"
+              min={MIN_TREES}
+              max={MAX_TREES}
+              value="1"
+              required
+              aria-labelledby="trees-legend"
+              data-invalid-message={`Choose between ${MIN_TREES} and ${MAX_TREES} trees.`}
+            />
+            <button
+              type="button"
+              class="stepper__button"
+              data-step="1"
+              aria-label="One more tree"
+              aria-controls="dedicate-trees"
+              hidden
+            >
+              +
+            </button>
+          </div>
+          <p class="trees__error" id="dedicate-trees-error" hidden></p>
+        </fieldset>
+
+        <FormField
+          id="dedicate-for"
+          name="dedicatedTo"
+          label="Dedicated to"
+          placeholder="Name of the person, family or team"
+          invalid="Enter who the tree is for."
+        />
+        <FormField
+          id="dedicate-message"
+          name="message"
+          label="Message for the register"
+          optional
+          maxlength="80"
+          hint="Up to 80 characters. Shown next to the name on the site page."
+          invalid="Keep the message to 80 characters."
+        />
+        <FormField
+          id="dedicate-site"
+          name="site"
+          label="Site"
+          type="select"
+          options={siteOptions}
+          value="anywhere"
+        />
+        <div class="pair">
+          <FormField
+            id="dedicate-name"
+            name="name"
+            label="Your name"
+            autocomplete="name"
+            invalid="Enter your name."
+          />
+          <FormField
+            id="dedicate-email"
+            name="email"
+            label="Your email"
+            type="email"
+            autocomplete="email"
+            invalid="Enter a full email address, like name@example.com."
+          />
+        </div>
+        <FormField id="dedicate-register" name="showOnRegister" type="checkbox" optional checked>
+          Show the dedication on the public site register.
+        </FormField>
+        <FormField
+          id="dedicate-consent"
+          name="consent"
+          type="checkbox"
+          invalid="Tick this box so we can process your dedication."
+        >
+          I agree that Dandelion Club may store these details to process this dedication.{' '}
+          <a href="/privacy">Privacy</a>
+        </FormField>
+        <p slot="success">
+          <Placeholder value="TODO: what happens next (payment is wired up in Phase 6)" />
+        </p>
+      </Form>
+
+      <aside
+        class="summary on-night"
+        aria-labelledby="summary-heading"
+        data-tree-summary
+        data-price={price}
+      >
+        <p class="t-eyebrow summary__heading" id="summary-heading">
+          Summary
+        </p>
+        <div class="summary__line">
+          <p class="t-lead">
+            <output data-trees for="dedicate-trees">
+              1
+            </output>{' '}
+            × tree
+          </p>
+          <p class="t-lead">
+            {price !== undefined ? (
+              `${formatRand(price)} each`
+            ) : (
+              <Placeholder value={settings.treePrice} />
+            )}
+          </p>
+        </div>
+        <div class="summary__total">
+          <p class="t-eyebrow">Total</p>
+          <p class="summary__amount" aria-live="polite">
+            {price !== undefined ? (
+              <output data-total for="dedicate-trees">
+                {formatRand(price)}
+              </output>
+            ) : (
+              <Placeholder value={settings.treePrice} />
+            )}
+          </p>
+        </div>
+        <ul class="summary__includes t-small muted">
+          {settings.treeIncludes.map((item) => (
+            <li>
+              <Placeholder value={item} />
+            </li>
+          ))}
+        </ul>
+        <Button type="submit" form="dedicate" block>
+          Continue to payment
+        </Button>
+        <p class="t-small muted">
+          Secure card payment by <Placeholder value="TODO: payment provider (PayFast?)" />. Prefer
+          EFT? <a href="/donate#eft">See bank details</a>.
+        </p>
+      </aside>
+    </div>
+  </Section>
+
+  <Section ground="paper" aria-labelledby="questions-heading">
+    <div class="faq">
+      <h2 class="t-display heading" id="questions-heading">
+        Questions.
+      </h2>
+      <div class="faq__list">
+        <details open>
+          <summary>When is my tree planted?</summary>
+          <p class="t-body">
+            On the next planting day at the site you chose.{' '}
+            <Placeholder value="TODO: how we let you know" />
+          </p>
+        </details>
+        <details>
+          <summary>Can I visit it?</summary>
+          <p class="t-body">
+            <Placeholder value="TODO: open plantings, school access rules" />
+          </p>
+        </details>
+        <details>
+          <summary>What if the tree doesn't make it?</summary>
+          <p class="t-body">
+            <Placeholder value="TODO: replanting policy" />
+          </p>
+        </details>
+        <details>
+          <summary>Can I dedicate a tree as a company?</summary>
+          <p class="t-body">
+            Yes. For <Placeholder value="TODO: how many trees" /> or more trees,
+            <a href="/get-involved/partner">talk to us about a partnership</a>.
+          </p>
+        </details>
+      </div>
+    </div>
+  </Section>
+</BaseLayout>
+
+<script>
+  import { formatRand } from '../lib/format';
+  import { clampTrees, treeTotal } from '../lib/trees';
+
+  const input = document.querySelector<HTMLInputElement>('#dedicate-trees');
+  const summary = document.querySelector<HTMLElement>('[data-tree-summary]');
+
+  if (input && summary) {
+    const price = summary.dataset.price ? Number(summary.dataset.price) : undefined;
+    const treesOut = summary.querySelector('[data-trees]');
+    const totalOut = summary.querySelector('[data-total]');
+
+    const update = () => {
+      const trees = clampTrees(Number(input.value));
+      if (treesOut) treesOut.textContent = String(trees);
+      if (totalOut && price !== undefined)
+        totalOut.textContent = formatRand(treeTotal(price, trees));
+    };
+
+    document.querySelectorAll<HTMLButtonElement>('[data-step]').forEach((button) => {
+      button.hidden = false;
+      button.addEventListener('click', () => {
+        input.value = String(clampTrees(Number(input.value) + Number(button.dataset.step)));
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+      });
+    });
+    input.addEventListener('input', update);
+    update();
+  }
+</script>
+
+<style>
+  .heading {
+    margin-bottom: var(--space-7);
+  }
+
+  @media (max-width: 599px) {
+    .heading {
+      font-size: var(--type-display-sm-size);
+      line-height: var(--type-display-sm-leading);
+    }
+  }
+
+  .intro-seed {
+    width: var(--seed-size);
+  }
+
+  .steps {
+    display: grid;
+    gap: var(--space-7) var(--space-5);
+  }
+
+  .step {
+    display: grid;
+    gap: var(--space-3);
+    align-content: start;
+    padding-top: var(--space-5);
+    border-top: var(--border-strong) solid var(--night);
+  }
+
+  .step__number {
+    font-family: var(--type-display-sm-family);
+    font-size: var(--type-display-sm-size);
+    line-height: var(--type-display-sm-leading);
+    font-weight: var(--type-display-sm-weight);
+  }
+
+  .step__title {
+    font-size: var(--type-subtitle-size);
+    line-height: var(--type-subtitle-leading);
+    font-weight: var(--type-subtitle-weight);
+  }
+
+  .step__text {
+    font-size: var(--type-small-lg-size);
+    line-height: var(--type-small-lg-leading);
+  }
+
+  .checkout {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  .checkout :global(.checkout__form) {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .checkout .heading {
+    margin-bottom: 0;
+  }
+
+  .trees {
+    border: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .trees__legend {
+    margin-bottom: var(--space-3);
+    font-size: var(--type-lead-size);
+    line-height: var(--type-lead-leading);
+    font-weight: var(--type-lead-weight);
+  }
+
+  .stepper {
+    display: flex;
+  }
+
+  .stepper__button,
+  .stepper__input {
+    height: calc(var(--space-8) + var(--space-1));
+    border: var(--border-strong) solid var(--night);
+    border-radius: var(--radius-none);
+    background: var(--paper);
+    color: var(--night);
+    font-family: var(--font-display);
+    font-weight: var(--type-display-weight);
+    font-size: var(--type-subtitle-size);
+  }
+
+  .stepper__button {
+    width: calc(var(--space-8) + var(--space-1));
+    transition:
+      background-color 150ms ease-out,
+      color 150ms ease-out;
+  }
+
+  .stepper__button:hover {
+    background: var(--night);
+    color: var(--dandelion);
+  }
+
+  .stepper__input {
+    width: calc(var(--space-10) - var(--space-7));
+    text-align: center;
+    appearance: textfield;
+    -moz-appearance: textfield;
+  }
+
+  /* With the buttons shown (JavaScript on), the three pieces share borders. */
+  .stepper:has(.stepper__button:not([hidden])) .stepper__input {
+    border-inline-width: 0;
+  }
+
+  .stepper__input::-webkit-inner-spin-button,
+  .stepper__input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .trees[data-invalid] .stepper__input {
+    border-color: var(--error);
+  }
+
+  .trees__error {
+    font-size: var(--type-small-size);
+    line-height: var(--type-small-leading);
+    font-weight: var(--type-lead-weight);
+    color: var(--error);
+  }
+
+  .pair {
+    display: grid;
+    gap: var(--space-5);
+    max-width: var(--field-measure);
+  }
+
+  .summary {
+    display: grid;
+    gap: var(--space-5);
+    align-self: start;
+    padding: var(--space-5);
+  }
+
+  .summary__heading {
+    color: var(--dandelion);
+  }
+
+  .summary__line,
+  .summary__total {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-4);
+  }
+
+  .summary__line {
+    padding-bottom: var(--space-4);
+    border-bottom: var(--border-hairline) solid var(--hairline-on-night);
+  }
+
+  .summary__amount {
+    font-family: var(--type-display-family);
+    font-size: var(--type-display-size);
+    line-height: var(--type-display-leading);
+    font-weight: var(--type-display-weight);
+    color: var(--dandelion);
+  }
+
+  .summary__includes {
+    display: grid;
+    gap: var(--space-1);
+    padding-left: var(--space-5);
+  }
+
+  .faq {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .faq__list details {
+    padding-block: var(--space-5);
+    border-top: var(--border-strong) solid var(--night);
+  }
+
+  .faq__list details:last-child {
+    border-bottom: var(--border-strong) solid var(--night);
+  }
+
+  .faq__list summary {
+    cursor: pointer;
+    font-size: var(--type-subtitle-sm-size);
+    line-height: var(--type-subtitle-sm-leading);
+    font-weight: var(--type-subtitle-sm-weight);
+  }
+
+  .faq__list details p {
+    margin-top: var(--space-3);
+  }
+
+  @media (min-width: 600px) {
+    .pair {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .summary {
+      padding: var(--space-7);
+    }
+
+    .faq__list summary {
+      font-size: var(--type-subtitle-size);
+      line-height: var(--type-subtitle-leading);
+    }
+  }
+
+  @media (min-width: 768px) {
+    .steps {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .checkout {
+      grid-template-columns: 7fr 1fr 4fr;
+    }
+
+    .summary {
+      grid-column: 3;
+      margin-top: calc(var(--space-10) - var(--space-7));
+    }
+
+    .faq {
+      grid-template-columns: 4fr 1fr 7fr;
+    }
+
+    .faq__list {
+      grid-column: 3;
+    }
+  }
+</style>

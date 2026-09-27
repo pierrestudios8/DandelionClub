@@ -1,0 +1,66 @@
+---
+/**
+ * The night opening band on pages without a hero photo (Plantings, Get involved,
+ * Dedicate a tree, Donate): eyebrow, dandelion display-xl h1 and a lead line.
+ * Slot "aside" sits to the right from 1024px (the seed on Dedicate a tree).
+ */
+import Section from './Section.astro';
+import SectionHeading from './SectionHeading.astro';
+
+interface Props {
+  eyebrow: string;
+  title: string;
+}
+
+const { eyebrow, title } = Astro.props;
+---
+
+<Section ground="night" class="intro">
+  <div class="intro__grid">
+    <div class="intro__text">
+      <SectionHeading eyebrow={eyebrow} level={1} size="display-xl">
+        {title}
+      </SectionHeading>
+      <div class="t-lead intro__lead">
+        <slot />
+      </div>
+    </div>
+    {Astro.slots.has('aside') && (
+      <div class="intro__aside">
+        <slot name="aside" />
+      </div>
+    )}
+  </div>
+</Section>
+
+<style>
+  .intro__grid {
+    display: grid;
+    gap: var(--space-7);
+  }
+
+  .intro__text {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .intro__lead {
+    max-width: var(--measure-text);
+  }
+
+  .intro__aside {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .intro__grid {
+      grid-template-columns: 2fr 1fr;
+      align-items: center;
+    }
+
+    .intro__aside {
+      display: grid;
+      justify-items: center;
+    }
+  }
+</style>

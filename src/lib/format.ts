@@ -23,3 +23,17 @@ export function formatTimeRange(start: string, end: string): string {
   if (isTodo(end)) return end;
   return `${start} to ${end}`;
 }
+
+const WORDS = ['No', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten'];
+
+/** "Three" for 3, as in "Three sites so far."; digits from 11 up. */
+export function numberWord(n: number): string {
+  return WORDS[n] ?? String(n);
+}
+
+const rand = new Intl.NumberFormat('en-ZA', { maximumFractionDigits: 0 });
+
+/** "R1 000" (South African grouping, no cents). */
+export function formatRand(amount: number): string {
+  return `R${rand.format(amount)}`;
+}

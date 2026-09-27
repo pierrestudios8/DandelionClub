@@ -4,9 +4,11 @@
  * `pnpm todos` lists them and Placeholder renders them visibly.
  */
 import { defineCollection, reference } from 'astro:content';
-import { glob } from 'astro/loaders';
+import { glob, type Loader } from 'astro/loaders';
 import { z } from 'astro/zod';
 import settingsJson from './content/settings.json';
+import { isTodo } from './lib/todo';
+import { EXAMPLE_ID, exampleBody, examplePlanting } from '../tests/fixtures/example-planting';
 import {
   DEFAULT_BRING,
   calendarDate,
@@ -21,9 +23,31 @@ import {
 
 const markdown = (dir: string) => glob({ pattern: '**/*.md', base: `./src/content/${dir}` });
 
+/**
+ * Plantings from Markdown, plus the example upcoming planting from
+ * tests/fixtures when DC_FIXTURES is set (e2e tests and the local preview only).
+ */
+function plantingsLoader(): Loader {
+  const files = markdown('plantings');
+  return {
+    name: 'plantings',
+    load: async (context) => {
+      await files.load(context);
+      if (!process.env.DC_FIXTURES) return;
+      const data = await context.parseData({ id: EXAMPLE_ID, data: examplePlanting() });
+      context.store.set({
+        id: EXAMPLE_ID,
+        data,
+        body: exampleBody,
+        rendered: await context.renderMarkdown(exampleBody),
+      });
+    },
+  };
+}
+
 /** One Markdown file per planting; the body is "about this planting". */
 const plantings = defineCollection({
-  loader: markdown('plantings'),
+  loader: plantingsLoader(),
   schema: ({ image }) =>
     z.object({
       title: orTodo(z.string()),
@@ -112,9 +136,15 @@ const facts = defineCollection({
   }),
 });
 
-/** Site-wide settings: one entry, id "settings", from settings.json. */
+/**
+ * Site-wide settings: one entry, id "settings", from settings.json.
+ * With DC_FIXTURES (tests and the local preview only) an unconfirmed tree price
+ * becomes the design's example R350 so the live total can be exercised.
+ */
+const fixtureSettings =
+  process.env.DC_FIXTURES && isTodo(settingsJson.treePrice) ? { treePrice: 350 } : {};
 const settings = defineCollection({
-  loader: () => [{ id: 'settings', ...settingsJson }],
+  loader: () => [{ id: 'settings', ...settingsJson, ...fixtureSettings }],
   schema: settingsSchema,
 });
 

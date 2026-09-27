@@ -55,29 +55,31 @@ const socials = [
       <NewsletterSignup id="footer-newsletter" />
     </div>
   </div>
-  <div class="container footer__bottom t-small">
-    <p class="muted">
-      <a href={`mailto:${email}`}>{email}</a>
-      {socials.map((s) =>
-        isTodo(s.href) ? (
-          <>
-            {' · '}
-            {s.label} <Placeholder value={s.href} />
-          </>
-        ) : (
-          <>
-            {' · '}
-            <a href={s.href}>{s.label}</a>
-          </>
-        ),
-      )}
-    </p>
-    <p class="muted">
-      {npcName} · Registration <Placeholder value={npcRegistration} />
-    </p>
-    <p class="muted">
-      <a href="/privacy">Privacy</a>
-    </p>
+  <div class="container">
+    <div class="footer__bottom t-small">
+      <p class="muted">
+        <a href={`mailto:${email}`}>{email}</a>
+        {socials.map((s) =>
+          isTodo(s.href) ? (
+            <>
+              {' · '}
+              {s.label} <Placeholder value={s.href} />
+            </>
+          ) : (
+            <>
+              {' · '}
+              <a href={s.href}>{s.label}</a>
+            </>
+          ),
+        )}
+      </p>
+      <p class="muted">
+        {npcName} · Registration <Placeholder value={npcRegistration} />
+      </p>
+      <p class="muted">
+        <a href="/privacy">Privacy</a>
+      </p>
+    </div>
   </div>
 </footer>
 

@@ -1,0 +1,75 @@
+---
+/**
+ * A form that posts to a server endpoint and works without JavaScript.
+ * With JavaScript: written inline errors, fetch submit, and the success
+ * message (slot "success") shown in place of the form.
+ *
+ * Every form carries the honeypot. Put FormFields, the POPIA consent and a
+ * Button type="submit" in the default slot.
+ */
+import type { HTMLAttributes } from 'astro/types';
+import Placeholder from './Placeholder.astro';
+import { getSettings } from '../lib/content';
+
+type Props = {
+  id: string;
+  action: string;
+  /** Heading shown in the success message. */
+  successTitle?: string;
+  class?: string;
+} & HTMLAttributes<'form'>;
+
+const { id, action, successTitle = 'Thank you.', class: className, ...rest } = Astro.props;
+const { email } = await getSettings();
+---
+
+<form id={id} class:list={['form', className]} method="post" action={action} data-enhance {...rest}>
+  <slot />
+  <div class="form__honeypot" data-honeypot aria-hidden="true">
+    <label>
+      Leave this empty
+      <input type="text" name="website" tabindex="-1" autocomplete="off" />
+    </label>
+  </div>
+  <p class="form__failure" role="alert" tabindex="-1" data-form-failure hidden>
+    That didn't go through. Please try again, or email
+    <a href={`mailto:${email}`}>{email}</a>.
+  </p>
+</form>
+<div class="form__success" role="status" tabindex="-1" data-success-for={id} hidden>
+  <p class="t-title">{successTitle}</p>
+  <div class="t-lead">
+    <slot name="success">
+      <Placeholder value="TODO: confirmation message" />
+    </slot>
+  </div>
+</div>
+
+<script>
+  import '../lib/forms/enhance';
+</script>
+
+<style>
+  .form__honeypot {
+    position: absolute;
+    left: -100vw;
+  }
+
+  .form__failure {
+    font-weight: var(--type-lead-weight);
+    color: var(--error);
+  }
+
+  :global(.on-night) .form__failure {
+    color: var(--dandelion);
+  }
+
+  .form__success {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .form__success[hidden] {
+    display: none;
+  }
+</style>

@@ -18,7 +18,13 @@ type Props = {
   label?: string;
   type?: 'text' | 'email' | 'tel' | 'number' | 'select' | 'textarea' | 'checkbox';
   hint?: string;
+  /** An error to show now (e.g. from a server round trip), written as a fix. */
   error?: string;
+  /**
+   * What to tell someone when this field is invalid, written as a fix
+   * ("Enter a full email address"). Used by client-side validation.
+   */
+  invalid?: string;
   /** Adds "(optional)" to the label. Fields are required unless marked optional. */
   optional?: boolean;
   options?: Option[];
@@ -35,6 +41,7 @@ const {
   type = 'text',
   hint,
   error,
+  invalid,
   optional = false,
   options = [],
   value,
@@ -43,31 +50,36 @@ const {
   ...rest
 } = Astro.props;
 
+// The error element is always rendered (hidden when empty) so client-side
+// validation can fill it in and keep the scoped styles.
 const hintId = hint ? `${id}-hint` : undefined;
-const errorId = error ? `${id}-error` : undefined;
-const describedBy = [errorId, hintId].filter(Boolean).join(' ') || undefined;
+const errorId = `${id}-error`;
+const describedBy = [error && errorId, hintId].filter(Boolean).join(' ') || undefined;
 const control = {
   id,
   name,
   required: !optional,
   'aria-invalid': error ? ('true' as const) : undefined,
   'aria-describedby': describedBy,
+  'data-invalid-message': invalid,
 };
 ---
 
 {type === 'checkbox' ? (
-  <div class:list={['check', error && 'check--error', wide && 'field--wide']}>
+  <div
+    class:list={['check', wide && 'field--wide']}
+    data-field
+    data-invalid={error ? '' : undefined}
+  >
     <label class="check__row" for={id}>
       <input type="checkbox" value={value ?? 'yes'} checked={checked} {...control} {...rest} />
       <span>
         <slot>{label}</slot>
       </span>
     </label>
-    {error && (
-      <p class="field__error" id={errorId}>
-        {error}
-      </p>
-    )}
+    <p class="field__error" id={errorId} hidden={!error}>
+      {error}
+    </p>
     {hint && (
       <p class="field__hint" id={hintId}>
         {hint}
@@ -75,7 +87,11 @@ const control = {
     )}
   </div>
 ) : (
-  <div class:list={['field', error && 'field--error', wide && 'field--wide']}>
+  <div
+    class:list={['field', wide && 'field--wide']}
+    data-field
+    data-invalid={error ? '' : undefined}
+  >
     <label class="field__label" for={id}>
       {label}
       {optional && <span class="field__optional"> (optional)</span>}
@@ -92,19 +108,16 @@ const control = {
       <textarea
         class="field__input"
         rows={4}
+        set:text={value ?? ''}
         {...control}
         {...(rest as HTMLAttributes<'textarea'>)}
-      >
-          {value}
-        </textarea>
+      />
     ) : (
       <input class="field__input" type={type} value={value} {...control} {...rest} />
     )}
-    {error && (
-      <p class="field__error" id={errorId}>
-        {error}
-      </p>
-    )}
+    <p class="field__error" id={errorId} hidden={!error}>
+      {error}
+    </p>
     {hint && (
       <p class="field__hint" id={hintId}>
         {hint}
@@ -182,7 +195,7 @@ const control = {
     color: var(--error);
   }
 
-  .field--error .field__input {
+  .field[data-invalid] .field__input {
     border-color: var(--error);
   }
 
@@ -201,12 +214,12 @@ const control = {
     accent-color: var(--night);
   }
 
-  .check--error .check__row input {
+  .check[data-invalid] .check__row input {
     outline: var(--border-strong) solid var(--error);
     outline-offset: var(--border-strong);
   }
 
-  .check--error .check__row input:focus-visible {
+  .check[data-invalid] .check__row input:focus-visible {
     outline-color: var(--focus-on-paper);
     outline-offset: var(--focus-offset);
   }

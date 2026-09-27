@@ -44,6 +44,21 @@ const [upcoming, past, partners] = await Promise.all([
 ]);
 const visiblePartners = partners.filter((p) => p.data.publish || includeUnpublished);
 const mapUrl = isTodo(data.mapUrl) ? undefined : data.mapUrl;
+
+// The light bands alternate by what actually renders, so no two neighbours
+// share a ground (CLAUDE.md) whichever optional sections a site has.
+const lightBands = [
+  ['story', true],
+  ['held', past.length > 0],
+  ['trees', true],
+  ['gallery', data.gallery.length > 0],
+  ['next', true],
+] as const;
+const grounds = new Map<string, 'paper' | 'paper-sunk'>();
+lightBands
+  .filter(([, shown]) => shown)
+  .forEach(([key], i) => grounds.set(key, i % 2 === 0 ? 'paper' : 'paper-sunk'));
+const ground = (key: string) => grounds.get(key) ?? 'paper';
 ---
 
 <BaseLayout
@@ -66,7 +81,7 @@ const mapUrl = isTodo(data.mapUrl) ? undefined : data.mapUrl;
     </p>
   </Hero>
 
-  <Section ground="paper" aria-labelledby="story-heading">
+  <Section ground={ground('story')} aria-labelledby="story-heading">
     <div class="story">
       <div class="story__text">
         <h2 class="t-display story__title" id="story-heading">
@@ -107,7 +122,7 @@ const mapUrl = isTodo(data.mapUrl) ? undefined : data.mapUrl;
   </Section>
 
   {past.length > 0 && (
-    <Section ground="paper-sunk" aria-labelledby="held-heading">
+    <Section ground={ground('held')} aria-labelledby="held-heading">
       <h2 class="t-display heading" id="held-heading">
         Planted here.
       </h2>
@@ -119,7 +134,7 @@ const mapUrl = isTodo(data.mapUrl) ? undefined : data.mapUrl;
     </Section>
   )}
 
-  <Section ground="paper" aria-labelledby="trees-heading">
+  <Section ground={ground('trees')} aria-labelledby="trees-heading">
     <div class="trees">
       <SectionHeading eyebrow="The tree register" id="trees-heading">
         Trees with names.
@@ -134,7 +149,7 @@ const mapUrl = isTodo(data.mapUrl) ? undefined : data.mapUrl;
   </Section>
 
   {data.gallery.length > 0 && (
-    <Section ground="paper" aria-labelledby="gallery-heading">
+    <Section ground={ground('gallery')} aria-labelledby="gallery-heading">
       <h2 class="t-display heading" id="gallery-heading">
         Photos.
       </h2>
@@ -148,7 +163,7 @@ const mapUrl = isTodo(data.mapUrl) ? undefined : data.mapUrl;
     </Section>
   )}
 
-  <Section ground="paper-sunk" aria-labelledby="next-heading">
+  <Section ground={ground('next')} aria-labelledby="next-heading">
     <h2 class="t-display heading" id="next-heading">
       What's next.
     </h2>

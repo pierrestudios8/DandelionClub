@@ -84,7 +84,9 @@ const socials = [
 </footer>
 
 <style>
+  /* A step lighter than night, so the footer never merges with a night section above it. */
   .footer {
+    background: var(--night-raised);
     border-top: var(--border-hairline) solid var(--hairline-on-night);
     padding-block: var(--space-9) var(--space-7);
   }
@@ -159,5 +161,9 @@ const socials = [
     .footer__bottom p:first-child {
       grid-column: 1 / -1;
     }
+  }
+
+  .footer :global(.signup__input) {
+    background: var(--night);
   }
 </style>

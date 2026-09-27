@@ -17,6 +17,7 @@ import {
   location,
   orTodo,
   plantingStatus,
+  projectSchema,
   settingsSchema,
   time,
   url,
@@ -99,6 +100,8 @@ const sites = defineCollection({
       partners: z.array(reference('partners')).default([]),
       heroImage: image().optional(),
       gallery: z.array(image()).default([]),
+      /** The site's food forest as a project (trees against a target). */
+      project: projectSchema.optional(),
       publish: z.boolean(),
     }),
 });

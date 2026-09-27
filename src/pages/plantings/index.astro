@@ -6,26 +6,25 @@ import NewsletterSignup from '../../components/NewsletterSignup.astro';
 import PageIntro from '../../components/PageIntro.astro';
 import Placeholder from '../../components/Placeholder.astro';
 import PlantingCard from '../../components/PlantingCard.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
 import Section from '../../components/Section.astro';
 import SectionHeading from '../../components/SectionHeading.astro';
-import {
-  getImpactFigures,
-  getPastPlantings,
-  getUpcomingPlantings,
-  plantingCard,
-} from '../../lib/content';
+import { getActiveProjects, getUpcomingPlantings, plantingCard } from '../../lib/content';
 
-const [upcoming, past, figures] = await Promise.all([
+const [projects, upcoming] = await Promise.all([
+  getActiveProjects(),
   getUpcomingPlantings().then((list) => Promise.all(list.map(plantingCard))),
-  getPastPlantings().then((list) => Promise.all(list.map(plantingCard))),
-  getImpactFigures(),
 ]);
 
-const tally = [
-  figures.plantingsHeld !== null &&
-    `${figures.plantingsHeld} ${figures.plantingsHeld === 1 ? 'planting' : 'plantings'}`,
-  figures.treesPlanted !== null && `${figures.treesPlanted} trees in the ground`,
-].filter(Boolean);
+/** "331 trees planted across 3 projects", only when every count is confirmed. */
+const allCounted = projects.every((p) => typeof p.treesPlanted === 'number');
+const planted = allCounted
+  ? projects.reduce((sum, p) => sum + (p.treesPlanted as number), 0)
+  : null;
+const tally =
+  planted !== null && projects.length > 0
+    ? `${planted.toLocaleString('en-ZA')} trees planted across ${projects.length} ${projects.length === 1 ? 'project' : 'projects'}`
+    : null;
 ---
 
 <BaseLayout
@@ -37,7 +36,23 @@ const tally = [
     them, and bring the family.
   </PageIntro>
 
-  <Section ground="paper" aria-labelledby="coming-up">
+  {projects.length > 0 && (
+    <Section ground="paper" aria-labelledby="active-projects">
+      <div class="section-head">
+        <h2 class="t-display section-title" id="active-projects">
+          Active projects.
+        </h2>
+        {tally && <p class="t-lead">{tally}</p>}
+      </div>
+      <div class="grid grid--three">
+        {projects.map((project) => (
+          <ProjectCard {...project} />
+        ))}
+      </div>
+    </Section>
+  )}
+
+  <Section ground="paper-sunk" aria-labelledby="coming-up">
     <h2 class="t-display section-title" id="coming-up">
       Upcoming plantings.
     </h2>
@@ -58,29 +73,13 @@ const tally = [
     </div>
   </Section>
 
-  {past.length > 0 && (
-    <Section ground="paper-sunk" aria-labelledby="already-planted">
-      <div class="past-head">
-        <h2 class="t-display section-title" id="already-planted">
-          Projects.
-        </h2>
-        {tally.length > 0 && <p class="t-lead">{tally.join(' · ')}</p>}
-      </div>
-      <div class="grid grid--three">
-        {past.map((p) => (
-          <PlantingCard variant="past" {...p} />
-        ))}
-      </div>
-    </Section>
-  )}
-
-  <Section ground="night" aria-labelledby="propose-heading">
+  <Section ground="dandelion" aria-labelledby="propose-heading">
     <div class="propose">
       <div class="propose__text">
         <SectionHeading eyebrow="Got a school in mind?" id="propose-heading">
           Propose a site.
         </SectionHeading>
-        <p class="t-lead muted">Schools and community groups can ask us to plant with them.</p>
+        <p class="t-lead">Schools and community groups can ask us to plant with them.</p>
       </div>
       <Button href="/get-involved/propose-a-site">Tell us about it</Button>
     </div>
@@ -108,6 +107,7 @@ const tally = [
 
   .grid :global(.card--upcoming) {
     max-width: none;
+    background: var(--paper);
   }
 
   .notify {
@@ -118,7 +118,7 @@ const tally = [
     border: var(--border-strong) dashed var(--night);
   }
 
-  .past-head {
+  .section-head {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -127,7 +127,7 @@ const tally = [
     margin-bottom: var(--space-7);
   }
 
-  .past-head .section-title {
+  .section-head .section-title {
     margin-bottom: 0;
   }
 

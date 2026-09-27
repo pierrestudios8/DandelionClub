@@ -6,6 +6,7 @@ import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
 import { formatDate, formatTimeRange } from './format';
 import { isTodo } from './todo';
 import { impactFigures, sortPlantings, type ImpactFigures } from './plantings';
+import { activeProjects, plantedTotal } from './projects';
 
 export type Planting = CollectionEntry<'plantings'>;
 export type Site = CollectionEntry<'sites'>;
@@ -57,6 +58,23 @@ export async function getSites(): Promise<Site[]> {
 /** Impact figures; any figure with unconfirmed inputs is null and must be hidden. */
 export async function getImpactFigures(): Promise<ImpactFigures> {
   return impactFigures(await getPastPlantings(), await getSites());
+}
+
+/** What ProjectCard needs for each active project, in order. */
+export async function getActiveProjects() {
+  return activeProjects(await getSites()).flatMap((site) => {
+    const { name, area, project } = site.data;
+    if (!project) return [];
+    return {
+      name,
+      area,
+      href: `/sites/${site.id}`,
+      treesTarget: project.treesTarget,
+      treesPlanted: plantedTotal(project),
+      phases: project.phases,
+      image: site.data.heroImage,
+    };
+  });
 }
 
 export async function getProgrammes() {

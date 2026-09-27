@@ -1,0 +1,45 @@
+/**
+ * Pure project logic: a site's trees planted against its target.
+ * `content.ts` feeds these from the sites collection; tests feed them directly.
+ */
+import { isTodo } from './todo';
+
+/** A count, or a `TODO:` placeholder string (content schemas type these as string). */
+type Count = number | string;
+
+export interface Phase {
+  name: string;
+  treesPlanted: Count;
+}
+
+export interface ProjectLike {
+  active: boolean;
+  order: number;
+  treesTarget: Count;
+  treesPlanted?: Count;
+  phases: Phase[];
+}
+
+/**
+ * Trees planted so far. With phases, the sum of the phases (a placeholder if any
+ * phase is unconfirmed); without, the project's own figure.
+ */
+export function plantedTotal(project: ProjectLike): Count | undefined {
+  if (project.phases.length === 0) return project.treesPlanted;
+  let total = 0;
+  for (const phase of project.phases) {
+    if (typeof phase.treesPlanted !== 'number') {
+      return isTodo(phase.treesPlanted)
+        ? phase.treesPlanted
+        : `TODO: trees planted in ${phase.name}`;
+    }
+    total += phase.treesPlanted;
+  }
+  return total;
+}
+
+/** Active projects, in their set order. */
+export function activeProjects<S extends { data: { project?: ProjectLike } }>(sites: S[]): S[] {
+  const order = (s: S) => s.data.project?.order ?? 0;
+  return sites.filter((s) => s.data.project?.active === true).sort((a, b) => order(a) - order(b));
+}

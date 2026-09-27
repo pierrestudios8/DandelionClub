@@ -29,6 +29,23 @@ export const location = z.object({
 
 export const plantingStatus = z.enum(['upcoming', 'done', 'cancelled']);
 
+const trees = z.number().int().nonnegative();
+
+/**
+ * A site's food forest as a project: trees planted against a target, optionally
+ * in phases. Active projects lead the Plantings page.
+ */
+export const projectSchema = z.object({
+  active: z.boolean(),
+  /** Order on the Plantings page, lowest first. */
+  order: z.number().int(),
+  treesTarget: orTodo(z.number().int().positive()),
+  /** Total planted, for projects without phases. */
+  treesPlanted: orTodo(trees).optional(),
+  /** Planted per phase; the total is their sum. */
+  phases: z.array(z.object({ name: z.string(), treesPlanted: orTodo(trees) })).default([]),
+});
+
 export const journalTag = z.enum(['Plantings', 'Learning', 'Partners', 'Field notes']);
 
 export const DEFAULT_BRING =

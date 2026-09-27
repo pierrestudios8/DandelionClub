@@ -4,6 +4,8 @@ Newest first. Add a line for every decision that isn't already in CLAUDE.md or S
 
 | Date | Decision | Reason |
 | --- | --- | --- |
+| 2026-09-27 | Plantings page leads with Active projects (a site's food forest: trees planted against a target, optional phases), then Upcoming plantings; the past-plantings grid is dropped here (held plantings still show on each site page) | Pierre's structure for the page; projects are the lasting thing, plantings are the days that feed them |
+| 2026-09-27 | Every section differs in colour from its neighbours: footer on `night-raised`, Home "What we do" on `paper-sunk`, Plantings' closing band on `dandelion` | Pierre asked that no two neighbouring sections share a ground; the header and page intro stay one night frame, as on the live site |
 | 2026-09-27 | Plantings page (Pierre's change): "Coming up." is now "Upcoming plantings." and "Already planted." is now "Projects." Upcoming cards show project (the planting's title), location (site and area), date, target and trees donated so far; project cards add trees planted against the target. The one-line summary is no longer on the upcoming card | Requested by Pierre on review of Phase 3 |
 | 2026-09-27 | New planting fields `treesTarget` and `treesDonated` (numbers or `TODO:`). `treesDonated` is entered by hand until Phase 6 can count paid dedications | Paid dedications only exist once payments are live |
 | 2026-09-27 | Headings wrap long words (`overflow-wrap: anywhere`, `hyphens: auto`), and an e2e check fails any page that scrolls sideways at 390px | A 40px headline with one long word overflowed a phone; the newsletter row overflowed the Plantings grid |

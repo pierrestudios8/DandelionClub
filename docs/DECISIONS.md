@@ -4,6 +4,7 @@ Newest first. Add a line for every decision that isn't already in CLAUDE.md or S
 
 | Date | Decision | Reason |
 | --- | --- | --- |
+| 2026-09-27 | Project cards show totals; phases open in a dropdown over the photo, and cards in a row share one height. Upcoming plantings is a two-column split (headline and copy, then the email box), with any planting cards below | Pierre's layout direction; the dropdown overlays so opening it never changes a card's size |
 | 2026-09-27 | Plantings page leads with Active projects (a site's food forest: trees planted against a target, optional phases), then Upcoming plantings; the past-plantings grid is dropped here (held plantings still show on each site page) | Pierre's structure for the page; projects are the lasting thing, plantings are the days that feed them |
 | 2026-09-27 | Every section differs in colour from its neighbours: footer on `night-raised`, Home "What we do" on `paper-sunk`, Plantings' closing band on `dandelion` | Pierre asked that no two neighbouring sections share a ground; the header and page intro stay one night frame, as on the live site |
 | 2026-09-27 | Plantings page (Pierre's change): "Coming up." is now "Upcoming plantings." and "Already planted." is now "Projects." Upcoming cards show project (the planting's title), location (site and area), date, target and trees donated so far; project cards add trees planted against the target. The one-line summary is no longer on the upcoming card | Requested by Pierre on review of Phase 3 |

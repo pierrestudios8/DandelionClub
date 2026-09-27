@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   activeProjects,
   plantedTotal,
+  projectConfirmed,
   projectTreesTotal,
   type ProjectLike,
 } from '../../src/lib/projects';
@@ -89,5 +90,30 @@ describe('projectTreesTotal', () => {
   it('is null when a project has no count at all, or there are no projects', () => {
     expect(projectTreesTotal([silukhanyo, project({})])).toBeNull();
     expect(projectTreesTotal([])).toBeNull();
+  });
+});
+
+describe('projectConfirmed', () => {
+  it('is true when every figure on the card is real', () => {
+    expect(projectConfirmed('Strand', project({ treesTarget: 200, treesPlanted: 92 }))).toBe(true);
+    const phases = [
+      { name: 'Phase 01', treesPlanted: 88 },
+      { name: 'Phase 02', treesPlanted: 80 },
+    ];
+    expect(projectConfirmed('Dunoon', project({ treesTarget: 300, phases }))).toBe(true);
+  });
+
+  it('is false while the area, target, count or any phase is a placeholder', () => {
+    const counted = { treesTarget: 200, treesPlanted: 92 };
+    expect(projectConfirmed('TODO: area', project(counted))).toBe(false);
+    expect(projectConfirmed('Strand', project({ ...counted, treesTarget: 'TODO: target' }))).toBe(
+      false,
+    );
+    expect(projectConfirmed('Strand', project({ treesTarget: 200 }))).toBe(false);
+    const phases = [
+      { name: 'Phase 01', treesPlanted: 88 },
+      { name: 'Phase 02', treesPlanted: 'TODO: phase 2 count' },
+    ];
+    expect(projectConfirmed('Dunoon', project({ treesTarget: 300, phases }))).toBe(false);
   });
 });

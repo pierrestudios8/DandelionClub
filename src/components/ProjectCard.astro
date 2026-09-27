@@ -2,9 +2,10 @@
 /**
  * One active project (a site's food forest): name, location and trees planted
  * against the target. When a project has phases, a "Phases" dropdown opens over
- * the photo, so the card never changes size. The whole card links to the site
- * page (a stretched link); the dropdown sits above it. Cards in a row share one
- * height.
+ * the photo, so the card never changes size. With an `href`, the whole card
+ * links to the site page (a stretched link) and ends "See the project →"; the
+ * dropdown sits above it. Without one (the site page isn't published yet), the
+ * card is plain text. Cards in a row share one height.
  */
 import type { ImageMetadata } from 'astro';
 import { Image } from 'astro:assets';
@@ -15,7 +16,8 @@ interface Props {
   name: string;
   /** Suburb or town, or a `TODO:` placeholder. */
   area: string;
-  href: string;
+  /** The site page; leave out while that page isn't published. */
+  href?: string;
   treesTarget: number | string;
   treesPlanted?: number | string;
   phases?: { name: string; treesPlanted: number | string }[];
@@ -71,18 +73,24 @@ const fmt = (n: number | string) => (typeof n === 'number' ? n.toLocaleString('e
     <span class="tag">{complete ? 'Target reached' : 'Active'}</span>
     <div class="project__what">
       <Heading class="project__name">
-        <a class="project__link" href={href}>
-          {name}
-        </a>
+        {href ? (
+          <a class="project__link" href={href}>
+            {name}
+          </a>
+        ) : (
+          name
+        )}
       </Heading>
       <p class="project__area">
         <Placeholder value={area} />
       </p>
     </div>
     <TreeCounter verb="planted" value={treesPlanted} target={treesTarget} />
-    <span class="project__more" aria-hidden="true">
-      See the project <span class="arrow">→</span>
-    </span>
+    {href && (
+      <span class="project__more" aria-hidden="true">
+        See the project <span class="arrow">→</span>
+      </span>
+    )}
   </div>
 </article>
 

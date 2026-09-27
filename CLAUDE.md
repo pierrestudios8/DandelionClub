@@ -4,7 +4,7 @@ The public site for Dandelion Club, a food forest initiative run by Business Bui
 
 The site's one job: turn a visitor into a planter, a tree dedicator, a donor or a partner.
 
-Work through `docs/BUILD_PLAN.md` one phase at a time. Read this file, `design/BRAND.md` and the phase's section of the plan before starting a phase.
+Work through `docs/BUILD_PLAN.md` one phase at a time. Read the newest `docs/HANDOFF-*.md` first: it lists work done outside these sessions and what's next. Read this file, `design/BRAND.md` and the phase's section of the plan before starting a phase.
 
 ## Sources of truth
 
@@ -76,6 +76,8 @@ tests/                  unit and e2e
 - Photos fade into night at the bottom (transparent at 42% → `night` at 100%). Text never sits on top of a photo.
 - The seed is the only illustration. No icon fonts or emoji; use text labels and `→`.
 - Mobile first. Most visitors are on phones over mobile data.
+- **No two neighbouring sections share a ground.** Each band differs from the one above and below it. The footer sits on `night-raised` so it never merges with a night section. The header and the page intro together count as one night frame.
+- Cards in a row share one height; their last line ("See the project →", actions) is pinned to the bottom.
 
 ## Content and copy rules
 

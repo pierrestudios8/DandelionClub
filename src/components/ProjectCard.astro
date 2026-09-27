@@ -1,0 +1,173 @@
+---
+/**
+ * One active project (a site's food forest): name, location, trees planted
+ * against the target, and the phases when there are several. The whole card
+ * links to the site page. Sits on paper; styled like the planting cards.
+ */
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+import Placeholder from './Placeholder.astro';
+import TreeCounter from './TreeCounter.astro';
+
+interface Props {
+  name: string;
+  /** Suburb or town, or a `TODO:` placeholder. */
+  area: string;
+  href: string;
+  treesTarget: number | string;
+  treesPlanted?: number | string;
+  phases?: { name: string; treesPlanted: number | string }[];
+  image?: ImageMetadata;
+  headingLevel?: 2 | 3;
+}
+
+const {
+  name,
+  area,
+  href,
+  treesTarget,
+  treesPlanted,
+  phases = [],
+  image,
+  headingLevel = 3,
+} = Astro.props;
+
+const Heading = `h${headingLevel}` as 'h2' | 'h3';
+const complete =
+  typeof treesPlanted === 'number' &&
+  typeof treesTarget === 'number' &&
+  treesPlanted >= treesTarget;
+const fmt = (n: number | string) => (typeof n === 'number' ? n.toLocaleString('en-ZA') : n);
+---
+
+<a class="project" href={href}>
+  <div class="project__media">
+    {image ? (
+      <Image src={image} alt="" widths={[390, 780]} sizes="(min-width: 1024px) 33vw, 100vw" />
+    ) : (
+      <span class="t-small">Photo of the site to come</span>
+    )}
+  </div>
+  <div class="project__body">
+    <span class="tag">{complete ? 'Target reached' : 'Active'}</span>
+    <div class="project__what">
+      <Heading class="project__name">{name}</Heading>
+      <p class="project__area">
+        <Placeholder value={area} />
+      </p>
+    </div>
+    <TreeCounter verb="planted" value={treesPlanted} target={treesTarget} />
+    {phases.length > 1 && (
+      <ul class="project__phases t-small" aria-label={`${name} planting phases`}>
+        {phases.map((phase) => (
+          <li>
+            <span>{phase.name}</span>
+            <span>
+              <Placeholder value={fmt(phase.treesPlanted)} /> trees
+            </span>
+          </li>
+        ))}
+      </ul>
+    )}
+    <span class="project__more">
+      See the project{' '}
+      <span class="arrow" aria-hidden="true">
+        →
+      </span>
+    </span>
+  </div>
+</a>
+
+<style>
+  .project {
+    display: grid;
+    align-content: start;
+    background: var(--paper);
+    color: var(--night);
+    border: var(--border-strong) solid var(--night);
+    border-radius: var(--radius-none);
+    text-decoration: none;
+  }
+
+  .project:hover .project__more {
+    text-decoration: underline;
+    text-decoration-thickness: var(--border-strong);
+  }
+
+  .project__media {
+    aspect-ratio: 3 / 2;
+    background: var(--night-raised);
+    color: var(--ink-muted-on-night);
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+  }
+
+  .project__media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .project__body {
+    display: grid;
+    gap: var(--space-3);
+    padding: var(--space-5);
+  }
+
+  .tag {
+    justify-self: start;
+    padding: var(--space-1) var(--space-2);
+    background: var(--night);
+    color: var(--dandelion);
+    font-family: var(--type-tag-family);
+    font-size: var(--type-tag-size);
+    line-height: var(--type-tag-leading);
+    font-weight: var(--type-tag-weight);
+    text-transform: uppercase;
+  }
+
+  .project__what {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .project__name {
+    font-size: var(--type-title-sm-size);
+    line-height: var(--type-title-sm-leading);
+    font-weight: var(--type-title-sm-weight);
+  }
+
+  .project__area {
+    font-size: var(--type-lead-size);
+    line-height: var(--type-lead-leading);
+    font-weight: var(--type-lead-weight);
+  }
+
+  .project__phases {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: var(--border-hairline) solid var(--hairline);
+  }
+
+  .project__phases li {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding-block: var(--space-2);
+    border-bottom: var(--border-hairline) solid var(--hairline);
+  }
+
+  .project__more {
+    font-family: var(--type-eyebrow-sm-family);
+    font-size: var(--type-eyebrow-sm-size);
+    line-height: var(--type-eyebrow-sm-leading);
+    font-weight: var(--type-eyebrow-sm-weight);
+    text-transform: uppercase;
+  }
+
+  .arrow {
+    font-family: var(--font-text);
+  }
+</style>

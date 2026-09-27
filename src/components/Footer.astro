@@ -7,9 +7,9 @@ import NewsletterSignup from './NewsletterSignup.astro';
 import Placeholder from './Placeholder.astro';
 import { footerTakePart, footerVisit } from '../lib/nav';
 import { isTodo } from '../lib/todo';
-import settings from '../content/settings.json';
+import { getSettings } from '../lib/content';
 
-const { npcName, npcRegistration, email, social } = settings;
+const { npcName, npcRegistration, email, social } = await getSettings();
 const socials = [
   { label: 'Instagram', href: social.instagram },
   { label: 'LinkedIn', href: social.linkedin },

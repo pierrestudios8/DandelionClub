@@ -10,7 +10,7 @@ describe('findTodos', () => {
     mkdirSync(join(dir, 'plantings'));
     writeFileSync(
       join(dir, 'plantings', 'silukhanyo.md'),
-      '---\ntitle: Silukhanyo\ntreesPlanted: "TODO: trees planted"\n---\n',
+      "---\ntitle: Silukhanyo\ntreesPlanted: \"TODO: trees planted\"\nkids: 'TODO: what kids can''t miss'\n---\nTODO: about this planting.\n",
     );
     writeFileSync(
       join(dir, 'settings.json'),
@@ -20,6 +20,8 @@ describe('findTodos', () => {
 
     expect(findTodos(dir)).toEqual([
       { file: 'plantings/silukhanyo.md', line: 3, text: 'TODO: trees planted' },
+      { file: 'plantings/silukhanyo.md', line: 4, text: "TODO: what kids can't miss" },
+      { file: 'plantings/silukhanyo.md', line: 6, text: 'TODO: about this planting.' },
       { file: 'settings.json', line: 2, text: 'TODO: price per tree' },
       { file: 'settings.json', line: 3, text: 'TODO: in an array' },
       { file: 'settings.json', line: 4, text: 'TODO: in an object' },

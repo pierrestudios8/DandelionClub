@@ -14,7 +14,7 @@
 | Route | Page | Design | Phase |
 | --- | --- | --- | --- |
 | `/` | Home | `Home.dc.html`, `HomeMobile.dc.html` | 3 |
-| `/plantings` | Plantings list and archive | `Plantings.dc.html` | 3 |
+| `/plantings` | Active projects, then Upcoming plantings (see HANDOFF-2026-09-27) | `Plantings.dc.html`, since changed | 3 |
 | `/plantings/[slug]` | Planting detail and sign-up | `PlantingDetail.dc.html`, `PlantingDetailMobile.dc.html` | 3 |
 | `/get-involved` | Get involved hub | `GetInvolved.dc.html` | 3 |
 | `/dedicate-a-tree` | Dedicate a tree | `DedicateTree.dc.html` | 3 |
@@ -60,6 +60,7 @@ Use Zod schemas in `src/content.config.ts`. Any string field may hold a `TODO:` 
 
 **sites**
 - `name`, `slug`, `area`, `address`, `mapUrl`, `location` (`{ lat, lng }`), `summary` (one line), `story` (Markdown body), `partners` (references), `heroImage`, `gallery`, `publish`
+- `project` (optional): the site's food forest as a project. `active`, `order`, `treesTarget`, and either `treesPlanted` or `phases` (`[{ name, treesPlanted }]`, summed). Active projects lead the Plantings page.
 
 **programmes**
 - `title`, `summary` (one line), `body`, `order`

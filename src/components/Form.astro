@@ -21,10 +21,15 @@ type Props = {
 
 const { id, action, successTitle = 'Thank you.', class: className, ...rest } = Astro.props;
 const { email } = await getSettings();
+// Turnstile runs when a site key is set at build time (see BaseLayout for the script).
+const turnstileKey = process.env.TURNSTILE_SITE_KEY;
 ---
 
 <form id={id} class:list={['form', className]} method="post" action={action} data-enhance {...rest}>
   <slot />
+  {turnstileKey && (
+    <div class="cf-turnstile" data-sitekey={turnstileKey} data-appearance="interaction-only" />
+  )}
   <div class="form__honeypot" data-honeypot aria-hidden="true">
     <label>
       Leave this empty
@@ -32,6 +37,7 @@ const { email } = await getSettings();
     </label>
   </div>
   <p class="form__failure" role="alert" tabindex="-1" data-form-failure hidden>
+    <span data-failure-detail></span>
     That didn't go through. Please try again, or email
     <a href={`mailto:${email}`}>{email}</a>.
   </p>

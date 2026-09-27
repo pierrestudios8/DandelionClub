@@ -156,4 +156,19 @@ const settings = defineCollection({
   schema: settingsSchema,
 });
 
-export const collections = { plantings, sites, programmes, journal, partners, facts, settings };
+/** Email copy (subject and plain-text body with {{placeholders}}), editable like any content. */
+const emails = defineCollection({
+  loader: markdown('emails'),
+  schema: z.object({ subject: z.string() }),
+});
+
+export const collections = {
+  plantings,
+  sites,
+  programmes,
+  journal,
+  partners,
+  facts,
+  settings,
+  emails,
+};

@@ -72,6 +72,9 @@ const ogImageUrl = ogImage ? new URL(ogImage, Astro.site).href : undefined;
     {ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
     <meta name="twitter:card" content={ogImageUrl ? 'summary_large_image' : 'summary'} />
 
+    {process.env.TURNSTILE_SITE_KEY && (
+      <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer />
+    )}
     <slot name="head" />
   </head>
   <body>

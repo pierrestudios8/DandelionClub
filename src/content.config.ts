@@ -145,12 +145,13 @@ const partners = defineCollection({
     }),
 });
 
-/** Fact band. A fact renders only once `sourceUrl` is a real link. */
+/** Fact band: the Dandelion idea. `sourceUrl` is optional; when set, a source line shows. */
 const facts = defineCollection({
   loader: glob({ pattern: '**/*.json', base: './src/content/facts' }),
   schema: z.object({
-    text: z.string(),
-    sourceUrl: orTodo(url),
+    text: orTodo(z.string()),
+    lines: z.array(z.string()).default([]),
+    sourceUrl: orTodo(url).optional(),
   }),
 });
 

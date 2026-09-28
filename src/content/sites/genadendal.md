@@ -5,7 +5,7 @@ area: 'TODO: area'
 address: 'TODO: street address'
 mapUrl: 'TODO: map link'
 location: 'TODO: latitude and longitude'
-summary: 'TODO: one line about this site'
+summary: An emerging community food-forest vision connecting food, ecology, local heritage, education and enterprise.
 partners: []
 publish: false
 ---

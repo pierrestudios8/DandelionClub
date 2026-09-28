@@ -2,6 +2,7 @@
 /**
  * Big numbers computed from the Plantings and Sites collections. Renders only
  * when trees planted is real, and shows only the figures whose inputs are real.
+ * Sits on paper-sunk so it never shares a ground with the night band after it.
  */
 import Section from './Section.astro';
 import type { ImpactFigures } from '../lib/plantings';
@@ -20,7 +21,7 @@ const items = [
 ---
 
 {figures.treesPlanted !== null && (
-  <Section ground="night" space="tight" aria-label="Our impact so far">
+  <Section ground="paper-sunk" space="tight" aria-label="Our impact so far">
     <dl class="impact">
       {items.map((i) => (
         <div>
@@ -50,7 +51,7 @@ const items = [
     font-weight: var(--type-display-xl-weight);
     font-size: var(--type-display-xl-size);
     line-height: var(--type-display-xl-leading);
-    color: var(--dandelion);
+    color: var(--night);
   }
 
   @media (min-width: 1024px) {

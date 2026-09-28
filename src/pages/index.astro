@@ -22,7 +22,7 @@ import {
   getSites,
   plantingCard,
 } from '../lib/content';
-import { formatDate, numberWord } from '../lib/format';
+import { formatDate } from '../lib/format';
 
 const [next, figures, facts, programmes, sites, posts, settings] = await Promise.all([
   getNextPlanting(),
@@ -40,18 +40,39 @@ const fact = facts[0]?.data;
 
 <BaseLayout
   title="Dandelion Club"
-  description="Dandelion Club turns bare school ground in the Western Cape into food forests, one Saturday planting at a time. Join a planting, dedicate a tree or donate."
+  description="Dandelion Club turns underused school and community spaces in the Western Cape into food forests. Join a planting, dedicate a tree or donate."
 >
-  <Hero eyebrow="Food forests for Western Cape schools" headline="Plant it forward.">
-    <p>We turn bare school ground into food forests, one planting day at a time.</p>
-    <p>Bring gloves if you've got them. We'll bring everything else.</p>
+  <Hero eyebrow="Food forests for stronger communities" headline="Plant it forward.">
+    <p>
+      We turn underused school and community spaces into thriving food forests: places that produce
+      food, restore soil, use water wisely, create opportunities and bring people together.
+    </p>
+    <p>
+      We work with schools, communities, government, businesses, growers and volunteers to build
+      living systems that can become more productive and resilient over time.
+    </p>
     <Fragment slot="actions">
       <Button href={joinHref}>Join a planting</Button>
       <Button href="/dedicate-a-tree">Dedicate a tree</Button>
     </Fragment>
   </Hero>
 
-  <NextPlanting planting={nextCard} />
+  <NextPlanting planting={nextCard}>
+    <p>
+      A Dandelion Club planting day is part work party, part outdoor classroom and part community
+      gathering.
+    </p>
+    <p>We bring the trees, compost, mulch, tools and a plan. You bring yourself.</p>
+    <p>
+      Together we transform another patch of ground into something that can feed people, teach
+      skills and support a community for years to come.
+    </p>
+    <p>
+      Bring gloves if you've got them.
+      <br />
+      We'll bring everything else.
+    </p>
+  </NextPlanting>
 
   <ImpactStrip figures={figures} />
 
@@ -65,6 +86,18 @@ const fact = facts[0]?.data;
       <Button href="/our-work" variant="ghost">
         Our work
       </Button>
+    </div>
+    <div class="work-intro t-body">
+      <p>A food forest is not simply an orchard. It is a living system.</p>
+      <p>
+        Trees create the canopy. Shrubs, vegetables, herbs, climbers and groundcovers fill the
+        layers underneath. Compost feeds the soil. Mulch protects it. Water is slowed and held.
+        Organic waste becomes a resource. And people are part of the ecosystem too.
+      </p>
+      <p>
+        That is why every Dandelion Club project asks two questions: What can this land produce? And
+        what can become possible around it?
+      </p>
     </div>
     <ul role="list" class="programmes">
       {programmes.map((p) => (
@@ -81,8 +114,9 @@ const fact = facts[0]?.data;
   {sites.length > 0 && (
     <Section ground="night" aria-labelledby="sites-heading">
       <SectionHeading eyebrow="Where we work" id="sites-heading">
-        {`${numberWord(sites.length)} ${sites.length === 1 ? 'site' : 'sites'} so far.`}
+        One food forest at a time.
       </SectionHeading>
+      <p class="t-lead sites-lead">Each site is different, so each project evolves differently.</p>
       <div class="cards cards--three">
         {sites.map((s) => (
           <SiteCard
@@ -102,17 +136,29 @@ const fact = facts[0]?.data;
     <div class="funders">
       <div class="funders__text">
         <SectionHeading eyebrow="For funders and partners" id="funders-heading">
-          Fund a food forest.
+          Fund more than a planting day.
         </SectionHeading>
-        <p class="t-body">
-          Dandelion Club is run by {settings.npcName}. Talk to us about funding a site, a school or
-          one of our programmes.
-        </p>
+        <div class="t-body stack">
+          <p>A planting day is visible. The work around it is less visible.</p>
+          <p>
+            Before a tree goes into the ground there is community engagement, site assessment,
+            ecological design, soil preparation, sourcing, logistics and planning. Afterwards there
+            is watering, maintenance, replacement, training, monitoring and learning.
+          </p>
+          <p>
+            That is why we invite partners to invest not simply in trees, but in the systems that
+            allow those trees, and the people around them, to thrive.
+          </p>
+          <p class="t-small muted">Dandelion Club is run by {settings.npcName}.</p>
+        </div>
       </div>
       <div class="funders__actions">
-        <Button href="/get-involved/partner">Start a conversation</Button>
-        <Button href="/about" variant="ghost">
-          About us
+        <Button href="/get-involved/partner">Talk to us about partnership</Button>
+        <Button href="/get-involved/partner" variant="ghost">
+          Fund a site
+        </Button>
+        <Button href="/get-involved/partner" variant="ghost">
+          Support a programme
         </Button>
       </div>
     </div>
@@ -121,9 +167,14 @@ const fact = facts[0]?.data;
   {posts.length > 0 && (
     <Section ground="paper" aria-labelledby="journal-heading">
       <div class="split-head">
-        <SectionHeading eyebrow="From the journal" id="journal-heading">
-          Field notes.
-        </SectionHeading>
+        <div class="journal-head">
+          <SectionHeading eyebrow="From the journal" id="journal-heading">
+            Field notes.
+          </SectionHeading>
+          <p class="t-lead">
+            We learn by doing. The journal is where we share what we are seeing in the field.
+          </p>
+        </div>
         <Button href="/journal" variant="ghost">
           All posts
         </Button>
@@ -148,6 +199,17 @@ const fact = facts[0]?.data;
       <SectionHeading eyebrow="Get involved" id="close-heading" size="display-xl">
         Get your hands dirty.
       </SectionHeading>
+      <div class="close__text on-night">
+        <p class="t-lead">You don't need to be a gardener to be part of Dandelion Club.</p>
+        <ul role="list" class="close__list t-body">
+          <li>Plant a tree.</li>
+          <li>Join a planting day.</li>
+          <li>Offer skills.</li>
+          <li>Bring a school or community site to us.</li>
+          <li>Fund a food forest.</li>
+        </ul>
+        <p class="t-body">Help us create the conditions for the next one.</p>
+      </div>
       <Button href="/get-involved" class="close__button">
         Find your way in
       </Button>
@@ -170,6 +232,34 @@ const fact = facts[0]?.data;
     .split-head :global(.btn) {
       display: none;
     }
+  }
+
+  .work-intro {
+    display: grid;
+    gap: var(--space-4);
+    max-width: var(--measure-text);
+    margin-bottom: var(--space-8);
+  }
+
+  .journal-head {
+    display: grid;
+    gap: var(--space-4);
+    max-width: var(--measure-text);
+  }
+
+  .sites-lead {
+    margin-top: var(--space-4);
+  }
+
+  .funders__text .stack,
+  .close__text {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .close__list {
+    display: grid;
+    gap: var(--space-1);
   }
 
   .programmes {

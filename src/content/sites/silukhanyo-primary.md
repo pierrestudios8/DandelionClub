@@ -5,7 +5,7 @@ area: Strand
 address: 'TODO: street address'
 mapUrl: 'TODO: map link'
 location: 'TODO: latitude and longitude'
-summary: First food forest planting, 29 August 2026.
+summary: A school garden in Lwandle evolving into a more diverse food forest and outdoor learning landscape through partnerships, community planting and regenerative growing.
 partners: []
 project:
   active: true

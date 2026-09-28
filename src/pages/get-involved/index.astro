@@ -17,34 +17,38 @@ const joinHref = next ? `/plantings/${next.id}#sign-up` : '/plantings';
   description="Plant with us on a Saturday, dedicate a tree, donate, propose a site or partner with Dandelion Club."
 >
   <PageIntro eyebrow="Get involved" title="Find your way in.">
-    Plant with us on a Saturday, put your name to a tree, give, bring us a site, or fund the work.
-    Pick the one that fits.
+    Dandelion Club is designed to be participatory. You can spend one Saturday with us or become
+    part of building a food forest over several years.
   </PageIntro>
 
   <Section ground="paper" aria-label="Ways to get involved">
     <div class="routes routes--two">
       <RouteCard href={joinHref} title="Join a planting" audience="For anyone with a free Saturday">
-        Bring gloves, bring friends, bring the kids.
+        Come dig, plant, mulch and learn with us. No gardening experience necessary. Bring gloves if
+        you've got them. We'll bring everything else.
       </RouteCard>
       <RouteCard
         href="/dedicate-a-tree"
         title="Dedicate a tree"
         audience="For a gift, a memory, a milestone"
       >
-        Put a name to a tree that will feed a school.
+        Mark a birthday, a memory, a new arrival, a friendship or a milestone by putting a tree into
+        a living food forest.
       </RouteCard>
     </div>
     <div class="routes routes--three">
-      <RouteCard href="/donate" title="Donate" audience="For individuals" tone="paper">
-        Once-off or monthly, by card or EFT.
+      <RouteCard href="/donate" title="Fund the work" audience="For individuals" tone="paper">
+        Help fund trees, soil-building materials, water systems, tools, education and the
+        infrastructure that keeps these projects alive.
       </RouteCard>
       <RouteCard
         href="/get-involved/propose-a-site"
-        title="Propose a site"
+        title="Bring us a place"
         audience="For schools and community groups"
         tone="paper"
       >
-        Tell us about the ground and the people who'll look after it.
+        Know a school or community space with land, committed people and potential? Tell us about
+        it.
       </RouteCard>
       <RouteCard
         href="/get-involved/partner"
@@ -52,7 +56,9 @@ const joinHref = next ? `/plantings/${next.id}#sign-up` : '/plantings';
         audience="For businesses and funders"
         tone="paper"
       >
-        Fund a site, a school or a programme.
+        Businesses, government, growers, educators, researchers, community organisations and funders
+        all have different resources to contribute. The strongest ecosystems are diverse. So are the
+        strongest partnerships.
       </RouteCard>
     </div>
   </Section>

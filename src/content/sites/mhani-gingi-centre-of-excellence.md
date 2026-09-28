@@ -5,7 +5,7 @@ area: 'TODO: area or suburb'
 address: 'TODO: street address'
 mapUrl: 'TODO: map link'
 location: 'TODO: latitude and longitude'
-summary: 'TODO: one line about this site'
+summary: A community agriculture site becoming a demonstration space for water-wise food production, circular systems and regenerative innovation.
 partners: []
 publish: false
 ---

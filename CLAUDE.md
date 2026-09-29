@@ -71,6 +71,7 @@ tests/                  unit and e2e
 
 - Three brand colours carry the site: `night` #1E122B, `dandelion` #FFCD19, `paper` #FCFAF2. Pages run in full-bleed horizontal bands: night header and hero, paper content, at most one dandelion seed band, night close.
 - **Never dandelion text on paper** (1.4:1 contrast). Dandelion on night, night on paper, and night on dandelion all pass.
+- Body paragraphs (`lead`, `body`, `small-lg`, `small`) use 100% line height (leading 1 in `design/tokens.json`); never loosen it in a component.
 - Square corners everywhere (`radius-none`). 2px outlines, no shadows.
 - Headlines, eyebrows, buttons and nav are uppercase **via CSS** (`text-transform`); write them in sentence case in content and markup.
 - Photos fade into night at the bottom (transparent at 42% → `night` at 100%). Text never sits on top of a photo.

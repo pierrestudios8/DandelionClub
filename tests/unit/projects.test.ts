@@ -95,7 +95,7 @@ describe('projectTreesTotal', () => {
 
 describe('projectConfirmed', () => {
   it('is true when every figure on the card is real', () => {
-    expect(projectConfirmed('Strand', project({ treesTarget: 200, treesPlanted: 92 }))).toBe(true);
+    expect(projectConfirmed('Lwandle', project({ treesTarget: 200, treesPlanted: 92 }))).toBe(true);
     const phases = [
       { name: 'Phase 01', treesPlanted: 88 },
       { name: 'Phase 02', treesPlanted: 80 },
@@ -106,10 +106,10 @@ describe('projectConfirmed', () => {
   it('is false while the area, target, count or any phase is a placeholder', () => {
     const counted = { treesTarget: 200, treesPlanted: 92 };
     expect(projectConfirmed('TODO: area', project(counted))).toBe(false);
-    expect(projectConfirmed('Strand', project({ ...counted, treesTarget: 'TODO: target' }))).toBe(
+    expect(projectConfirmed('Lwandle', project({ ...counted, treesTarget: 'TODO: target' }))).toBe(
       false,
     );
-    expect(projectConfirmed('Strand', project({ treesTarget: 200 }))).toBe(false);
+    expect(projectConfirmed('Lwandle', project({ treesTarget: 200 }))).toBe(false);
     const phases = [
       { name: 'Phase 01', treesPlanted: 88 },
       { name: 'Phase 02', treesPlanted: 'TODO: phase 2 count' },

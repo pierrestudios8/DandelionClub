@@ -28,6 +28,7 @@ Three brand colours carry everything. Use `night`, `dandelion` and `paper` as fu
 
 Two families, both hosted on Google Fonts: **Unbounded** (`--font-display`) for display, eyebrows, buttons and nav, and **Geist** (`--font-text`) for everything you read.
 
+- Body paragraphs (`lead`, `body`, `small-lg`, `small`) run at 100% line height, tight like the headlines. Headings keep their own leading.
 - `display` (Unbounded 900, 40/36) for section headlines in capitals; `display-xl` (72, leading 0.9) for the desktop hero only.
 - `eyebrow` (Unbounded 900, 18) sits directly above a display headline with no gap.
 - `title` 32 and `subtitle` 24 (Geist 700) for names, places and dates.

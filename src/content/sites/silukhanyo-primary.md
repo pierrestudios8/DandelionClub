@@ -1,7 +1,7 @@
 ---
 name: Silukhanyo Primary
 slug: silukhanyo-primary
-area: Strand
+area: Lwandle
 address: 'TODO: street address'
 mapUrl: 'TODO: map link'
 location: 'TODO: latitude and longitude'

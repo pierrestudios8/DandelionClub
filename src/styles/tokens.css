@@ -110,23 +110,23 @@
   --type-subtitle-sm-weight: 700;
   --type-lead-family: var(--font-text);
   --type-lead-size: 18px;
-  --type-lead-leading: 19.8px;
+  --type-lead-leading: 1;
   --type-lead-weight: 700;
   --type-lead-strong-family: var(--font-text);
   --type-lead-strong-size: 18px;
-  --type-lead-strong-leading: 19.8px;
+  --type-lead-strong-leading: 1;
   --type-lead-strong-weight: 900;
   --type-body-family: var(--font-text);
   --type-body-size: 18px;
-  --type-body-leading: 28px;
+  --type-body-leading: 1;
   --type-body-weight: 400;
   --type-small-lg-family: var(--font-text);
   --type-small-lg-size: 16px;
-  --type-small-lg-leading: 24px;
+  --type-small-lg-leading: 1;
   --type-small-lg-weight: 400;
   --type-small-family: var(--font-text);
   --type-small-size: 14px;
-  --type-small-leading: 20px;
+  --type-small-leading: 1;
   --type-small-weight: 400;
 }
 

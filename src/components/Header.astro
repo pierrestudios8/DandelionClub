@@ -30,16 +30,36 @@ const current = (href: string) => (isCurrent(href, pathname) ? 'page' : undefine
     <nav class="header__nav" aria-label="Main">
       <ul role="list">
         {mainNav.map((link) => (
-          <li>
+          <li class:list={['header__item', link.children && 'has-sub']}>
             <a class="header__link" href={link.href} aria-current={current(link.href)}>
               {link.label}
             </a>
+            {link.children && (
+              <ul class="sub" role="list" aria-label={`${link.label} pages`}>
+                {link.children.map((child) => (
+                  <li>
+                    <a class="sub__link" href={child.href} aria-current={current(child.href)}>
+                      {child.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
           </li>
         ))}
-        <li>
+        <li class="header__item has-sub has-sub--end">
           <Button href={mainAction.href} aria-current={current(mainAction.href)}>
             {mainAction.label}
           </Button>
+          <ul class="sub" role="list" aria-label={`${mainAction.label} pages`}>
+            {mainAction.children?.map((child) => (
+              <li>
+                <a class="sub__link" href={child.href} aria-current={current(child.href)}>
+                  {child.label}
+                </a>
+              </li>
+            ))}
+          </ul>
         </li>
       </ul>
     </nav>
@@ -83,6 +103,17 @@ const current = (href: string) => (isCurrent(href, pathname) ? 'page' : undefine
             <a class="menu__link" href={link.href} aria-current={current(link.href)}>
               {link.label}
             </a>
+            {link.children && (
+              <ul class="menu__sub" role="list">
+                {link.children.map((child) => (
+                  <li>
+                    <a class="menu__sublink" href={child.href} aria-current={current(child.href)}>
+                      {child.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
           </li>
         ))}
       </ul>
@@ -181,6 +212,91 @@ const current = (href: string) => (isCurrent(href, pathname) ? 'page' : undefine
     text-decoration: underline;
     text-decoration-thickness: var(--border-strong);
     text-underline-offset: var(--space-2);
+  }
+
+  .header {
+    position: relative;
+    z-index: 10;
+  }
+
+  .header__item {
+    position: relative;
+  }
+
+  /* Drop-down: opens on hover or keyboard focus, anywhere in the item. */
+  .header__nav ul.sub {
+    position: absolute;
+    top: 100%;
+    left: calc(var(--space-5) * -1);
+    min-width: 100%;
+    width: max-content;
+    display: grid;
+    justify-items: start;
+    gap: var(--space-4);
+    padding: var(--space-5);
+    background: var(--night-raised);
+    border: var(--border-strong) solid var(--dandelion);
+    border-radius: var(--radius-none);
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 150ms ease-out;
+  }
+
+  .header__nav .has-sub--end ul.sub {
+    left: auto;
+    right: 0;
+  }
+
+  /* Keep the pointer inside the item while it crosses the gap to the panel. */
+  .has-sub::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    height: var(--space-4);
+  }
+
+  .header__nav .has-sub:hover > ul.sub,
+  .header__nav .has-sub:focus-within > ul.sub {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .sub__link,
+  .menu__sublink {
+    font-family: var(--type-eyebrow-family);
+    font-weight: var(--type-eyebrow-weight);
+    text-transform: uppercase;
+    color: var(--dandelion);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .sub__link {
+    font-size: var(--type-eyebrow-sm-size);
+    line-height: var(--type-eyebrow-sm-leading);
+  }
+
+  .sub__link:hover,
+  .sub__link[aria-current='page'],
+  .menu__sublink:hover,
+  .menu__sublink[aria-current='page'] {
+    text-decoration: underline;
+    text-decoration-thickness: var(--border-strong);
+    text-underline-offset: var(--space-2);
+  }
+
+  .menu__sub {
+    display: grid;
+    gap: var(--space-3);
+    margin-top: var(--space-3);
+    padding-left: var(--space-5);
+  }
+
+  .menu__sublink {
+    font-size: var(--type-eyebrow-size);
+    line-height: var(--type-eyebrow-leading);
   }
 
   .header__toggle {

@@ -1,6 +1,6 @@
 ---
 title: Healthy soil & circular systems
-summary: We compost, mulch, make Bokashi and find ways to return organic resources to the soil instead of treating them as waste.
+summary: We compost, mulch, process Bokashi and find ways to return organic resources to the soil instead of treating them as waste.
 order: 2
 ---
 

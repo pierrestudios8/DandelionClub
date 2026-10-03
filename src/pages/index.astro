@@ -331,6 +331,9 @@ const fact = facts[0]?.data;
     gap: var(--space-4);
   }
 
+  .close :global(.close__button) {
+    justify-self: start;
+  }
   .close__list {
     display: grid;
     gap: var(--space-1);
@@ -338,14 +341,14 @@ const fact = facts[0]?.data;
 
   .programmes {
     display: grid;
-    gap: var(--space-5);
+    gap: var(--space-7) var(--space-5);
   }
 
   .programme {
     display: grid;
-    gap: var(--space-2);
+    gap: var(--space-3);
     align-content: start;
-    padding-top: var(--space-4);
+    padding-block: var(--space-4) var(--space-6);
     border-top: var(--border-strong) solid var(--night);
   }
 
@@ -356,8 +359,8 @@ const fact = facts[0]?.data;
   }
 
   .programme__summary {
-    font-size: var(--type-small-lg-size);
-    line-height: var(--type-small-lg-leading);
+    font-size: var(--type-small-size);
+    line-height: var(--type-small-leading);
   }
 
   .cards {
@@ -388,13 +391,6 @@ const fact = facts[0]?.data;
     gap: var(--space-3);
   }
 
-  @media (max-width: 599px) {
-    .close :global(.close__button) {
-      display: flex;
-      width: 100%;
-    }
-  }
-
   @media (min-width: 768px) {
     .programmes {
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -418,8 +414,8 @@ const fact = facts[0]?.data;
     }
 
     .programme {
-      gap: var(--space-3);
-      padding-top: var(--space-5);
+      gap: var(--space-4);
+      padding-block: var(--space-5) var(--space-7);
     }
 
     .programme__title {

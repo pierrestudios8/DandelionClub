@@ -7,7 +7,7 @@ import Hero from '../components/Hero.astro';
 import ImpactStrip from '../components/ImpactStrip.astro';
 import NextPlanting from '../components/NextPlanting.astro';
 import Placeholder from '../components/Placeholder.astro';
-import RouteCard from '../components/RouteCard.astro';
+import Pathways from '../components/Pathways.astro';
 import Section from '../components/Section.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import SeedBand from '../components/SeedBand.astro';
@@ -85,70 +85,9 @@ const fact = facts[0]?.data;
       Where do you fit?
     </SectionHeading>
     <div class="ways">
-      <RouteCard
-        href={joinHref}
-        title="Join"
-        audience="For anyone with a free Saturday"
-        headingLevel={3}
-      >
-        Turn up, dig, plant. Everyone welcome. We bring the trees, compost, mulch, tools and a plan.
-        You bring yourself.
-      </RouteCard>
-      <RouteCard
-        opens="support-dialog"
-        title="Support a food forest"
-        audience="For teams, enterprises and individuals"
-        headingLevel={3}
-      >
-        Pay for the soil, the trees and the care around them. Choose how you want to be part of it.
-      </RouteCard>
-      <RouteCard
-        href="/get-involved/propose-a-site"
-        title="Propose a site"
-        audience="For communities with a place"
-        headingLevel={3}
-      >
-        Bring a community site to us. Explore what a food forest requires, connect local people and
-        help steward a living system over time.
-      </RouteCard>
+      <Pathways joinHref={joinHref} />
     </div>
   </Section>
-  <dialog class="support" id="support-dialog" aria-labelledby="support-title">
-    <div class="support__bar">
-      <h2 class="support__title" id="support-title">
-        Support a food forest
-      </h2>
-      <button class="support__close" type="button" data-close>
-        <span class="visually-hidden">Close</span>
-        <span aria-hidden="true">×</span>
-      </button>
-    </div>
-    <ul role="list" class="support__options">
-      <li class="option">
-        <h3 class="option__title">Corporate investment</h3>
-        <p class="option__text">
-          Bring your team for a planting day, or contribute financially without the day.
-        </p>
-        <Button href="/get-involved/partner">Talk to us</Button>
-      </li>
-      <li class="option">
-        <h3 class="option__title">Enterprise development</h3>
-        <p class="option__text">
-          Back the nurseries, produce and small enterprises that grow around a food forest.
-        </p>
-        <Button href="/get-involved/partner">Talk to us</Button>
-      </li>
-      <li class="option">
-        <h3 class="option__title">Individuals</h3>
-        <p class="option__text">Put a name to a tree, or give once or monthly.</p>
-        <div class="option__actions">
-          <Button href="/dedicate-a-tree">Dedicate a tree</Button>
-          <Button href="/donate">Donate</Button>
-        </div>
-      </li>
-    </ul>
-  </dialog>
-
   <FactBand fact={fact} />
 
   <Section ground="paper-sunk" aria-labelledby="work-heading" class="home-work">
@@ -301,127 +240,8 @@ const fact = facts[0]?.data;
   </Section>
 </BaseLayout>
 
-<script>
-  document.querySelectorAll<HTMLElement>('[data-opens]').forEach((trigger) => {
-    const dialog = document.getElementById(trigger.dataset.opens ?? '') as HTMLDialogElement | null;
-    if (!dialog) return;
-    trigger.addEventListener('click', () => dialog.showModal());
-    dialog.querySelector('[data-close]')?.addEventListener('click', () => dialog.close());
-    // A click on the backdrop (outside the panel) closes it.
-    dialog.addEventListener('click', (e) => {
-      if (e.target === dialog) dialog.close();
-    });
-    dialog.addEventListener('close', () => trigger.focus());
-  });
-</script>
-
 <style>
-  .support {
-    margin: auto;
-    width: min(100% - var(--space-8), var(--measure-content));
-    max-height: calc(100% - var(--space-8));
-    padding: var(--space-7);
-    background: var(--night-raised);
-    color: var(--paper);
-    border: var(--border-strong) solid var(--dandelion);
-    border-radius: var(--radius-none);
-    overflow-y: auto;
-  }
-  .support::backdrop {
-    background: var(--night);
-    opacity: 0.8;
-  }
-  .support__bar {
-    display: flex;
-    align-items: start;
-    justify-content: space-between;
-    gap: var(--space-4);
-    margin-bottom: var(--space-7);
-  }
-  .support__title {
-    font-family: var(--type-display-family);
-    font-size: var(--type-display-sm-size);
-    line-height: var(--type-display-sm-leading);
-    font-weight: var(--type-display-weight);
-    text-transform: uppercase;
-    color: var(--dandelion);
-  }
-  .support__close {
-    flex: none;
-    width: var(--space-8);
-    height: var(--space-8);
-    background: var(--night-raised);
-    color: var(--dandelion);
-    border: var(--border-strong) solid var(--dandelion);
-    border-radius: var(--radius-none);
-    font-family: var(--font-display);
-    font-size: var(--type-subtitle-size);
-    cursor: pointer;
-  }
-  .support__options {
-    display: grid;
-    gap: var(--space-5);
-  }
-  .option {
-    display: grid;
-    gap: var(--space-4);
-    align-content: start;
-    padding: var(--space-5);
-    border: var(--border-strong) solid var(--dandelion);
-  }
-  .option__title {
-    font-family: var(--type-eyebrow-family);
-    font-size: var(--type-eyebrow-size);
-    line-height: var(--type-eyebrow-leading);
-    font-weight: var(--type-eyebrow-weight);
-    overflow-wrap: anywhere;
-    text-transform: uppercase;
-    color: var(--dandelion);
-  }
-  .option__text {
-    font-size: var(--type-body-size);
-    line-height: var(--type-body-leading);
-  }
-  .option__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3);
-  }
-  @media (min-width: 1024px) {
-    .support__options {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-    .option__title {
-      font-size: var(--type-eyebrow-lg-size);
-      line-height: var(--type-eyebrow-lg-leading);
-    }
-  }
-  .split-head {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: end;
-    justify-content: space-between;
-    gap: var(--space-5);
-    margin-bottom: var(--space-8);
-  }
-
-  /* On phones the section's button moves out of the heading row, as in HomeMobile. */
-  @media (max-width: 599px) {
-    .split-head :global(.btn) {
-      display: none;
-    }
-  }
-
-  .work-intro {
-    display: grid;
-    gap: var(--space-4);
-    max-width: var(--measure-text);
-    margin-bottom: var(--space-8);
-  }
-
   .ways {
-    display: grid;
-    gap: var(--space-5);
     margin-top: var(--space-8);
   }
   .agro {
@@ -523,18 +343,6 @@ const fact = facts[0]?.data;
     .cards--two,
     .cards--three {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  @media (min-width: 768px) {
-    .ways {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .ways {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
 

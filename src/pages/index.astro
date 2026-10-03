@@ -139,19 +139,23 @@ const fact = facts[0]?.data;
         </div>
         <Button href="/about#approach-heading">See how we work</Button>
       </div>
-      <div class="agro__observe stack">
-        <h3 class="agro__title">Start with what is already there.</h3>
-        <div class="t-body stack">
-          <p>
-            Before we plant, we observe. Where does the water move? Where does the wind come from?
-            What already grows? Who uses the space? What knowledge already exists in the community?
-            What resources are being overlooked or thrown away?
-          </p>
-          <p>
-            A good food forest doesn't begin with a planting plan. It begins with understanding the
-            system.
-          </p>
-        </div>
+    </div>
+  </Section>
+  <Section ground="paper-sunk" aria-labelledby="observe-heading">
+    <div class="observe">
+      <SectionHeading eyebrow="Observe first" id="observe-heading">
+        Start with what is already there.
+      </SectionHeading>
+      <div class="t-body stack observe__text">
+        <p>
+          Before we plant, we observe. Where does the water move? Where does the wind come from?
+          What already grows? Who uses the space? What knowledge already exists in the community?
+          What resources are being overlooked or thrown away?
+        </p>
+        <p>
+          A good food forest doesn't begin with a planting plan. It begins with understanding the
+          system.
+        </p>
       </div>
     </div>
   </Section>
@@ -296,7 +300,6 @@ const fact = facts[0]?.data;
     gap: var(--space-8);
   }
   .agro__main,
-  .agro__observe,
   .agro .stack {
     display: grid;
     gap: var(--space-4);
@@ -306,10 +309,15 @@ const fact = facts[0]?.data;
   .agro__main :global(.btn) {
     justify-self: start;
   }
-  .agro__title {
-    font-size: var(--type-subtitle-sm-size);
-    line-height: var(--type-subtitle-sm-leading);
-    font-weight: var(--type-subtitle-sm-weight);
+  .observe {
+    display: grid;
+    gap: var(--space-6);
+  }
+  .observe__text {
+    display: grid;
+    gap: var(--space-4);
+    align-content: start;
+    max-width: var(--measure-text);
   }
   .journal-head {
     display: grid;
@@ -399,9 +407,10 @@ const fact = facts[0]?.data;
   }
 
   @media (min-width: 1024px) {
-    .agro {
+    .observe {
       grid-template-columns: 1fr 1fr;
       gap: var(--space-9);
+      align-items: start;
     }
     .programmes,
     .cards--three {

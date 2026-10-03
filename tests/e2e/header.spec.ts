@@ -35,7 +35,13 @@ test('desktop: links are inline and the menu button is hidden', async ({ page },
   await page.goto('/styleguide');
   const header = page.locator('header.header');
   await expect(header.getByRole('button', { name: 'Open menu' })).toBeHidden();
-  for (const name of ['Plantings', 'Our work', 'About', 'Journal', 'Get involved']) {
+  for (const name of ['Plantings', 'Our work', 'About', 'Get involved']) {
     await expect(header.getByRole('link', { name, exact: true })).toBeVisible();
   }
+  const journal = header.getByRole('link', { name: 'Journal', exact: true });
+  await expect(journal).toBeHidden();
+  await header.getByRole('link', { name: 'Our work', exact: true }).hover();
+  await expect(journal).toBeVisible();
+  await header.getByRole('link', { name: 'Get involved', exact: true }).hover();
+  await expect(header.getByRole('link', { name: 'Donate', exact: true })).toBeVisible();
 });

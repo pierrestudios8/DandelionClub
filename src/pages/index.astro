@@ -5,7 +5,6 @@ import Button from '../components/Button.astro';
 import FactBand from '../components/FactBand.astro';
 import Hero from '../components/Hero.astro';
 import ImpactStrip from '../components/ImpactStrip.astro';
-import JournalCard from '../components/JournalCard.astro';
 import NextPlanting from '../components/NextPlanting.astro';
 import Placeholder from '../components/Placeholder.astro';
 import RouteCard from '../components/RouteCard.astro';
@@ -16,22 +15,19 @@ import SiteCard from '../components/SiteCard.astro';
 import {
   getFacts,
   getImpactFigures,
-  getJournal,
   getNextPlanting,
   getProgrammes,
   getSettings,
   getSites,
   plantingCard,
 } from '../lib/content';
-import { formatDate } from '../lib/format';
 
-const [next, figures, facts, programmes, sites, posts, settings] = await Promise.all([
+const [next, figures, facts, programmes, sites, settings] = await Promise.all([
   getNextPlanting(),
   getImpactFigures(),
   getFacts(),
   getProgrammes(),
   getSites(),
-  getJournal(),
   getSettings(),
 ]);
 const nextCard = next ? await plantingCard(next) : undefined;
@@ -254,38 +250,6 @@ const fact = facts[0]?.data;
     </div>
   </Section>
 
-  {posts.length > 0 && (
-    <Section ground="paper" aria-labelledby="journal-heading">
-      <div class="split-head">
-        <div class="journal-head">
-          <SectionHeading eyebrow="From the journal" id="journal-heading">
-            Field notes.
-          </SectionHeading>
-          <p class="t-lead">
-            We learn by doing. The Dandelion Club journal is where we share what we are seeing in
-            the field: what worked, what failed, what surprised us, what the soil taught us and what
-            communities are building around these spaces.
-          </p>
-        </div>
-        <Button href="/journal" variant="ghost">
-          All posts
-        </Button>
-      </div>
-      <div class="cards cards--two">
-        {posts.slice(0, 2).map((post) => (
-          <JournalCard
-            title={post.data.title}
-            href={`/journal/${post.id}`}
-            date={formatDate(post.data.date)}
-            author={post.data.author}
-            tag={post.data.tags[0]}
-            image={post.data.heroImage}
-          />
-        ))}
-      </div>
-    </Section>
-  )}
-
   <Section ground="night" aria-labelledby="close-heading">
     <div class="close">
       <SectionHeading eyebrow="Get involved" id="close-heading" size="display-xl">
@@ -362,11 +326,6 @@ const fact = facts[0]?.data;
     display: grid;
     gap: var(--space-4);
     align-content: start;
-    max-width: var(--measure-text);
-  }
-  .journal-head {
-    display: grid;
-    gap: var(--space-4);
     max-width: var(--measure-text);
   }
 

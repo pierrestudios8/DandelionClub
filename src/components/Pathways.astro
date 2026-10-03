@@ -1,0 +1,88 @@
+---
+/**
+ * The ways in: two large night cards, then three paper cards. Shared by the
+ * Get involved hub and Home so the two stay the same.
+ */
+import RouteCard from './RouteCard.astro';
+
+interface Props {
+  /** The next planting's sign-up, or /plantings when none is scheduled. */
+  joinHref: string;
+}
+
+const { joinHref } = Astro.props;
+---
+
+<div class="routes routes--two">
+  <RouteCard
+    href={joinHref}
+    title="Join a planting"
+    audience="For anyone ready to get their hands dirty"
+  >
+    Come dig, plant, mulch and learn with us. No gardening experience necessary. Bring gloves if
+    you've got them. We'll bring everything else.
+  </RouteCard>
+  <RouteCard
+    href="/dedicate-a-tree"
+    title="Dedicate a tree"
+    audience="For a gift, a memory, a milestone"
+  >
+    Mark a birthday, a memory, a new arrival, a friendship or a milestone by putting a tree into a
+    living food forest.
+  </RouteCard>
+</div>
+<div class="routes routes--three">
+  <RouteCard href="/donate" title="Fund the work" audience="For individuals" tone="paper">
+    Help fund trees, soil-building materials, water systems, tools, education and the infrastructure
+    that keeps these projects alive.
+  </RouteCard>
+  <RouteCard
+    href="/get-involved/propose-a-site"
+    title="Bring us a place"
+    audience="For schools and community groups"
+    tone="paper"
+  >
+    Know a school or community space with land, committed people and potential? Tell us about it.
+  </RouteCard>
+  <RouteCard
+    href="/get-involved/partner"
+    title="Partner with us"
+    audience="For businesses and funders"
+    tone="paper"
+  >
+    Businesses, government, growers, educators, researchers, community organisations and funders all
+    have different resources to contribute. The strongest ecosystems are diverse. So are the
+    strongest partnerships.
+  </RouteCard>
+</div>
+
+<style>
+  .routes {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .routes + .routes {
+    margin-top: var(--space-5);
+  }
+
+  @media (min-width: 768px) {
+    .routes--two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .routes--three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .routes :global(.route--night) {
+      min-height: calc(var(--space-10) * 2 + var(--space-10) / 2);
+    }
+
+    .routes :global(.route--paper) {
+      min-height: calc(var(--space-10) * 2 + var(--space-9) / 2);
+    }
+  }
+</style>

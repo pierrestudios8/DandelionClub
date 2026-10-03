@@ -3,7 +3,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import NewsletterSignup from '../../components/NewsletterSignup.astro';
 import PageIntro from '../../components/PageIntro.astro';
-import RouteCard from '../../components/RouteCard.astro';
+import Pathways from '../../components/Pathways.astro';
 import Section from '../../components/Section.astro';
 import SectionHeading from '../../components/SectionHeading.astro';
 import { getNextPlanting } from '../../lib/content';
@@ -14,53 +14,15 @@ const joinHref = next ? `/plantings/${next.id}#sign-up` : '/plantings';
 
 <BaseLayout
   title="Get involved"
-  description="Plant with us on a Saturday, dedicate a tree, donate, propose a site or partner with Dandelion Club."
+  description="Plant with us, dedicate a tree, donate, propose a site or partner with Dandelion Club."
 >
   <PageIntro eyebrow="Get involved" title="Find your way in.">
-    Dandelion Club is designed to be participatory. You can spend one Saturday with us or become
-    part of building a food forest over several years.
+    Dandelion Club is designed to be participatory. You can spend one day with us or become part of
+    building a food forest over several years.
   </PageIntro>
 
   <Section ground="paper" aria-label="Ways to get involved">
-    <div class="routes routes--two">
-      <RouteCard href={joinHref} title="Join a planting" audience="For anyone with a free Saturday">
-        Come dig, plant, mulch and learn with us. No gardening experience necessary. Bring gloves if
-        you've got them. We'll bring everything else.
-      </RouteCard>
-      <RouteCard
-        href="/dedicate-a-tree"
-        title="Dedicate a tree"
-        audience="For a gift, a memory, a milestone"
-      >
-        Mark a birthday, a memory, a new arrival, a friendship or a milestone by putting a tree into
-        a living food forest.
-      </RouteCard>
-    </div>
-    <div class="routes routes--three">
-      <RouteCard href="/donate" title="Fund the work" audience="For individuals" tone="paper">
-        Help fund trees, soil-building materials, water systems, tools, education and the
-        infrastructure that keeps these projects alive.
-      </RouteCard>
-      <RouteCard
-        href="/get-involved/propose-a-site"
-        title="Bring us a place"
-        audience="For schools and community groups"
-        tone="paper"
-      >
-        Know a school or community space with land, committed people and potential? Tell us about
-        it.
-      </RouteCard>
-      <RouteCard
-        href="/get-involved/partner"
-        title="Partner with us"
-        audience="For businesses and funders"
-        tone="paper"
-      >
-        Businesses, government, growers, educators, researchers, community organisations and funders
-        all have different resources to contribute. The strongest ecosystems are diverse. So are the
-        strongest partnerships.
-      </RouteCard>
-    </div>
+    <Pathways joinHref={joinHref} />
   </Section>
 
   <Section ground="night" aria-labelledby="not-ready">
@@ -74,39 +36,12 @@ const joinHref = next ? `/plantings/${next.id}#sign-up` : '/plantings';
 </BaseLayout>
 
 <style>
-  .routes {
-    display: grid;
-    gap: var(--space-5);
-  }
-
-  .routes + .routes {
-    margin-top: var(--space-5);
-  }
-
   .later {
     display: grid;
     gap: var(--space-7);
   }
 
-  @media (min-width: 768px) {
-    .routes--two {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
   @media (min-width: 1024px) {
-    .routes--three {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
-    .routes :global(.route--night) {
-      min-height: calc(var(--space-10) * 2 + var(--space-10) / 2);
-    }
-
-    .routes :global(.route--paper) {
-      min-height: calc(var(--space-10) * 2 + var(--space-9) / 2);
-    }
-
     .later {
       grid-template-columns: 1fr 1fr;
       align-items: center;

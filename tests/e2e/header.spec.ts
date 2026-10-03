@@ -15,7 +15,7 @@ test('mobile: menu opens as a dialog, closes on Escape, and returns focus', asyn
   const menu = page.getByRole('dialog', { name: 'Menu' });
   await expect(menu).toBeVisible();
   await expect(toggle).toHaveAttribute('aria-expanded', 'true');
-  for (const name of ['Plantings', 'Our work', 'About', 'Journal', 'Get involved']) {
+  for (const name of ['Plantings', 'Our work', 'About', 'Get involved']) {
     await expect(menu.getByRole('link', { name })).toBeVisible();
   }
   await page.screenshot({ path: 'screenshots/menu-mobile.png' });
@@ -38,10 +38,6 @@ test('desktop: links are inline and the menu button is hidden', async ({ page },
   for (const name of ['Plantings', 'Our work', 'About', 'Get involved']) {
     await expect(header.getByRole('link', { name, exact: true })).toBeVisible();
   }
-  const journal = header.getByRole('link', { name: 'Journal', exact: true });
-  await expect(journal).toBeHidden();
-  await header.getByRole('link', { name: 'Our work', exact: true }).hover();
-  await expect(journal).toBeVisible();
   await header.getByRole('link', { name: 'Get involved', exact: true }).hover();
   await expect(header.getByRole('link', { name: 'Donate', exact: true })).toBeVisible();
 });

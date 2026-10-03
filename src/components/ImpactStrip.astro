@@ -14,9 +14,14 @@ interface Props {
 const { figures } = Astro.props;
 const items = [
   { value: figures.treesPlanted, label: 'trees planted' },
-  { value: figures.plantingsHeld, label: figures.plantingsHeld === 1 ? 'planting' : 'plantings' },
-  { value: figures.schools, label: figures.schools === 1 ? 'school' : 'schools' },
-  { value: figures.volunteers, label: 'volunteers' },
+  {
+    value: figures.foodForests,
+    label: figures.foodForests === 1 ? 'food forest seeded' : 'food forests seeded',
+  },
+  {
+    value: figures.plantingsHeld,
+    label: figures.plantingsHeld === 1 ? 'planting day hosted' : 'planting days hosted',
+  },
 ].filter((i): i is { value: number; label: string } => i.value !== null);
 ---
 

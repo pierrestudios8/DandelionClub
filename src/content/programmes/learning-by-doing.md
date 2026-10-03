@@ -1,6 +1,6 @@
 ---
 title: Learning by doing
-summary: Our gardens become outdoor classrooms where children, growers, volunteers and community members can learn about food, ecology, soil, biodiversity and how natural systems work.
+summary: Our gardens become learning spaces where children, growers, volunteers and community members can learn about food, ecology, soil, biodiversity and how natural systems work.
 order: 4
 ---
 

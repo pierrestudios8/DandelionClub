@@ -102,6 +102,7 @@ export function sortPlantings<P extends PlantingLike>(
 export interface ImpactFigures {
   treesPlanted: number | null;
   plantingsHeld: number | null;
+  foodForests: number | null;
   schools: number | null;
   volunteers: number | null;
 }
@@ -128,9 +129,16 @@ export function impactFigures(
   held: PlantingLike[],
   sites: SiteLike[],
   projectTrees: number | null,
+  foodForests: number | null = null,
 ): ImpactFigures {
   if (held.length === 0) {
-    return { treesPlanted: projectTrees, plantingsHeld: null, schools: null, volunteers: null };
+    return {
+      treesPlanted: projectTrees,
+      plantingsHeld: null,
+      foodForests,
+      schools: null,
+      volunteers: null,
+    };
   }
   const siteIds = new Set(sites.map((s) => s.id));
   const sitesWithPlanting = new Set(
@@ -139,6 +147,7 @@ export function impactFigures(
   return {
     treesPlanted: projectTrees,
     plantingsHeld: held.length,
+    foodForests,
     schools: sitesWithPlanting.size,
     volunteers: sumOrNull(held, 'volunteers'),
   };

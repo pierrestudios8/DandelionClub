@@ -1,6 +1,6 @@
 ---
 title: Community & belonging
-summary: Food forests are places people make together. They create opportunities to share knowledge, stories, skills, food and responsibility for a common place.
+summary: Food forests are places people grow together. They create opportunities to share knowledge, stories, skills, food and responsibility for a common place through cultural immersion and team building events, training and leadership development circles.
 order: 6
 ---
 

@@ -40,29 +40,40 @@ const fact = facts[0]?.data;
 
 <BaseLayout
   title="Dandelion Club"
-  description="Dandelion Club turns underused school and community spaces in the Western Cape into food forests. Join a planting, dedicate a tree or donate."
+  description="Dandelion Club turns underused community spaces in the Western Cape into food forests. Join a planting, dedicate a tree or donate."
 >
-  <Hero eyebrow="Food forests for stronger communities" headline="Plant it forward.">
+  <Hero eyebrow="Food forests for stronger futures" headline="Plant it forward.">
     <p>
-      We turn underused school and community spaces into thriving food forests: places that produce
-      food, restore soil, use water wisely, create opportunities and bring people together.
+      We turn underused community spaces into thriving food forests: places that produce food,
+      restore soil, build climate resilience, use water wisely, create economic opportunities,
+      honour local knowledge and culture, and bring people together.
     </p>
     <p>
-      We work with schools, communities, government, businesses, growers and volunteers to build
-      living systems that can become more productive and resilient over time.
+      We work with communities, government, businesses, restaurants and hotels, growers, funders and
+      volunteers to plant living systems that become more productive, diverse and resilient over
+      time.
     </p>
     <Fragment slot="actions">
-      <Button href={joinHref}>Join a planting</Button>
+      <Button href={joinHref}>Join a planting day</Button>
       <Button href="/dedicate-a-tree">Dedicate a tree</Button>
+      <Button href="/get-involved/propose-a-site" variant="ghost">
+        Plant a food forest
+      </Button>
+      <Button href="/our-work" variant="ghost">
+        See our work
+      </Button>
     </Fragment>
   </Hero>
 
   <NextPlanting planting={nextCard}>
     <p>
-      A Dandelion Club planting day is part work party, part outdoor classroom and part community
-      gathering.
+      A Dandelion Club planting day is part work, part party, part learning, part leading, part
+      sharing and part community gathering.
     </p>
-    <p>We bring the trees, compost, mulch, tools and a plan. You bring yourself.</p>
+    <p>
+      We bring the people together, trees, compost, mulch, tools, local food, music and a plan. You
+      bring yourself.
+    </p>
     <p>
       Together we transform another patch of ground into something that can feed people, teach
       skills and support a community for years to come.
@@ -90,13 +101,11 @@ const fact = facts[0]?.data;
     <div class="work-intro t-body">
       <p>A food forest is not simply an orchard. It is a living system.</p>
       <p>
-        Trees create the canopy. Shrubs, vegetables, herbs, climbers and groundcovers fill the
-        layers underneath. Compost feeds the soil. Mulch protects it. Water is slowed and held.
-        Organic waste becomes a resource. And people are part of the ecosystem too.
-      </p>
-      <p>
-        That is why every Dandelion Club project asks two questions: What can this land produce? And
-        what can become possible around it?
+        Indigenous and climate-appropriate trees create the protective canopy. Fruit and nut trees,
+        shrubs, berries, vegetables and medicinal herbs create nourishment. Climbers, groundcovers
+        and root crops fill the layers underneath. Compost feeds the soil. Mulch protects the
+        system. Water is slowed and held. Organic waste becomes a resource. And communities benefit
+        from the abundance of the ecosystem.
       </p>
     </div>
     <ul role="list" class="programmes">
@@ -111,6 +120,41 @@ const fact = facts[0]?.data;
     </ul>
   </Section>
 
+  <Section ground="paper" aria-labelledby="agro-heading">
+    <div class="agro">
+      <div class="agro__main">
+        <SectionHeading eyebrow="How we work" id="agro-heading">
+          Agroecology, made practical.
+        </SectionHeading>
+        <div class="t-body stack">
+          <p>
+            Dandelion Club works through an agroecological approach. That means looking beyond
+            simply producing vegetables. We ask how food, water, soil, biodiversity, livelihoods,
+            local knowledge and community ownership can support one another.
+          </p>
+          <p>
+            Rather than importing a finished solution, we begin by understanding the place and the
+            people already connected to it. Then we build from there.
+          </p>
+        </div>
+        <Button href="/about#approach-heading">See how we work</Button>
+      </div>
+      <div class="agro__observe stack">
+        <h3 class="agro__title">Start with what is already there.</h3>
+        <div class="t-body stack">
+          <p>
+            Before we plant, we observe. Where does the water move? Where does the wind come from?
+            What already grows? Who uses the space? What knowledge already exists in the community?
+            What resources are being overlooked or thrown away?
+          </p>
+          <p>
+            A good food forest doesn't begin with a planting plan. It begins with understanding the
+            system.
+          </p>
+        </div>
+      </div>
+    </div>
+  </Section>
   {sites.length > 0 && (
     <Section ground="night" aria-labelledby="sites-heading">
       <SectionHeading eyebrow="Where we work" id="sites-heading">
@@ -136,29 +180,32 @@ const fact = facts[0]?.data;
     <div class="funders">
       <div class="funders__text">
         <SectionHeading eyebrow="For funders and partners" id="funders-heading">
-          Fund more than a planting day.
+          Fund a planting day.
         </SectionHeading>
         <div class="t-body stack">
-          <p>A planting day is visible. The work around it is less visible.</p>
           <p>
-            Before a tree goes into the ground there is community engagement, site assessment,
-            ecological design, soil preparation, sourcing, logistics and planning. Afterwards there
-            is watering, maintenance, replacement, training, monitoring and learning.
+            A Dandelion Club planting day can become much more than a once-off team activity. We
+            work with corporate partners to shape days that bring together team building, cultural
+            immersion, ecological learning, whole-systems thinking, leadership development and
+            hands-on community participation.
           </p>
           <p>
-            That is why we invite partners to invest not simply in trees, but in the systems that
-            allow those trees, and the people around them, to thrive.
+            Each day is designed around both the needs of the sponsoring team and the needs of the
+            local forest community. That might mean supporting a smaller Pocket Food Forest of
+            around 21 trees, adding to an existing forest, helping establish a medium forest of
+            around 88 trees, or contributing towards a full food-forest system that includes the
+            support systems needed around it.
+          </p>
+          <p>
+            The size and approach can change. The intention stays the same: to create something
+            living that continues long after the planting day is over.
           </p>
           <p class="t-small muted">Dandelion Club is run by {settings.npcName}.</p>
         </div>
       </div>
       <div class="funders__actions">
-        <Button href="/get-involved/partner">Talk to us about partnership</Button>
-        <Button href="/get-involved/partner" variant="ghost">
-          Fund a site
-        </Button>
-        <Button href="/get-involved/partner" variant="ghost">
-          Support a programme
+        <Button href="/get-involved/partner">
+          Bring your team into a living community project
         </Button>
       </div>
     </div>
@@ -172,7 +219,9 @@ const fact = facts[0]?.data;
             Field notes.
           </SectionHeading>
           <p class="t-lead">
-            We learn by doing. The journal is where we share what we are seeing in the field.
+            We learn by doing. The Dandelion Club journal is where we share what we are seeing in
+            the field: what worked, what failed, what surprised us, what the soil taught us and what
+            communities are building around these spaces.
           </p>
         </div>
         <Button href="/journal" variant="ghost">
@@ -202,10 +251,12 @@ const fact = facts[0]?.data;
       <div class="close__text on-night">
         <p class="t-lead">You don't need to be a gardener to be part of Dandelion Club.</p>
         <ul role="list" class="close__list t-body">
-          <li>Plant a tree.</li>
+          <li>Follow our story.</li>
+          <li>Join our newsletter.</li>
+          <li>Dedicate a tree.</li>
           <li>Join a planting day.</li>
           <li>Offer skills.</li>
-          <li>Bring a school or community site to us.</li>
+          <li>Bring a community site to us.</li>
           <li>Fund a food forest.</li>
         </ul>
         <p class="t-body">Help us create the conditions for the next one.</p>
@@ -241,6 +292,26 @@ const fact = facts[0]?.data;
     margin-bottom: var(--space-8);
   }
 
+  .agro {
+    display: grid;
+    gap: var(--space-8);
+  }
+  .agro__main,
+  .agro__observe,
+  .agro .stack {
+    display: grid;
+    gap: var(--space-4);
+    align-content: start;
+    max-width: var(--measure-text);
+  }
+  .agro__main :global(.btn) {
+    justify-self: start;
+  }
+  .agro__title {
+    font-size: var(--type-subtitle-sm-size);
+    line-height: var(--type-subtitle-sm-leading);
+    font-weight: var(--type-subtitle-sm-weight);
+  }
   .journal-head {
     display: grid;
     gap: var(--space-4);
@@ -333,6 +404,10 @@ const fact = facts[0]?.data;
   }
 
   @media (min-width: 1024px) {
+    .agro {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-9);
+    }
     .programmes,
     .cards--three {
       grid-template-columns: repeat(3, minmax(0, 1fr));

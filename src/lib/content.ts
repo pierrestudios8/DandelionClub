@@ -78,7 +78,12 @@ export async function getImpactFigures(): Promise<ImpactFigures> {
     getShownProjects(),
   ]);
   const projects = shown.flatMap((s) => (s.data.project ? [s.data.project] : []));
-  return impactFigures(past, sites, projectTreesTotal(projects));
+  return impactFigures(
+    past,
+    sites,
+    projectTreesTotal(projects),
+    projects.length > 0 ? projects.length : null,
+  );
 }
 
 /**

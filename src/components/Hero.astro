@@ -116,6 +116,15 @@ const Heading = `h${level}` as 'h1' | 'h2';
     width: 100%;
   }
 
+  /* One action fits its label instead of filling the row. */
+  .hero__actions:has(> :only-child) {
+    justify-items: start;
+  }
+
+  .hero__actions:has(> :only-child) :global(.btn) {
+    width: auto;
+  }
+
   @media (min-width: 768px) {
     .hero__media {
       aspect-ratio: 3 / 1;

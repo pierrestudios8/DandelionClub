@@ -6,7 +6,10 @@
  * night (large, first row) or paper (smaller, second row), as in GetInvolved.dc.html.
  */
 interface Props {
-  href: string;
+  /** A link. Leave out when `opens` is set. */
+  href?: string;
+  /** Id of a dialog this card opens, turning the card into a button. */
+  opens?: string;
   /** Matches the button text used elsewhere, e.g. "Join a planting". */
   title: string;
   /** Who it's for, e.g. "For anyone with a free Saturday". */
@@ -15,11 +18,19 @@ interface Props {
   headingLevel?: 2 | 3;
 }
 
-const { href, title, audience, tone = 'night', headingLevel = 2 } = Astro.props;
+const { href, opens, title, audience, tone = 'night', headingLevel = 2 } = Astro.props;
+const Tag = opens ? 'button' : 'a';
 const Heading = `h${headingLevel}` as 'h2' | 'h3';
 ---
 
-<a class:list={['route', `route--${tone}`, tone === 'night' ? 'on-night' : 'on-paper']} href={href}>
+<Tag
+  class:list={['route', `route--${tone}`, tone === 'night' ? 'on-night' : 'on-paper']}
+  href={opens ? undefined : href}
+  type={opens ? 'button' : undefined}
+  aria-haspopup={opens ? 'dialog' : undefined}
+  aria-controls={opens}
+  data-opens={opens}
+>
   <div class="route__text">
     <p class="t-eyebrow-sm muted">{audience}</p>
     <Heading class="route__title">{title}</Heading>
@@ -30,7 +41,7 @@ const Heading = `h${headingLevel}` as 'h2' | 'h3';
   <span class="route__arrow" aria-hidden="true">
     →
   </span>
-</a>
+</Tag>
 
 <style>
   .route {
@@ -43,6 +54,13 @@ const Heading = `h${headingLevel}` as 'h2' | 'h3';
     border-radius: var(--radius-none);
     text-decoration: none;
     transition: border-color 150ms ease-out;
+  }
+
+  button.route {
+    width: 100%;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
   }
 
   .route__text {

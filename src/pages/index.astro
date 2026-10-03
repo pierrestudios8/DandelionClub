@@ -160,7 +160,6 @@ const fact = facts[0]?.data;
       <SectionHeading eyebrow="Where we work" id="sites-heading">
         One food forest at a time.
       </SectionHeading>
-      <p class="t-lead sites-lead">Each site is different, so each project evolves differently.</p>
       <div class="cards cards--three">
         {sites.map((s) => (
           <SiteCard
@@ -316,10 +315,6 @@ const fact = facts[0]?.data;
     display: grid;
     gap: var(--space-4);
     max-width: var(--measure-text);
-  }
-
-  .sites-lead {
-    margin-top: var(--space-4);
   }
 
   .funders__text .stack,

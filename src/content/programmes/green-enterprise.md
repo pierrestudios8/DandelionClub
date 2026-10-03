@@ -1,6 +1,6 @@
 ---
-title: Green enterprise
-summary: A productive landscape can create more than food. Seedlings, produce, compost, propagation, training and other small enterprises can create pathways towards local livelihoods.
+title: Green enterprises & cooperatives
+summary: A productive landscape can create more than food. Seedling and tree propagation nurseries, fruit and vegetable production, green products, compost and green entrepreneurship development can create pathways towards local livelihoods.
 order: 5
 ---
 

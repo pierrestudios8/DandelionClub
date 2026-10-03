@@ -66,3 +66,4 @@ Newest first. Add a line for every decision that isn't already in CLAUDE.md or S
 | 2026-09-26 | Unconfirmed facts stay as `TODO:` placeholders and block publishing | Nothing invented goes live |
 | 2026-09-26 | Rive taproot story is a later phase; a `RiveSlot` holds its place | Launch doesn't wait on animation |
 
+| 2026-10-03 | Home copy from content v03 applied. Impact strip shows trees planted, food forests seeded (count of active projects) and planting days hosted; "Forest care days funded" stays out until there is a real figure. Agroecology and "Start with what is already there" share one paper band. Funder band is "Fund a planting day." with one button. | The club marked these Home rows "Updated draft — latest". |

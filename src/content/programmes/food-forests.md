@@ -4,7 +4,7 @@ summary: We transform marginal and underused land into diverse productive landsc
 order: 1
 ---
 
-We design and establish diverse productive landscapes around schools and community spaces.
+We design and establish diverse productive landscapes in underused community spaces.
 
 Food forests combine fruit trees, indigenous plants, vegetables, herbs, shrubs, climbers, groundcovers and soil-building species in layered systems inspired by natural forests.
 

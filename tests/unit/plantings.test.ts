@@ -106,6 +106,7 @@ describe('impactFigures', () => {
     expect(impactFigures([], sites, null)).toEqual({
       treesPlanted: null,
       plantingsHeld: null,
+      foodForests: null,
       schools: null,
       volunteers: null,
     });
@@ -115,6 +116,7 @@ describe('impactFigures', () => {
     expect(impactFigures([], sites, 331)).toEqual({
       treesPlanted: 331,
       plantingsHeld: null,
+      foodForests: null,
       schools: null,
       volunteers: null,
     });
@@ -134,6 +136,7 @@ describe('impactFigures', () => {
     expect(impactFigures(held, sites, 331)).toEqual({
       treesPlanted: 331,
       plantingsHeld: 3,
+      foodForests: null,
       schools: 2,
       volunteers: 45,
     });
@@ -151,9 +154,14 @@ describe('impactFigures', () => {
     expect(impactFigures(held, sites, null)).toEqual({
       treesPlanted: null,
       plantingsHeld: 2,
+      foodForests: null,
       schools: 1,
       volunteers: null,
     });
+  });
+
+  it('passes the number of food forests through', () => {
+    expect(impactFigures([], sites, 331, 3).foodForests).toBe(3);
   });
 
   it("doesn't count a site that isn't visible", () => {

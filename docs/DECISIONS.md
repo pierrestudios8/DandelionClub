@@ -67,3 +67,6 @@ Newest first. Add a line for every decision that isn't already in CLAUDE.md or S
 | 2026-09-26 | Rive taproot story is a later phase; a `RiveSlot` holds its place | Launch doesn't wait on animation |
 
 | 2026-10-03 | Home copy from content v03 applied. Impact strip shows trees planted, food forests seeded (count of active projects) and planting days hosted; "Forest care days funded" stays out until there is a real figure. Agroecology and "Start with what is already there" share one paper band. Funder band is "Fund a planting day." with one button. | The club marked these Home rows "Updated draft — latest". |
+| 2026-11-02 | Headlines are one word, or two totalling 10 characters or fewer, with no full stop. Body, small-lg and small move to Geist 300 at 130% line height. | Pierre's 2 Nov feedback. |
+| 2026-11-02 | Home and Get involved share one `Pathways` component. | Avoids two copies of the same cards. |
+| 2026-11-02 | First photos (Silukhanyo Primary) added to `src/assets/photos/`, resized to 2400px max. Consent confirmed by Pierre: team members' children and club learners. | Imagery phase. Silverleaf photos to follow. |

@@ -1,5 +1,6 @@
 ---
 /** Home: design/pages/Home.dc.html (1440px) and HomeMobile.dc.html (390px). */
+import heroPhoto from '../assets/photos/silukhanyo-planting-wide.jpg';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/Button.astro';
 import FactBand from '../components/FactBand.astro';
@@ -39,7 +40,12 @@ const fact = facts[0]?.data;
   title="Dandelion Club"
   description="Dandelion Club turns underused community spaces in the Western Cape into food forests. Join a planting, dedicate a tree or donate."
 >
-  <Hero eyebrow="Food forests for stronger futures" headline="Plant it">
+  <Hero
+    eyebrow="Food forests for stronger futures"
+    headline="Plant it"
+    image={heroPhoto}
+    imageAlt="Learners kneeling in the soil, planting a new bed at Silukhanyo Primary."
+  >
     <p>
       We turn underused community spaces into thriving food forests: places that produce food,
       restore soil, build climate resilience, use water wisely, create economic opportunities,

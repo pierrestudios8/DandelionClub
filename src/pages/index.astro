@@ -1,11 +1,15 @@
 ---
 /** Home: design/pages/Home.dc.html (1440px) and HomeMobile.dc.html (390px). */
+import heroPhoto from '../assets/photos/silukhanyo-wheelbarrow.jpg';
+import agroPhoto from '../assets/photos/silukhanyo-shade-garden.jpg';
+import closePhoto from '../assets/photos/silukhanyo-garden-planting.jpg';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/Button.astro';
 import FactBand from '../components/FactBand.astro';
 import Hero from '../components/Hero.astro';
 import ImpactStrip from '../components/ImpactStrip.astro';
 import NextPlanting from '../components/NextPlanting.astro';
+import PhotoBand from '../components/PhotoBand.astro';
 import Placeholder from '../components/Placeholder.astro';
 import Pathways from '../components/Pathways.astro';
 import Section from '../components/Section.astro';
@@ -39,7 +43,12 @@ const fact = facts[0]?.data;
   title="Dandelion Club"
   description="Dandelion Club turns underused community spaces in the Western Cape into food forests. Join a planting, dedicate a tree or donate."
 >
-  <Hero eyebrow="Food forests for stronger futures" headline="Plant it">
+  <Hero
+    eyebrow="Food forests for stronger futures"
+    headline="Plant it"
+    image={heroPhoto}
+    imageAlt="A Silukhanyo Primary learner with a red wheelbarrow in the food forest at golden hour."
+  >
     <p>
       We turn underused community spaces into thriving food forests: places that produce food,
       restore soil, build climate resilience, use water wisely, create economic opportunities,
@@ -121,7 +130,7 @@ const fact = facts[0]?.data;
     </ul>
   </Section>
 
-  <Section ground="paper" aria-labelledby="agro-heading">
+  <Section ground="night" aria-labelledby="agro-heading">
     <div class="agro">
       <div class="agro__main">
         <SectionHeading eyebrow="How we work" id="agro-heading">
@@ -140,6 +149,12 @@ const fact = facts[0]?.data;
         </div>
         <Button href="/about#approach-heading">See how we work</Button>
       </div>
+      <PhotoBand
+        image={agroPhoto}
+        alt="The shade-netted garden at Silukhanyo Primary, with young trees and flowering beds."
+        shape="frame"
+        eager={false}
+      />
     </div>
   </Section>
   <Section ground="paper-sunk" aria-labelledby="observe-heading">
@@ -215,7 +230,12 @@ const fact = facts[0]?.data;
     </div>
   </Section>
 
-  <Section ground="night" aria-labelledby="close-heading">
+  <PhotoBand
+    image={closePhoto}
+    alt="Two volunteers planting into a fresh bed at Silukhanyo Primary."
+    eager={false}
+  />
+  <Section ground="night" aria-labelledby="close-heading" class="home-close">
     <div class="close">
       <SectionHeading eyebrow="Get involved" id="close-heading" size="display-xl">
         Get dirty
@@ -241,6 +261,25 @@ const fact = facts[0]?.data;
 </BaseLayout>
 
 <style>
+  .split-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: var(--space-5) var(--space-7);
+  }
+
+  .work-intro {
+    display: grid;
+    gap: var(--space-4);
+    max-width: var(--measure-text);
+    margin-block: var(--space-7) var(--space-9);
+  }
+
+  :global(.section.section--normal.home-close) {
+    padding-block-start: var(--space-2);
+  }
+
   .ways {
     margin-top: var(--space-8);
   }
@@ -285,7 +324,7 @@ const fact = facts[0]?.data;
 
   .programmes {
     display: grid;
-    gap: var(--space-7) var(--space-5);
+    gap: var(--space-8) var(--space-7);
   }
 
   .programme {
@@ -347,6 +386,11 @@ const fact = facts[0]?.data;
   }
 
   @media (min-width: 1024px) {
+    .agro {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-9);
+      align-items: center;
+    }
     .observe {
       grid-template-columns: 1fr 1fr;
       gap: var(--space-9);

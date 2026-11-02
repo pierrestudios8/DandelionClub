@@ -4,18 +4,25 @@
  * Dedicate a tree, Donate): eyebrow, dandelion display-xl h1 and a lead line.
  * Slot "aside" sits to the right from 1024px (the seed on Dedicate a tree).
  */
+import type { ImageMetadata } from 'astro';
+import PhotoBand from './PhotoBand.astro';
 import Section from './Section.astro';
 import SectionHeading from './SectionHeading.astro';
 
 interface Props {
   eyebrow: string;
   title: string;
+  /** Optional photograph above the text, fading into night. */
+  image?: ImageMetadata;
+  imageAlt?: string;
+  imagePosition?: string;
 }
 
-const { eyebrow, title } = Astro.props;
+const { eyebrow, title, image, imageAlt = '', imagePosition } = Astro.props;
 ---
 
-<Section ground="night" class="intro">
+{image && <PhotoBand image={image} alt={imageAlt} position={imagePosition} />}
+<Section ground="night" class={image ? 'intro intro--photo' : 'intro'}>
   <div class="intro__grid">
     <div class="intro__text">
       <SectionHeading eyebrow={eyebrow} level={1} size="display-xl">
@@ -34,6 +41,11 @@ const { eyebrow, title } = Astro.props;
 </Section>
 
 <style>
+  /* After a photo the band picks up straight from the fade. */
+  :global(.section.section--normal.intro--photo) {
+    padding-block-start: var(--space-2);
+  }
+
   .intro__grid {
     display: grid;
     gap: var(--space-7);

@@ -1,5 +1,6 @@
 ---
 /** Get involved hub: design/pages/GetInvolved.dc.html. */
+import introPhoto from '../../assets/photos/silukhanyo-planting-wide.jpg';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import NewsletterSignup from '../../components/NewsletterSignup.astro';
 import PageIntro from '../../components/PageIntro.astro';
@@ -16,7 +17,12 @@ const joinHref = next ? `/plantings/${next.id}#sign-up` : '/plantings';
   title="Get involved"
   description="Plant with us, dedicate a tree, donate, propose a site or partner with Dandelion Club."
 >
-  <PageIntro eyebrow="Get involved" title="Join in">
+  <PageIntro
+    eyebrow="Get involved"
+    title="Join in"
+    image={introPhoto}
+    imageAlt="Learners kneeling in the soil, planting a new bed at Silukhanyo Primary."
+  >
     Dandelion Club is designed to be participatory. You can spend one day with us or become part of
     building a food forest over several years.
   </PageIntro>

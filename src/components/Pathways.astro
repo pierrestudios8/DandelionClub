@@ -3,6 +3,8 @@
  * The ways in: two large night cards, then three paper cards. Shared by the
  * Get involved hub and Home so the two stay the same.
  */
+import joinPhoto from '../assets/photos/silukhanyo-planting-hands.jpg';
+import treePhoto from '../assets/photos/silukhanyo-tree-planting.jpg';
 import RouteCard from './RouteCard.astro';
 
 interface Props {
@@ -18,6 +20,7 @@ const { joinHref } = Astro.props;
     href={joinHref}
     title="Join a planting"
     audience="For anyone ready to get their hands dirty"
+    image={joinPhoto}
   >
     Come dig, plant, mulch and learn with us. No gardening experience necessary. Bring gloves if
     you've got them. We'll bring everything else.
@@ -26,6 +29,7 @@ const { joinHref } = Astro.props;
     href="/dedicate-a-tree"
     title="Dedicate a tree"
     audience="For a gift, a memory, a milestone"
+    image={treePhoto}
   >
     Mark a birthday, a memory, a new arrival, a friendship or a milestone by putting a tree into a
     living food forest.

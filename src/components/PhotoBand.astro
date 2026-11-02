@@ -10,22 +10,34 @@ import { Image } from 'astro:assets';
 interface Props {
   image: ImageMetadata;
   alt: string;
-  /** CSS object-position, to keep the subject in the wide crop. */
+  /** CSS object-position. Centred by default. */
   position?: string;
+  /** Band: full-bleed strip (3:2, 5:2 from 768px). Frame: a 4:3 photo inside a layout. */
+  shape?: 'band' | 'frame';
+  /** Load at once (page openings) or lazily (further down the page). */
+  eager?: boolean;
+  sizes?: string;
 }
 
-const { image, alt, position = 'center 38%' } = Astro.props;
+const {
+  image,
+  alt,
+  position = 'center',
+  shape = 'band',
+  eager = true,
+  sizes = shape === 'band' ? '100vw' : '(min-width: 1024px) 50vw, 100vw',
+} = Astro.props;
 ---
 
-<div class="photo-band">
+<div class:list={['photo-band', `photo-band--${shape}`]}>
   <Image
     class="photo-band__img"
     src={image}
     alt={alt}
     widths={[390, 780, 1200, 1440, 2160]}
-    sizes="100vw"
-    loading="eager"
-    fetchpriority="high"
+    sizes={sizes}
+    loading={eager ? 'eager' : 'lazy'}
+    fetchpriority={eager ? 'high' : 'auto'}
     style={`object-position: ${position}`}
   />
 </div>
@@ -33,7 +45,6 @@ const { image, alt, position = 'center 38%' } = Astro.props;
 <style>
   .photo-band {
     position: relative;
-    aspect-ratio: 3 / 2;
     background: var(--night-raised);
     overflow: hidden;
   }
@@ -52,9 +63,17 @@ const { image, alt, position = 'center 38%' } = Astro.props;
     background: linear-gradient(transparent 42%, var(--night) 100%);
   }
 
+  .photo-band--band {
+    aspect-ratio: 3 / 2;
+  }
+
+  .photo-band--frame {
+    aspect-ratio: 4 / 3;
+  }
+
   @media (min-width: 768px) {
-    .photo-band {
-      aspect-ratio: 3 / 1;
+    .photo-band--band {
+      aspect-ratio: 5 / 2;
     }
   }
 </style>

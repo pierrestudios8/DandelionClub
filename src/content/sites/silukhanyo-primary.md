@@ -12,7 +12,7 @@ project:
   order: 1
   treesTarget: 200
   treesPlanted: 92
-heroImage: ../../assets/photos/silukhanyo-shade-garden.jpg
+heroImage: ../../assets/photos/silukhanyo-certificates.jpg
 gallery:
   - ../../assets/photos/silukhanyo-planting-wide.jpg
   - ../../assets/photos/silukhanyo-planting-hands.jpg
@@ -21,6 +21,11 @@ gallery:
   - ../../assets/photos/silukhanyo-vegetables.jpg
   - ../../assets/photos/silukhanyo-cabbage.jpg
   - ../../assets/photos/silukhanyo-kitchen.jpg
+  - ../../assets/photos/silukhanyo-shade-garden.jpg
+  - ../../assets/photos/silukhanyo-harvest.jpg
+  - ../../assets/photos/silukhanyo-flowers.jpg
+  - ../../assets/photos/silukhanyo-mushrooms.jpg
+  - ../../assets/photos/silukhanyo-wheelbarrow.jpg
 publish: false
 ---
 

@@ -3,6 +3,7 @@
  * About (docs/SPEC.md, Pages without designs): origin story (warm), approach,
  * people, and governance (plain). Unconfirmed content stays as placeholders.
  */
+import introPhoto from '../assets/photos/silukhanyo-flowers.jpg';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/Button.astro';
 import PageIntro from '../components/PageIntro.astro';
@@ -18,7 +19,13 @@ const settings = await getSettings();
   title="About"
   description={`Who Dandelion Club is, how we work, and how ${settings.npcName} governs it.`}
 >
-  <PageIntro eyebrow="About" title="About us">
+  <PageIntro
+    eyebrow="About"
+    title="About us"
+    image={introPhoto}
+    imageAlt="A gardener at Silukhanyo Primary holding an armful of yellow flowers."
+    imagePosition="center 30%"
+  >
     We believe productive landscapes can change more than landscapes.
   </PageIntro>
 

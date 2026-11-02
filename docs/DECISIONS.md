@@ -70,3 +70,4 @@ Newest first. Add a line for every decision that isn't already in CLAUDE.md or S
 | 2026-11-02 | Headlines are one word, or two totalling 10 characters or fewer, with no full stop. Body, small-lg and small move to Geist 300 at 130% line height. | Pierre's 2 Nov feedback. |
 | 2026-11-02 | Home and Get involved share one `Pathways` component. | Avoids two copies of the same cards. |
 | 2026-11-02 | First photos (Silukhanyo Primary) added to `src/assets/photos/`, resized to 2400px max. Consent confirmed by Pierre: team members' children and club learners. | Imagery phase. Silverleaf photos to follow. |
+| 2026-11-02 | Photos run through the site: new `PhotoBand` component shared by Hero and PageIntro (optional `image`). Home hero is the wheelbarrow learner, Silukhanyo's hero the certificates by the mural; About, Our work, Plantings, Get involved, Donate and Dedicate a tree each open on a photo. | Pierre: scatter the Silukhanyo imagery through the site. |

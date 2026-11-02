@@ -1,0 +1,60 @@
+---
+/**
+ * Full-bleed photograph at the top of a night opening, fading into night at
+ * the bottom (transparent at 42% → night at 100%). Text never sits on it.
+ * Used by Hero and PageIntro.
+ */
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+
+interface Props {
+  image: ImageMetadata;
+  alt: string;
+  /** CSS object-position, to keep the subject in the wide crop. */
+  position?: string;
+}
+
+const { image, alt, position = 'center 38%' } = Astro.props;
+---
+
+<div class="photo-band">
+  <Image
+    class="photo-band__img"
+    src={image}
+    alt={alt}
+    widths={[390, 780, 1200, 1440, 2160]}
+    sizes="100vw"
+    loading="eager"
+    fetchpriority="high"
+    style={`object-position: ${position}`}
+  />
+</div>
+
+<style>
+  .photo-band {
+    position: relative;
+    aspect-ratio: 3 / 2;
+    background: var(--night-raised);
+    overflow: hidden;
+  }
+
+  .photo-band :global(.photo-band__img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .photo-band::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(transparent 42%, var(--night) 100%);
+  }
+
+  @media (min-width: 768px) {
+    .photo-band {
+      aspect-ratio: 3 / 1;
+    }
+  }
+</style>

@@ -1,5 +1,6 @@
 ---
 /** Plantings list and archive: design/pages/Plantings.dc.html. */
+import introPhoto from '../../assets/photos/silukhanyo-tree-planting.jpg';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Button from '../../components/Button.astro';
 import NewsletterSignup from '../../components/NewsletterSignup.astro';
@@ -31,7 +32,13 @@ const tally =
   title="Plantings"
   description="Planting days at Western Cape schools and community spaces. Pick a date, bring gloves if you've got them, and bring the family."
 >
-  <PageIntro eyebrow="Plantings" title="Dig in">
+  <PageIntro
+    eyebrow="Plantings"
+    title="Dig in"
+    image={introPhoto}
+    imageAlt="Two volunteers kneeling to plant a young tree."
+    imagePosition="center 60%"
+  >
     Each planting is a morning with a school community. Pick a date, bring gloves if you've got
     them, and bring the family.
   </PageIntro>

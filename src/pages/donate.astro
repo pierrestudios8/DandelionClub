@@ -4,6 +4,7 @@
  * amounts are radio buttons, so the form works without JavaScript; the script
  * only keeps the summary in step.
  */
+import introPhoto from '../assets/photos/silukhanyo-mushrooms.jpg';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BankDetails from '../components/BankDetails.astro';
 import Button from '../components/Button.astro';
@@ -28,7 +29,13 @@ const offer18a = settings.section18a !== false;
   title="Donate"
   description="Give once or monthly to pay for trees, soil, water and tools for school food forests in the Western Cape. Card or EFT."
 >
-  <PageIntro eyebrow="Donate" title="Plant more">
+  <PageIntro
+    eyebrow="Donate"
+    title="Plant more"
+    image={introPhoto}
+    imageAlt="Mushrooms growing from mulched soil in a raised bed."
+    imagePosition="center 60%"
+  >
     Your gift pays for trees, soil, water and tools for school food forests in the Western Cape.{' '}
     <Placeholder value="TODO: confirm what donations cover" />
   </PageIntro>

@@ -28,7 +28,7 @@ const offer18a = settings.section18a !== false;
   title="Donate"
   description="Give once or monthly to pay for trees, soil, water and tools for school food forests in the Western Cape. Card or EFT."
 >
-  <PageIntro eyebrow="Donate" title="Pay for the next planting.">
+  <PageIntro eyebrow="Donate" title="Plant more">
     Your gift pays for trees, soil, water and tools for school food forests in the Western Cape.{' '}
     <Placeholder value="TODO: confirm what donations cover" />
   </PageIntro>
@@ -37,7 +37,7 @@ const offer18a = settings.section18a !== false;
     <div class="checkout">
       <Form id="donate" action="/api/donate" aria-labelledby="gift-heading" class="checkout__form">
         <h2 class="t-display heading" id="gift-heading">
-          Your gift.
+          Your gift
         </h2>
 
         <fieldset class="choice">
@@ -163,7 +163,7 @@ const offer18a = settings.section18a !== false;
     <div class="eft">
       <div class="eft__text">
         <SectionHeading eyebrow="Prefer EFT?" id="eft-heading">
-          Pay us directly.
+          Pay direct
         </SectionHeading>
         <p class="t-lead muted">
           Use your name as the reference and email{' '}
@@ -177,7 +177,7 @@ const offer18a = settings.section18a !== false;
   <Section ground="paper" aria-labelledby="accountable-heading">
     <div class="accountable">
       <h2 class="t-display heading" id="accountable-heading">
-        Accountable.
+        The facts
       </h2>
       <div class="facts">
         <div class="fact">
@@ -407,7 +407,7 @@ const offer18a = settings.section18a !== false;
 
   .eft__text {
     display: grid;
-    gap: var(--space-4);
+    gap: var(--space-5);
   }
 
   .eft__text a {

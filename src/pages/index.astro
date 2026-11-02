@@ -39,7 +39,7 @@ const fact = facts[0]?.data;
   title="Dandelion Club"
   description="Dandelion Club turns underused community spaces in the Western Cape into food forests. Join a planting, dedicate a tree or donate."
 >
-  <Hero eyebrow="Food forests for stronger futures" headline="Plant it forward.">
+  <Hero eyebrow="Food forests for stronger futures" headline="Plant it">
     <p>
       We turn underused community spaces into thriving food forests: places that produce food,
       restore soil, build climate resilience, use water wisely, create economic opportunities,
@@ -82,7 +82,7 @@ const fact = facts[0]?.data;
     aria-labelledby="ways-heading"
   >
     <SectionHeading eyebrow="Ways in" id="ways-heading">
-      Where do you fit?
+      Your part
     </SectionHeading>
     <div class="ways">
       <Pathways joinHref={joinHref} />
@@ -93,7 +93,7 @@ const fact = facts[0]?.data;
   <Section ground="paper-sunk" aria-labelledby="work-heading" class="home-work">
     <div class="split-head">
       <SectionHeading eyebrow="What we do" id="work-heading">
-        More than trees.
+        Systems
       </SectionHeading>
       <Button href="/our-work" variant="ghost">
         Our work
@@ -125,7 +125,7 @@ const fact = facts[0]?.data;
     <div class="agro">
       <div class="agro__main">
         <SectionHeading eyebrow="How we work" id="agro-heading">
-          Agroecology, made practical.
+          Practical
         </SectionHeading>
         <div class="t-body stack">
           <p>
@@ -144,8 +144,8 @@ const fact = facts[0]?.data;
   </Section>
   <Section ground="paper-sunk" aria-labelledby="observe-heading">
     <div class="observe">
-      <SectionHeading eyebrow="Observe first" id="observe-heading">
-        Start with what is already there.
+      <SectionHeading eyebrow="Start with what is already there" id="observe-heading">
+        Observe
       </SectionHeading>
       <div class="t-body stack observe__text">
         <p>
@@ -163,7 +163,7 @@ const fact = facts[0]?.data;
   {sites.length > 0 && (
     <Section ground="night" aria-labelledby="sites-heading">
       <SectionHeading eyebrow="Where we work" id="sites-heading">
-        One food forest at a time.
+        One by one
       </SectionHeading>
       <div class="cards cards--three">
         {sites.map((s) => (
@@ -184,7 +184,7 @@ const fact = facts[0]?.data;
     <div class="funders">
       <div class="funders__text">
         <SectionHeading eyebrow="For funders and partners" id="funders-heading">
-          Fund a planting day.
+          Fund a day
         </SectionHeading>
         <div class="t-body stack">
           <p>
@@ -218,7 +218,7 @@ const fact = facts[0]?.data;
   <Section ground="night" aria-labelledby="close-heading">
     <div class="close">
       <SectionHeading eyebrow="Get involved" id="close-heading" size="display-xl">
-        Get your hands dirty.
+        Get dirty
       </SectionHeading>
       <div class="close__text on-night">
         <p class="t-lead">You don't need to be a gardener to be part of Dandelion Club.</p>
@@ -251,7 +251,7 @@ const fact = facts[0]?.data;
   .agro__main,
   .agro .stack {
     display: grid;
-    gap: var(--space-4);
+    gap: var(--space-5);
     align-content: start;
     max-width: var(--measure-text);
   }
@@ -264,7 +264,7 @@ const fact = facts[0]?.data;
   }
   .observe__text {
     display: grid;
-    gap: var(--space-4);
+    gap: var(--space-5);
     align-content: start;
     max-width: var(--measure-text);
   }
@@ -272,7 +272,7 @@ const fact = facts[0]?.data;
   .funders__text .stack,
   .close__text {
     display: grid;
-    gap: var(--space-4);
+    gap: var(--space-5);
   }
 
   .close :global(.close__button) {
@@ -325,7 +325,7 @@ const fact = facts[0]?.data;
 
   .funders__text {
     display: grid;
-    gap: var(--space-4);
+    gap: var(--space-5);
     max-width: var(--measure-text);
   }
 

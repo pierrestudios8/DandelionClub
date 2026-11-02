@@ -18,13 +18,13 @@ const settings = await getSettings();
   title="About"
   description={`Who Dandelion Club is, how we work, and how ${settings.npcName} governs it.`}
 >
-  <PageIntro eyebrow="About" title="About Dandelion Club.">
+  <PageIntro eyebrow="About" title="About us">
     We believe productive landscapes can change more than landscapes.
   </PageIntro>
 
   <Section ground="paper" width="text" aria-labelledby="story-heading">
     <SectionHeading eyebrow="How it started" id="story-heading">
-      Our story.
+      Story
     </SectionHeading>
     <div class="t-body stack">
       <p>Dandelion Club began with a simple observation.</p>
@@ -59,7 +59,7 @@ const settings = await getSettings();
 
   <Section ground="paper-sunk" aria-labelledby="approach-heading">
     <SectionHeading eyebrow="How we work" id="approach-heading">
-      Our approach.
+      Approach
     </SectionHeading>
     <div class="t-body stack approach">
       <p>
@@ -89,7 +89,7 @@ const settings = await getSettings();
 
   <Section ground="paper" aria-labelledby="people-heading">
     <SectionHeading eyebrow="Who we are" id="people-heading">
-      The people.
+      People
     </SectionHeading>
     <p class="t-body people">
       <Placeholder value="TODO: people, each with a portrait (with consent), name and one line" />
@@ -99,7 +99,7 @@ const settings = await getSettings();
   <Section ground="night" aria-labelledby="governance-heading">
     <div class="governance">
       <SectionHeading eyebrow="Governance" id="governance-heading">
-        Accountable.
+        The facts
       </SectionHeading>
       <dl class="facts">
         <div class="fact">
@@ -161,7 +161,7 @@ const settings = await getSettings();
 
   .stack {
     display: grid;
-    gap: var(--space-4);
+    gap: var(--space-5);
     max-width: var(--measure-text);
   }
 

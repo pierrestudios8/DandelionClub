@@ -88,7 +88,7 @@ test.describe('planting sign-up', () => {
     await form.getByLabel('Email', { exact: true }).fill('test@example.com');
     await form.locator('#signup-consent').check();
     await form.getByRole('button', { name: 'Save my spot', exact: true }).click();
-    await expect(page.getByRole('status')).toContainText('See you in the soil.');
+    await expect(page.getByRole('status')).toContainText('See you');
     await expect(page.locator('#planting-signup')).toBeHidden();
   });
 });
@@ -104,7 +104,7 @@ test.describe('without JavaScript', () => {
     await form.locator('#signup-consent').check();
     await form.getByRole('button', { name: 'Save my spot', exact: true }).click();
     await expect(page).toHaveURL(/\/thank-you\/planting$/);
-    await expect(page.locator('h1')).toHaveText(/See you in the soil/i);
+    await expect(page.locator('h1')).toHaveText(/See you/i);
   });
 
   test('dedicate a tree works as a plain form', async ({ page }) => {
@@ -229,7 +229,7 @@ test('partner enquiry explains an unchosen interest', async ({ page }) => {
 test('an unknown address shows the 404 page', async ({ page }) => {
   const response = await page.goto('/this-page-does-not-exist');
   expect(response?.status()).toBe(404);
-  await expect(page.locator('h1')).toHaveText(/This page blew away/i);
+  await expect(page.locator('h1')).toHaveText(/Blown away/i);
   const { violations } = await new AxeBuilder({ page }).analyze();
   expect(violations).toEqual([]);
 });

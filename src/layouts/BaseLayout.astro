@@ -7,13 +7,14 @@
  */
 import '@fontsource/unbounded/latin-300.css';
 import '@fontsource/unbounded/latin-900.css';
+import '@fontsource/geist/latin-300.css';
 import '@fontsource/geist/latin-400.css';
 import '@fontsource/geist/latin-700.css';
 import '@fontsource/geist/latin-900.css';
 import '../styles/tokens.css';
 import '../styles/global.css';
 import unbounded900 from '@fontsource/unbounded/files/unbounded-latin-900-normal.woff2?url';
-import geist700 from '@fontsource/geist/files/geist-latin-700-normal.woff2?url';
+import geist300 from '@fontsource/geist/files/geist-latin-300-normal.woff2?url';
 import AnnouncementBar, {
   type Props as AnnouncementProps,
 } from '../components/AnnouncementBar.astro';
@@ -61,7 +62,7 @@ const ogImageUrl = ogImage ? new URL(ogImage, Astro.site).href : undefined;
     <meta name="theme-color" content={themeColour} />
 
     <link rel="preload" href={unbounded900} as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href={geist700} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={geist300} as="font" type="font/woff2" crossorigin />
 
     <meta property="og:site_name" content={siteName} />
     <meta property="og:locale" content="en_GB" />

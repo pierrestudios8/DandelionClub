@@ -21,12 +21,7 @@ const headingId = labelledBy ?? `${id}-heading`;
 ---
 
 <div class="signup">
-  <Form
-    id={id}
-    action="/api/newsletter"
-    aria-labelledby={headingId}
-    successTitle="You're on the list."
-  >
+  <Form id={id} action="/api/newsletter" aria-labelledby={headingId} successTitle="You're in">
     {!labelledBy && (
       <p class="t-eyebrow-sm signup__heading" id={headingId}>
         {label}

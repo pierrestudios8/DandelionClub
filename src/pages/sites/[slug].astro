@@ -85,7 +85,7 @@ const ground = (key: string) => grounds.get(key) ?? 'paper';
     <div class="story">
       <div class="story__text">
         <h2 class="t-display story__title" id="story-heading">
-          The site.
+          The site
         </h2>
         <Body entry={site} />
       </div>
@@ -124,7 +124,7 @@ const ground = (key: string) => grounds.get(key) ?? 'paper';
   {past.length > 0 && (
     <Section ground={ground('held')} aria-labelledby="held-heading">
       <h2 class="t-display heading" id="held-heading">
-        Planted here.
+        Planted
       </h2>
       <div class="grid">
         {past.map((p) => (
@@ -137,7 +137,7 @@ const ground = (key: string) => grounds.get(key) ?? 'paper';
   <Section ground={ground('trees')} aria-labelledby="trees-heading">
     <div class="trees">
       <SectionHeading eyebrow="The tree register" id="trees-heading">
-        Trees with names.
+        Tree names
       </SectionHeading>
       <p class="t-body">
         <Placeholder value="TODO: names and messages of trees dedicated here, where the giver chose to show them (from paid dedications, Phase 6)" />
@@ -165,7 +165,7 @@ const ground = (key: string) => grounds.get(key) ?? 'paper';
 
   <Section ground={ground('next')} aria-labelledby="next-heading">
     <h2 class="t-display heading" id="next-heading">
-      What's next.
+      Next
     </h2>
     {upcoming.length > 0 ? (
       <div class="grid">
@@ -186,7 +186,7 @@ const ground = (key: string) => grounds.get(key) ?? 'paper';
   <Section ground="night" aria-labelledby="give-heading">
     <div class="give">
       <SectionHeading eyebrow="Help this site" id="give-heading">
-        Pay for the next planting.
+        Plant more
       </SectionHeading>
       <Button href="/donate">Donate</Button>
     </div>

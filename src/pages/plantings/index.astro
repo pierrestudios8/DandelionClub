@@ -31,7 +31,7 @@ const tally =
   title="Plantings"
   description="Planting days at Western Cape schools and community spaces. Pick a date, bring gloves if you've got them, and bring the family."
 >
-  <PageIntro eyebrow="Plantings" title="Hands in the soil.">
+  <PageIntro eyebrow="Plantings" title="Dig in">
     Each planting is a morning with a school community. Pick a date, bring gloves if you've got
     them, and bring the family.
   </PageIntro>
@@ -40,7 +40,7 @@ const tally =
     <Section ground="paper" aria-labelledby="active-projects">
       <div class="section-head">
         <h2 class="t-display section-title" id="active-projects">
-          Active projects.
+          Projects
         </h2>
         {tally && <p class="t-lead">{tally}</p>}
       </div>
@@ -59,7 +59,7 @@ const tally =
           eyebrow={upcoming.length ? 'More dates to come' : 'Next date not set yet'}
           id="coming-up"
         >
-          Upcoming plantings.
+          Upcoming
         </SectionHeading>
         <p class="t-lead">
           We announce plantings <Placeholder value="TODO: how far ahead plantings are announced" />.
@@ -81,7 +81,7 @@ const tally =
     <div class="propose">
       <div class="propose__text">
         <SectionHeading eyebrow="Got a school in mind?" id="propose-heading">
-          Propose a site.
+          Your place
         </SectionHeading>
         <p class="t-lead">Schools and community groups can ask us to plant with them.</p>
       </div>
@@ -135,7 +135,7 @@ const tally =
 
   .split__text {
     display: grid;
-    gap: var(--space-3);
+    gap: var(--space-4);
   }
 
   .upcoming {
@@ -149,7 +149,7 @@ const tally =
 
   .propose__text {
     display: grid;
-    gap: var(--space-3);
+    gap: var(--space-4);
   }
 
   @media (min-width: 768px) {

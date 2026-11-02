@@ -110,24 +110,24 @@
   --type-subtitle-sm-weight: 700;
   --type-lead-family: var(--font-text);
   --type-lead-size: 18px;
-  --type-lead-leading: 1;
-  --type-lead-weight: 700;
+  --type-lead-leading: 1.25;
+  --type-lead-weight: 400;
   --type-lead-strong-family: var(--font-text);
   --type-lead-strong-size: 18px;
-  --type-lead-strong-leading: 1;
-  --type-lead-strong-weight: 900;
+  --type-lead-strong-leading: 1.25;
+  --type-lead-strong-weight: 700;
   --type-body-family: var(--font-text);
   --type-body-size: 18px;
-  --type-body-leading: 1;
-  --type-body-weight: 400;
+  --type-body-leading: 1.3;
+  --type-body-weight: 300;
   --type-small-lg-family: var(--font-text);
   --type-small-lg-size: 16px;
-  --type-small-lg-leading: 1;
-  --type-small-lg-weight: 400;
+  --type-small-lg-leading: 1.3;
+  --type-small-lg-weight: 300;
   --type-small-family: var(--font-text);
   --type-small-size: 14px;
-  --type-small-leading: 1;
-  --type-small-weight: 400;
+  --type-small-leading: 1.3;
+  --type-small-weight: 300;
 }
 
 /* display-xl is desktop-only; it steps down to display below 1024px. */

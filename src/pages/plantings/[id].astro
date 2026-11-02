@@ -100,7 +100,7 @@ const heardOptions = [
     <div class:list={['layout', held && 'layout--held']}>
       <div class="about">
         <div class="about__intro">
-          <h2 class="t-display about__title">The day.</h2>
+          <h2 class="t-display about__title">The day</h2>
           <Body entry={planting} />
         </div>
 
@@ -188,7 +188,7 @@ const heardOptions = [
             id="planting-signup"
             action="/api/planting-signup"
             aria-labelledby="signup-title"
-            successTitle="See you in the soil."
+            successTitle="See you"
           >
             <div>
               {data.capacity && <p class="t-eyebrow-sm">{data.capacity} spots</p>}
@@ -282,7 +282,7 @@ const heardOptions = [
     <Section ground="night" aria-labelledby="next-heading">
       <div class="next">
         <SectionHeading eyebrow="Plantings" id="next-heading">
-          Come to the next one.
+          Join us
         </SectionHeading>
         <Button href="/plantings">See the dates</Button>
       </div>
@@ -348,7 +348,7 @@ const heardOptions = [
 
   .about__intro {
     display: grid;
-    gap: var(--space-4);
+    gap: var(--space-5);
   }
 
   @media (max-width: 1023px) {

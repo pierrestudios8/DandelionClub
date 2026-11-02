@@ -19,7 +19,7 @@ type Props = {
   class?: string;
 } & HTMLAttributes<'form'>;
 
-const { id, action, successTitle = 'Thank you.', class: className, ...rest } = Astro.props;
+const { id, action, successTitle = 'Thank you', class: className, ...rest } = Astro.props;
 const { email } = await getSettings();
 // Turnstile runs when a site key is set at build time (see BaseLayout for the script).
 const turnstileKey = process.env.TURNSTILE_SITE_KEY;

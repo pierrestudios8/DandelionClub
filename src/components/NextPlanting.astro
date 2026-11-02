@@ -24,7 +24,7 @@ const { id = 'next-planting', planting } = Astro.props;
   <div class="next">
     <div class="next__intro">
       <SectionHeading eyebrow="Next planting" id={`${id}-heading`}>
-        {planting ? 'Come and dig with us.' : 'Coming soon.'}
+        {planting ? 'Join us' : 'Soon'}
       </SectionHeading>
       <div class="next__lines t-lead">
         <slot>
@@ -64,7 +64,7 @@ const { id = 'next-planting', planting } = Astro.props;
 
   .next__lines {
     display: grid;
-    gap: var(--space-4);
+    gap: var(--space-5);
   }
 
   .next__all {

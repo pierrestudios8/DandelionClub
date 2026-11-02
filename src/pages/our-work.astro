@@ -12,7 +12,6 @@ import Section from '../components/Section.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import SiteCard from '../components/SiteCard.astro';
 import { getProgrammes, getSites } from '../lib/content';
-import { numberWord } from '../lib/format';
 
 const [programmes, sites] = await Promise.all([getProgrammes(), getSites()]);
 
@@ -38,7 +37,7 @@ const layers = [
     <div class="layers">
       <div class="layers__intro">
         <SectionHeading eyebrow="How a food forest works" id="layers-heading">
-          In layers.
+          Layers
         </SectionHeading>
         <p class="t-body">
           A food forest grows in layers, so every bit of sun and soil is doing something.
@@ -84,7 +83,7 @@ const layers = [
   {sites.length > 0 && (
     <Section ground="night" aria-labelledby="sites-heading">
       <SectionHeading eyebrow="Where we work" id="sites-heading">
-        {`${numberWord(sites.length)} ${sites.length === 1 ? 'site' : 'sites'} so far.`}
+        Our sites
       </SectionHeading>
       <div class="sites">
         {sites.map((s) => (
